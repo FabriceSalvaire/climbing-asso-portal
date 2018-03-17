@@ -17,6 +17,11 @@ urlpatterns = [
          TemplateView.as_view(template_name='main.html'),
          name='home',
     ),
+
+    path(r'mentions-legales',
+         TemplateView.as_view(template_name='mentions-legales.html'),
+         name='mentions-legales',
+    ),
 ]
 
 ####################################################################################################
