@@ -1,0 +1,22 @@
+{# -*- mode: jinja2 -*- #}
+{% extends "include/base.html" %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{# {% block head_title %}{{ _("Log out") }}{% endblock %} #}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-5">
+            <form method="POST" action="{{ url("account_logout") }}">
+                <legend>{{ _("Log out") }}</legend>
+                <fieldset>
+                    {% csrf_token %}
+                    <p>{{ _("Are you sure you want to log out ?") }}</p>
+                    <button type="submit" class="btn btn-primary">{{ _("Log out") }}</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock %}
