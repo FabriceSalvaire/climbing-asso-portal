@@ -1,3 +1,5 @@
+# -*- mode: Python -*-
+
 ####################################################################################################
 
 """Django settings for AdhesionSite project.
@@ -120,7 +122,9 @@ TEMPLATES = [
         'OPTIONS': {
             "app_dirname": "jinja2",
             # 'match_extension': '.jinja',
-            'match_extension': '.html',
+            # 'match_extension': '.html',
+            'match_extension': None,
+            'match_regex': r"^.*", # \.(html|txt)$
 
             'newstyle_gettext': True,
 
@@ -131,6 +135,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
 
                 'account.context_processors.account',
+                'AdhesionApplication.context_processors.site',
             ],
 
             'extensions': [
@@ -255,3 +260,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #
 
 ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
+ACCOUNT_DELETION_MARK_CALLBACK = None # Fixme:
+THEME_CONTACT_EMAIL = 'admin@foo.org'
