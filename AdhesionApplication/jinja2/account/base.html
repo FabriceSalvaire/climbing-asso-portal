@@ -1,6 +1,12 @@
 {# -*- mode: jinja2 -*- #}
 {% extends "include/base.html" %}
 
+{% block title %} - {{ _('Account') }}{% endblock %}
+
+{% block breadcrumb_li %}
+    <li class="breadcrumb-item active" aria-current="page">{{ _('Account') }}</li>
+{% endblock %}
+
 {# {% block content_class %}account{% endblock %} #}
 
 {% block content %}

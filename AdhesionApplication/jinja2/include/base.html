@@ -62,7 +62,7 @@
 	    {% block navbar %}
 		{# nav / fixed-top navbar-expand-lg #}
 		<header class="navbar navbar-expand navbar-dark bg-dark flex-column flex-md-row">
-		    <a class="navbar-brand ml-md-5" href="#">Adhesion</a>
+		    <a class="navbar-brand ml-md-5" href="/">Adhesion</a>
 		    <button class="navbar-toggler" type="button"
 			    data-toggle="collapse" data-target="#navbarSupportedContent"
 			    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -118,32 +118,36 @@
 		    {# flex-xl-nowrap #}
 		    <div class="row justify-content-center py-md-3">
 			<div class="col-12 col-xl-8">
-			{# Breadcrumb #}
-			{% block breadcrumb %}
-			    <ul class="breadcrumb" role="navigation">
-				<li><a href="/"><i class="fa fa-home"></i> Accueil</a></li>
-				{% block breadcrumb_li %}{% endblock %}
-			    </ul>
-			{% endblock %}
+			    {# Breadcrumb #}
+			    {% block breadcrumb %}
+				<nav aria-label="breadcrumb">
+				    <ol class="breadcrumb">
+					<li class="breadcrumb-item" aria-current="page">
+					    <a href="/"><i class="fa fa-home"></i> {{ _('Home') }}{# Acceuil #}</a></li>
+					{% block breadcrumb_li %}{% endblock %}
+				    </ol>
+				</nav>
+			    {% endblock %}
 
-			{# Page content #}
-			<main class="" role="main">
-			    {# {% include 'include/message.jinja %} #}
-			    {% block content %}{% endblock %}
-			</main>
+			    {# Page content #}
+			    <main class="" role="main">
+				{# {% include 'include/message.jinja %} #}
+				{% block content %}{% endblock %}
+			    </main>
 
-			{# Footer #}
-			{% block footer %}
-			    <hr />
-			    <footer role="contentinfo" >
-				<p>
-				    <i class="fa fa-copyright"></i>
-				    <a href="https://github.com/">
-					Adhesion 2018</a>
-					/ <a href="/mentions-legales">Mentions légales</a>
-				</p>
-			    </footer>
-			{% endblock %}
+			    {# Footer #}
+			    {% block footer %}
+				<hr />
+				<footer role="contentinfo" >
+				    <p>
+					<i class="fa fa-copyright"></i>
+					<a href="https://github.com/">
+					    Adhesion 2018</a>
+					    / <a href="{{ url('mentions-legales') }}">Mentions légales</a>
+				    </p>
+				</footer>
+			    {% endblock %}
+			</div>
 		    </div>
 		</div>
 	    {% endblock %}
