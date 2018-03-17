@@ -1,0 +1,12 @@
+{# -*- mode: jinja2 -*- #}
+{% extends "include/base.html" %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{# {% block head_title %}{{ _("Email confirmed") }}{% endblock %} #}
+
+{% block content %}
+    <h1>{{ _("Email confirmed") }}</h1>
+    <p>{% trans email=confirmation.email_address.email %}You have confirmed <b>{{ email }}</b>{% endtrans %}</p>
+{% endblock %}

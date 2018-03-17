@@ -1,0 +1,2 @@
+{# -*- mode: jinja2 -*- #}
+{% trans name=current_site.name %}Create an account on {{ name }}{% endtrans %}

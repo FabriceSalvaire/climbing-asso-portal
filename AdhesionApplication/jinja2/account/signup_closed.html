@@ -1,0 +1,16 @@
+{# -*- mode: jinja2 -*- #}
+{% extends "include/base.html" %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{# {% block head_title %}{{ _("Sign up") }}{% endblock %} #}
+
+{% block content %}
+    <h1>{{ _("This site is in private beta") }}</h1>
+    <p>{% trans %}If you have signup code you can enter it below.{% endtrans %}</p>
+    <form method="get" action="">
+	<div><input type="text" name="code" placeholder="{% trans 'Your signup code...' %}" /></div>
+	<div><input type="submit" class="btn btn-primary"></div>
+    </form>
+{% endblock %}

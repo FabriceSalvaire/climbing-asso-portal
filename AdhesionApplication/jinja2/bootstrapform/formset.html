@@ -1,0 +1,14 @@
+{# -*- mode: jinja2 -*- #}
+{# cf. django-bootstrap-form/bootstrapform/templates/bootstrapform #}
+
+{{ formset.management_form }}
+
+{% for form in formset %}
+    {% if classes.label == 'sr-only' %}
+	<div class="form-inline">
+	    {% include "bootstrapform/form.html" %}
+	</div>
+    {%else%}
+	{% include "bootstrapform/form.html" %}
+    {% endif %}
+{% endfor %}

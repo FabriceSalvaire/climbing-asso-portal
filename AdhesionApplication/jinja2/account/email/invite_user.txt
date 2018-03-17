@@ -1,0 +1,5 @@
+{# -*- mode: jinja2 -*- #}
+{% trans name=current_site.name %}You have been invited to sign up at {{ name }}.
+
+{{ signup_url }}
+{% endtrans %}

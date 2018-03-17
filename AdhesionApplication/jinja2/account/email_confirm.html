@@ -1,0 +1,22 @@
+{# -*- mode: jinja2 -*- #}
+{% extends "include/base.html" %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{# {% block head_title %}{{ _("Confirm Email") }}{% endblock %} #}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-5">
+            <form method="post" action="{{ url("account_confirm_email" key=confirmation.key %}">
+                <legend>{{ _("Confirm Email") }}</legend>
+                <fieldset>
+                    {% csrf_token %}
+                    <p>{% trans email=confirmation.email_address.email %}Confirm email address <b>{{ email }}</b>?{% endtrans %}</p>
+                    <button type="submit" class="btn btn-primary">{{ _("Confirm") }}</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock %}

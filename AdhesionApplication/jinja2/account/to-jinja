@@ -1,0 +1,41 @@
+#! /usr/bin/env python3
+
+####################################################################################################
+
+import argparse
+
+parser = argparse.ArgumentParser(description='Django to Jinja2 template')
+parser.add_argument('template', metavar='Template',
+                    help='Django template')
+
+args = parser.parse_args()
+
+####################################################################################################
+
+with open(args.template) as fh:
+    input_lines = fh.readlines()
+
+with open(args.template, 'w') as fh:
+    if 'jinja2' not in input_lines[0]:
+        fh.write('{# -*- mode: jinja2 -*- #}\n')
+    if 'base.html' not in input_lines[1]:
+        fh.write('{% extends "include/base.html" %}\n')
+        fh.write('\n')
+        fh.write('{% block breadcrumb %}\n')
+        fh.write('{% endblock %}\n')
+        fh.write('\n')
+    for line in input_lines:
+        line = line.rstrip()
+        # if line.startswith('{% extends'):
+        if line.startswith('{% load'):
+            continue
+        line = line.replace('block body', 'block content')
+        line = line.replace('block scripts', 'block script')
+        line = line.replace('block.super', 'super()')
+        line = line.replace('blocktrans with', 'trans')
+        line = line.replace('blocktrans', 'trans')
+        if 'include' not in line and 'extends' not in line:
+            line = line.replace('{% url "', '{{ url("')
+            line = line.replace('{% trans "', '{{ _("')
+            line = line.replace('" %}', '") }}')
+        fh.write(line + '\n')

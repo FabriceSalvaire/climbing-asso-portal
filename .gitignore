@@ -1,0 +1,10 @@
+*~
+__pycache__
+#
+# AdhesionApplication/migrations/
+db.sqlite3
+django-application
+packages/
+password.txt
+paypal-test/
+static/

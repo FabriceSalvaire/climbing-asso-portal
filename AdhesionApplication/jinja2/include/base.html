@@ -1,0 +1,177 @@
+{# -*- mode: jinja2 -*- #}
+<!DOCTYPE html>
+{% set use_cdn = true %}
+{# <html lang="en"> #}
+<html lang="fr">
+    <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="Fabrice Salvaire">
+	<meta name="generator" content="Django">
+
+        <title>Adhesion{% block title %}{% endblock %}</title>
+
+        {# Stylesheets #}
+
+	<!-- Favicons -->
+        <link rel="shortcut icon" href="{{ static('image/favicon.png') }}">
+
+	<!-- Bootstrap -->
+        {% if use_cdn %}
+	    {# https://fontawesome.com/get-started/web-fonts-with-css #}
+	    {# <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css" #}
+	    {# 	  integrity="sha384-v2Tw72dyUXeU3y4aM2Y0tBJQkGfplr39mxZqlTBDUZAb9BGoC40+rdFCG0m10lXk" #}
+	    {# 	  crossorigin="anonymous"> #}
+            {# <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/fontawesome.css" #}
+	    {# 	  integrity="sha384-q3jl8XQu1OpdLgGFvNRnPdj5VIlCvgsDQTQB6owSOHWlAurxul7f+JpUOVdAiJ5P" #}
+	    {# 	  crossorigin="anonymous"> #}
+	    {# https://fontawesome.com/get-started/svg-with-js #}
+	    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js"
+		    integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l"
+		    crossorigin="anonymous">
+	    </script>
+	    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js"
+		    integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c"
+		    crossorigin="anonymous">
+	    </script>
+
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+		  crossorigin="anonymous">
+	{% else %}
+	    {# <link rel="stylesheet" href={{ static('css-ext/font-awesome.min.css') }}> #}
+	    {# <link rel="stylesheet" href={{ static('css-ext/bootstrap.min.css') }}> #}
+	{% endif %}
+
+	<link rel="stylesheet" href={{ static('css/adhesion.css') }}>
+
+	{% block head %}{% endblock %}
+    </head>
+
+    {# Body #}
+    {% block body %}
+	<body>
+	    <a id="skippy" class="sr-only sr-only-focusable" href="#content">
+	    	<div class="container">
+	    	    <span class="skiplink-text">Skip to main content</span>
+	    	</div>
+	    </a>
+
+	    {# Top navbar #}
+	    {% block navbar %}
+		{# nav / fixed-top navbar-expand-lg #}
+		<header class="navbar navbar-expand navbar-dark bg-dark flex-column flex-md-row">
+		    <a class="navbar-brand ml-md-5" href="#">Adhesion</a>
+		    <button class="navbar-toggler" type="button"
+			    data-toggle="collapse" data-target="#navbarSupportedContent"
+			    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		    </button>
+
+		    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+			    {# <li class="nav-item active"> #}
+			    {# 	<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a> #}
+			    {# </li> #}
+			    {# <li class="nav-item"> #}
+			    {# 	<a class="nav-link" href="#">Link</a> #}
+			    {# </li> #}
+			    {% if user.is_authenticated %}
+				<li class="nav-item dropdown mr-md-5 {% block nav_account %}{% endblock %}">
+				    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+				       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				       <i class="fa fa-user"></i> {{ user.username }} {#get_full_name()#}</a>
+				    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<a class="dropdown-item" href="{{ url('account_settings') }}">
+					    <i class="fa fa-user"></i>  {{ _('Settings') }}</a>
+					{% if request.user.is_staff %}
+					    {# {% url THEME_ADMIN_URL|default:"admin:index" %} #}
+					    <a class="dropdown-item" href="{{ url('admin:index') }}">
+						<i class="fa fa-cog"></i> {{ _('Admin') }}</a>
+					{% endif %}
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="{{ url('account_logout') }}">
+						<i class="fa fa-sign-out-alt"></i> {{ _('Log out') }}</a>
+				    </div>
+				</li>
+			    {% else %}
+				<li class="nav-item {% block nav_login %}{% endblock %}">
+				    <a class="nav-link" href="{{ url('account_login') }}">
+					<i class="fa fa-sign-in-alt"></i> {{ _('Log in') }}
+				    </a>
+				</li>
+				{% if ACCOUNT_OPEN_SIGNUP %}
+				    <li class="nav-item mr-md-5">
+					<a class="nav-link" href="{{ url('account_signup') }}">{{ _('Sign up') }}</a>
+				    </li>
+				{% endif %}
+			    {% endif %}
+			</ul>
+		    </div>
+		</header>
+	    {% endblock %}
+
+	    {# Standard page layout #}
+	    {% block body_container %}
+		<div class="container-fluid">
+		    {# flex-xl-nowrap #}
+		    <div class="row justify-content-center py-md-3">
+			<div class="col-12 col-xl-8">
+			{# Breadcrumb #}
+			{% block breadcrumb %}
+			    <ul class="breadcrumb" role="navigation">
+				<li><a href="/"><i class="fa fa-home"></i> Accueil</a></li>
+				{% block breadcrumb_li %}{% endblock %}
+			    </ul>
+			{% endblock %}
+
+			{# Page content #}
+			<main class="" role="main">
+			    {# {% include 'include/message.jinja %} #}
+			    {% block content %}{% endblock %}
+			</main>
+
+			{# Footer #}
+			{% block footer %}
+			    <hr />
+			    <footer role="contentinfo" >
+				<p>
+				    <i class="fa fa-copyright"></i>
+				    <a href="https://github.com/">
+					Adhesion 2018</a>
+					/ <a href="/mentions-legales">Mentions légales</a>
+				</p>
+			    </footer>
+			{% endblock %}
+		    </div>
+		</div>
+	    {% endblock %}
+
+	    {# Lazy Scripts #}
+	    {% if use_cdn %}
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+			integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+			crossorigin="anonymous">
+		</script>
+	    {% else %}
+		{# <script type="text/javascript" src={{ static('js-ext/jquery.min.js') }}></script> #}
+	    {% endif %}
+	    {% if use_cdn %}
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+			integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+			crossorigin="anonymous">
+		</script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+			integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+			crossorigin="anonymous">
+		</script>
+	    {% else %}
+		{# <script type="text/javascript" src={{ static('js-ext/bootstrap.min.js') }}></script> #}
+	    {% endif %}
+
+	    {# Custom script #}
+	    {% block script %}{% endblock %}
+	</body>
+    {% endblock %}
+</html>

@@ -1,0 +1,2 @@
+{# -*- mode: jinja2 -*- #}
+{% trans site_name=current_site.name %}Confirm email address for {{ site_name }}{% endtrans %}
