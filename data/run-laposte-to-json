@@ -1,0 +1,2 @@
+# --gps --indent
+./laposte-to-json laposte_hexasmal.csv laposte_commnouv.csv french_zip_code.json
