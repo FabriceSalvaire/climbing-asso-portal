@@ -1,10 +1,19 @@
 *~
 __pycache__
 #
-# AdhesionApplication/migrations/
 db.sqlite3
+# filer
+# packages/
+#
+# AdhesionApplication/migrations/
+# static/
+# ClimbingAssoPortal/templates/
+ClimbingAssoPortal/jinja2/include/tmp.html
+ClimbingAssoPortal/jinja2/rename.sh
+ClimbingAssoPortal/jinja2/trash/
+data/laposte_commnouv.csv
+data/laposte_hexasmal.csv
 django-application
-packages/
 password.txt
 paypal-test/
-static/
+setup-tools/make-translation-sh
