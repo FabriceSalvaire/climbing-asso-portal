@@ -4,6 +4,6 @@ from django.apps import AppConfig
 
 ####################################################################################################
 
-class AdhesionApplicationConfig(AppConfig):
-    name = 'AdhesionApplication'
-    verbose_name = 'Adhesion Application'
+class ClimbingAssoPortallicationConfig(AppConfig):
+    name = 'ClimbingAssoPortallication'
+    verbose_name = 'Climbing Asso Portal Application'
