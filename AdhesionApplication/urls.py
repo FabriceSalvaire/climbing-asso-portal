@@ -3,9 +3,12 @@
 ####################################################################################################
 
 from django.conf.urls import include
+from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.urls import path
 from django.views.generic.base import TemplateView
+
+from rest_framework import routers
 
 ####################################################################################################
 #
@@ -13,15 +16,33 @@ from django.views.generic.base import TemplateView
 #
 
 urlpatterns = [
-    path(r'',
+    path('',
          TemplateView.as_view(template_name='main.html'),
          name='home',
     ),
 
-    path(r'mentions-legales',
+    path('mentions-legales',
          TemplateView.as_view(template_name='mentions-legales.html'),
          name='mentions-legales',
     ),
+]
+
+####################################################################################################
+#
+# Admin
+#
+
+urlpatterns += [
+    path('admin/', admin.site.urls),
+]
+
+####################################################################################################
+#
+# Filer
+#
+
+urlpatterns += [
+    path('filer/', include('filer.urls')),
 ]
 
 ####################################################################################################
@@ -31,6 +52,27 @@ urlpatterns = [
 
 urlpatterns += [
     path(r'account/', include('account.urls')),
+]
+
+####################################################################################################
+#
+# REST API
+#
+
+from .views.rest import (
+    UserViewSet,
+    UserProfileViewSet,
+)
+from .views.schema_view import schema_view
+
+router = routers.DefaultRouter()
+router.register('user', UserViewSet)
+router.register('user_profile', UserProfileViewSet)
+
+urlpatterns += [
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api-docs/', schema_view),
 ]
 
 ####################################################################################################
