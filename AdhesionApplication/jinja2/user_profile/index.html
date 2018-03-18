@@ -1,0 +1,31 @@
+{# -*- mode: jinja2 -*- #}
+{% extends "include/base.html" %}
+{% from "include/widgets.html" import new_button_group, search_by_name %}
+
+{% block title %} - {{ _('User Profiles') }}{% endblock %}
+
+{% block breadcrumb_li %}
+    <li class="breadcrumb-item active">{{ _('User Profiles') }}</li>
+{% endblock %}
+
+{% block content %}
+    <h2>{{ _('User Profiles') }}
+	{{ new_button_group(title=_('New user profile'), href=url('user_profile.create')) }}
+    </h2>
+
+    {{ search_by_name(form) }}
+    <br>
+
+    {% if user_profiles %}
+	{% for group in user_profiles|groupby('first_letter') %}
+	    <h2>{{ group.grouper|upper }}</h2>
+	    <ul class="list-unstyled">
+		{% for user_profile in group.list %}
+		    <li><a href="{{ url('user_profile.details', user_profile.pk) }}">{{ user_profile.last_first_name }}</a></li>
+		{% endfor %}
+	    </ul>
+	{% endfor %}
+    {% else %}
+	<p>{{ _('Any user profile') }}</p>
+    {% endif %}
+{% endblock %}
