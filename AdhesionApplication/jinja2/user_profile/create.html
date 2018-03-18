@@ -1,0 +1,33 @@
+{# -*- engine: jinja2 -*- #}
+{% extends "include/base.html" %}
+{% from "include/widgets.html" import update_form %}
+
+{% block title %} -
+    {% if update %}
+	{{ _('Update') }} {{ user_profile.last_first_name }}
+    {% else %}
+	{{ _('New user profile') }}
+    {% endif %}
+{% endblock %}
+
+{% block breadcrumb_li %}
+    <li class="breadcrumb-item"><a href="{{ url('user_profile.index') }}">{{ _('User Profiles') }}</a></li>
+    {% if update %}
+	<li class="breadcrumb-item"><a href="{{ url('user_profile.details', user_profile.pk) }}">{{ user_profile.last_first_name }}</a></li>
+	<li class="breadcrumb-item active">{{ _('Update') }}</li>
+    {% else %}
+	<li class="breadcrumb-item active">{{ _('New user_profile') }}</li>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <h2>
+	{% if update %}
+	    {{ _('Update:') }} {{ user_profile.last_first_name }}
+	{% else %}
+	    {{ _('New user_profile') }}
+	{% endif %}
+    </h2>
+
+    {{ update_form(form, csrf_token) }}
+{% endblock %}
