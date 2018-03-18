@@ -86,6 +86,11 @@ INSTALLED_APPS = [
 
     'django.contrib.sites',
 
+    'rest_framework', # http://www.django-rest-framework.org
+    'rest_framework_swagger', # https://django-rest-swagger.readthedocs.io/en/latest
+
+    # 'reversion',
+
     'django_jinja', # http://niwinz.github.io/django-jinja/latest/
     'bootstrapform', # https://github.com/tzangms/django-bootstrap-form
 
@@ -256,6 +261,51 @@ SUIT_CONFIG = {
 #
 # REST Framework
 #
+
+REST_FRAMEWORK = {
+    # http://www.django-rest-framework.org/api-guide/permissions/
+    'DEFAULT_PERMISSION_CLASSES': (
+        # DjangoModelPermissionsOrAnonReadOnly
+        # 'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        # 'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAdminUser',
+    ),
+
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100,
+}
+
+SWAGGER_SETTINGS = {
+    'exclude_namespaces': [],
+    'api_key': '',
+    'api_version': '1.0',
+    # 'api_path': '/',
+    # 'base_path': '',
+    'doc_expansion': 'none',
+    'enabled_methods': [
+        'get',
+        'post',
+        'put',
+        'patch',
+        'delete'
+    ],
+    'info': {
+        'title': 'REST API',
+        'description': '''
+        This page provides an automatically generated documentation for the <a href="/about-rest-api">REST API</a>.
+        You can learn the data schemas and try it out.
+        ''',
+        # 'contact': 'fabrice.salvaire@orange.fr',
+        # 'license': 'CC BY-NC-SA 3.0',
+        # 'licenseUrl': 'http://creativecommons.org/licenses/by-nc-sa/3.0/',
+        # 'termsOfServiceUrl': '/mentions-legales',
+    },
+    'is_authenticated': True,
+    'is_superuser': True,
+    'permission_denied_handler': None,
+    'resource_access_handler': None,
+    # 'token_type': Token,
+}
 
 ####################################################################################################
 #
