@@ -1,0 +1,88 @@
+#! /usr/bin/env python3
+
+####################################################################################################
+
+import argparse
+import json
+
+####################################################################################################
+
+parser = argparse.ArgumentParser(description='La Poste CSV to JSON')
+parser.add_argument(
+    'csv_file', metavar='FILE.csv',
+    help='CSV file',
+)
+parser.add_argument(
+    'update_csv_file', metavar='UpdateFILE.csv',
+    help='CSV update file',
+)
+parser.add_argument(
+    'json_file', metavar='FILE.json',
+    help='JSON file',
+)
+parser.add_argument(
+    '--indent',
+    action='store_true', default=False,
+    help='indent JSON file',
+)
+parser.add_argument(
+    '--gps',
+    action='store_true', default=False,
+    help='add gps coordinate to JSON file',
+)
+
+args = parser.parse_args()
+
+####################################################################################################
+
+zip_codes = {}
+
+def add_zip_code(zip_code, name, coordinate=None):
+    if zip_code not in zip_codes:
+        zip_codes[zip_code] = []
+    if args.gps:
+        names = [city['name'] for city in zip_codes[zip_code]]
+        if name not in names:
+            zip_codes[zip_code].append({'name':name, 'gps':coordinate})
+    else:
+        if name not in zip_codes[zip_code]:
+            zip_codes[zip_code].append(name)
+
+with open(args.csv_file) as fh:
+    for line in fh.readlines()[1:]:
+        columns = line.strip().split(';')
+        insee_code, name, zip_code, libelle_acheminement, ligne_5, coordinate = columns
+        # print(insee_code, name, zip_code, libelle_acheminement, ligne_5, coordinate)
+        add_zip_code(zip_code, libelle_acheminement, coordinate or None)
+
+with open(args.update_csv_file) as fh:
+    #  0 Prise en compte
+    #  1 Code INSEE Commune Nouvelle
+    #  2 Nom Commune Déléguée
+    #  3 Adresse 2015 - Code INSEE
+    #  4 Adresse 2015 - Libellé Acheminement
+    #  5 Nom Commune Nouvelle Siège
+    #  6 Code INSEE Commune Déléguée (non actif)
+    #  7 Adresse 2017 - Code INSEE
+    #  8 Adresse 2017 - L6 Code Postal
+    #  9 Adresse 2017 - L6 Libellé Acheminement
+    # 10 Adresse 2017 - Ligne 5 Commune déléguée
+    # 11 Adresse 2017 - Code INSEE associé à la L5
+    # 12 Adresse 2015 - L6 Code Postal
+    # 13 Adresse 2015 - L5
+    # 15 Adresse 2015 - Code INSEE Associé à la L5
+    for line in fh.readlines()[1:]:
+        columns = line.strip().split(';')
+        zip_code = columns[8]
+        libelle_acheminement = columns[9]
+        print('Update', zip_code, libelle_acheminement)
+        add_zip_code(zip_code, libelle_acheminement)
+
+# sort name
+if not args.gps:
+    for names in zip_codes.values():
+        names.sort()
+
+with open(args.json_file, 'w') as fh:
+    indent = 4 if args.indent else None
+    json.dump(zip_codes, fh, sort_keys=True, indent=indent)
