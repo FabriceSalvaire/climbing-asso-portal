@@ -10,6 +10,9 @@ from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 import django.db.models as models
 
+from filer.fields.image import FilerImageField
+from filer.fields.file import FilerFileField
+
 from django.db.models.fields import (
     BooleanField,
     CharField,
@@ -143,7 +146,7 @@ class UserProfile(Model):
     )
 
     medical_certificate_year = PositiveIntegerField(
-        verbose_name=_('medical certificat year'),
+        verbose_name=_('medical certificate year'),
         null=True,
         blank=True,
         validators=[validate_year],
@@ -152,6 +155,20 @@ class UserProfile(Model):
     social_discount = BooleanField(
         verbose_name=_('social discount'),
         default=False,
+    )
+
+    medical_certificate_scan = FilerImageField(
+        verbose_name=_('medical certificate scan'),
+        related_name="medical_certificate_scan_user_profile",
+        null=True,
+        blank=True,
+    )
+
+    medical_certificate_pdf = FilerFileField(
+        verbose_name=_('medical certificate PDF'),
+        related_name="medical_certificate_pdf_user_profile",
+        null=True,
+        blank=True,
     )
 
     # id membre
@@ -174,6 +191,14 @@ class UserProfile(Model):
     @property
     def first_name(self):
         return self.user.first_name
+
+    @property
+    def last_first_name(self):
+        return self.user.last_name.title() + ' ' + self.user.first_name.title()
+
+    @property
+    def first_letter(self):
+        return self.user.last_name[0]
 
     ##############################################
 

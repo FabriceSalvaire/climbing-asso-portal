@@ -87,12 +87,21 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     'django_jinja', # http://niwinz.github.io/django-jinja/latest/
+    'bootstrapform', # https://github.com/tzangms/django-bootstrap-form
 
-    'account',
-    # 'pinax_theme_bootstrap',
-    'bootstrapform',
+    # 'pinax_theme_bootstrap', # https://github.com/pinax/pinax-theme-bootstrap
+    'account', # http://django-user-accounts.readthedocs.io/en/latest
+
+    # https://django-filer.readthedocs.io
+    'easy_thumbnails',
+    'filer',
+    'mptt',
 
     'AdhesionApplication',
+
+    # https://github.com/applecat/django-simple-poll
+    # https://github.com/byteweaver/django-polls
+    # https://github.com/hmtanbir/django-easy-poll
 ]
 
 MIDDLEWARE = [
@@ -124,7 +133,7 @@ TEMPLATES = [
             # 'match_extension': '.jinja',
             # 'match_extension': '.html',
             'match_extension': None,
-            'match_regex': r"^.*", # \.(html|txt)$
+            'match_regex': r"^(?!admin/).*", # \.(html|txt)$
 
             'newstyle_gettext': True,
 
@@ -169,6 +178,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # 'DIRS': [],
         'DIRS': [
+            'filer/templates',
             'AdhesionApplication/templates',
         ],
         'APP_DIRS': True,
@@ -194,19 +204,20 @@ TEMPLATES = [
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
+# Fixme: Not in production !
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    # },
 ]
 
 ####################################################################################################
@@ -262,3 +273,23 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
 ACCOUNT_DELETION_MARK_CALLBACK = None # Fixme:
 THEME_CONTACT_EMAIL = 'admin@foo.org'
+
+####################################################################################################
+#
+# Easy Thumbail
+#
+
+# THUMBNAIL_PROCESSORS = (
+#     'easy_thumbnails.processors.colorspace',
+#     'easy_thumbnails.processors.autocrop',
+#     #'easy_thumbnails.processors.scale_and_crop',
+#     'filer.thumbnail_processors.scale_and_crop_with_subject_location',
+#     'easy_thumbnails.processors.filters',
+# )
+
+####################################################################################################
+#
+# Filer
+#
+
+# FILER_CANONICAL_URL = 'sharing/'
