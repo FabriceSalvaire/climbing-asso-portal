@@ -1,6 +1,6 @@
 {# -*- mode: jinja2 -*- #}
 <!DOCTYPE html>
-{% set use_cdn = true %}
+{% set use_cdn = false %}
 {# <html lang="en"> #}
 <html lang="fr">
     <head>
@@ -40,11 +40,11 @@
 		  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
 		  crossorigin="anonymous">
 	{% else %}
-	    {# <link rel="stylesheet" href={{ static('css-ext/font-awesome.min.css') }}> #}
-	    {# <link rel="stylesheet" href={{ static('css-ext/bootstrap.min.css') }}> #}
+	    <script defer src={{ static('js-ext/fontawesome-all.js') }}></script>
+            <link rel="stylesheet" href={{ static('css-ext/bootstrap.min.css') }}>
 	{% endif %}
 
-	<link rel="stylesheet" href={{ static('css/adhesion.css') }}>
+	<link rel="stylesheet" href="{{ static('css/adhesion.css') }}">
 
 	{% block head %}{% endblock %}
     </head>
@@ -159,7 +159,7 @@
 			crossorigin="anonymous">
 		</script>
 	    {% else %}
-		{# <script type="text/javascript" src={{ static('js-ext/jquery.min.js') }}></script> #}
+		<script type="text/javascript" src={{ static('js-ext/jquery.min.js') }}></script>
 	    {% endif %}
 	    {% if use_cdn %}
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
@@ -171,7 +171,8 @@
 			crossorigin="anonymous">
 		</script>
 	    {% else %}
-		{# <script type="text/javascript" src={{ static('js-ext/bootstrap.min.js') }}></script> #}
+		<script type="text/javascript" src={{ static('js-ext/popper.min.js') }}></script>
+		<script type="text/javascript" src={{ static('js-ext/bootstrap.min.js') }}></script>
 	    {% endif %}
 
 	    {# Custom script #}
