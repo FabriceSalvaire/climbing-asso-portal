@@ -1,0 +1,121 @@
+#! /usr/bin/env python3
+
+####################################################################################################
+#
+# Climbing Asso Portal - A Portal for Climbing Club (Association)
+# Copyright (C) 2018 Fabrice Salvaire
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+####################################################################################################
+
+####################################################################################################
+#
+# see https://docs.djangoproject.com/en/2.0/howto/initial-data/
+#  manage.py loaddata <fixturename>
+#
+####################################################################################################
+
+####################################################################################################
+
+import json
+import os
+
+from django.core import serializers
+# from django.db.models import Model
+
+import django
+
+####################################################################################################
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ClimbingAssoPortalSite.settings')
+django.setup()
+
+from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
+
+from account.models import (
+    AccountDeletion,
+    Account,
+    EmailAddress,
+    EmailConfirmation,
+    PasswordExpiry,
+    PasswordHistory,
+    SignupCode,
+    SignupCodeResult,
+)
+
+from filer.models import (
+    Clipboard,
+    ClipboardItem,
+    Folder,
+    FolderPermission,
+    ThumbnailOption,
+)
+
+from ClimbingAssoPortal.models import (
+    UserProfile,
+)
+
+####################################################################################################
+
+# model_list = []
+# for item in models.__dict__.values():
+#     try:
+#         if issubclass(item, Model):
+#             model_list.append(item)
+#     except TypeError:
+#         pass
+
+# model_list.sort(key=lambda x:x.__name__)
+
+model_list = (
+    Site,
+
+    User,
+
+    AccountDeletion,
+    Account,
+    EmailAddress,
+    EmailConfirmation,
+    PasswordExpiry,
+    PasswordHistory,
+    SignupCode,
+    SignupCodeResult,
+
+    Clipboard,
+    ClipboardItem,
+    Folder,
+    FolderPermission,
+    ThumbnailOption,
+
+    UserProfile,
+)
+
+json_content = '['
+for model_class in model_list:
+    print('Model class:', model_class)
+    json_data = serializers.serialize('json', model_class.objects.all())[1:-1]
+    if json_data:
+        json_content += json_data
+        if model_class != model_list[-1]:
+            json_content += ','
+json_content += ']'
+
+# with open('db.json', 'w') as fh:
+#     fh.write(json_content)
+
+with open('db.json', 'w') as fh:
+    data = json.loads(json_content)
+    json.dump(data, fh, sort_keys=True, indent=4)
