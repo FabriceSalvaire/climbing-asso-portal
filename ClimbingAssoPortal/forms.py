@@ -23,6 +23,9 @@
 from django.forms import ModelForm, Form
 from django.utils.translation import ugettext_lazy as _
 
+# from filer.fields.file import FilerFileField
+# from filer.fields.image import FilerImageField
+
 from .models import UserProfile
 
 ####################################################################################################
@@ -31,22 +34,24 @@ class UserProfileForm(ModelForm):
     class Meta:
         model = UserProfile
         fields = '__all__'
-        fields = [
-            'registration_year',
-            'group',
-            'license_id',
-            'license_club',
-            'birth_date',
-            'sex',
-            'adresse',
-            'zip_code',
-            'city',
-            'phone_home',
-            'phone_work',
-            'phone_mobile',
-            'medical_certificate_year',
-            'social_discount',
-        ]
+        # fields = [
+        #     'registration_year',
+        #     'group',
+        #     'license_id',
+        #     'license_club',
+        #     'birth_date',
+        #     'sex',
+        #     'adresse',
+        #     'zip_code',
+        #     'city',
+        #     'phone_home',
+        #     'phone_work',
+        #     'phone_mobile',
+        #     'medical_certificate_year',
+        #     'social_discount',
+        #     'medical_certificate_scan',
+        #     'medical_certificate_pdf',
+        # ]
 
 ####################################################################################################
 
