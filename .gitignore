@@ -1,18 +1,20 @@
 *~
 __pycache__
 du.log
+trash/
 #
-db.sqlite3
-#
+ClimbingAssoPortal/fixtures/db.json
 ClimbingAssoPortal/static/node_modules/
 ClimbingAssoPortal/static/packages/
 ClimbingAssoPortal/static/yarn-error.log
 ClimbingAssoPortal/static/yarn.lock
-# filer
-# packages/
+db.sqlite3
+filer
+packages/
+static/
+!ClimbingAssoPortal/static/
 #
 # AdhesionApplication/migrations/
-# static/
 # ClimbingAssoPortal/templates/
 ClimbingAssoPortal/jinja2/include/tmp.html
 ClimbingAssoPortal/jinja2/rename.sh
