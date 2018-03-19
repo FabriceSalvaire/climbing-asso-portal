@@ -1,4 +1,4 @@
-{# -*- engine: jinja2 -*- #}
+{# -*- mode: jinja2 -*- #}
 {% extends "include/base.html" %}
 {% from "include/widgets.html" import update_form %}
 
@@ -29,5 +29,11 @@
 	{% endif %}
     </h2>
 
-    {{ update_form(form, csrf_token) }}
+    {#{ update_form(form, csrf_token) }#}
+
+    <form method="POST" action=".">
+        {% csrf_token %}
+        {{ form|bootstrap }}
+        <button class="btn btn-primary" type="submit">{{ _("Save") }}</button>
+    </form>
 {% endblock %}

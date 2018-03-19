@@ -40,11 +40,11 @@
 		  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
 		  crossorigin="anonymous">
 	{% else %}
-	    <script defer src={{ static('js-ext/fontawesome-all.js') }}></script>
+	    <script defer src={{ static('js-ext/fontawesome-all.min.js') }}></script>
             <link rel="stylesheet" href={{ static('css-ext/bootstrap.min.css') }}>
 	{% endif %}
 
-	<link rel="stylesheet" href="{{ static('css/adhesion.css') }}">
+	<link rel="stylesheet" href="{{ static('css/climbing-asso-portal.css') }}">
 
 	{% block head %}{% endblock %}
     </head>
