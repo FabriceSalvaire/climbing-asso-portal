@@ -1,0 +1,15 @@
+{
+  "name": "ClimbingAssoPortal",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "AGPLv3",
+  "description": "Climbing Asso Portal",
+  "repository": "https://github.com/FabriceSalvaire/climbing-asso-portal",
+  "author": "Fabrice Salvaire",
+  "dependencies": {
+    "bootstrap": "^4.0.0",
+    "fontawesome": "^4.7.2",
+    "jquery": "1.9.1",
+    "popper.js": "^1.12.9"
+  }
+}
