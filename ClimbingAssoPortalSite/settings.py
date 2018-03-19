@@ -73,6 +73,9 @@ SECRET_KEY = '#v2=-7xr3=5(^63sc4)374j48j-d23bo4gc%z$+a#nji56k%we'
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+MEDIA_URL = '/filer_public/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'filer_public')
+MEDIA_ROOT = os.path.join(BASE_DIR)
 
 ####################################################################################################
 #
@@ -362,4 +365,34 @@ THEME_CONTACT_EMAIL = 'admin@foo.org'
 # Filer
 #
 
-# FILER_CANONICAL_URL = 'sharing/'
+# FILER_ENABLE_PERMISSIONS = False
+# Activate the or not the Permission check on the files and folders before displaying them in the
+# admin. When set to False it gives all the authorization to staff members based on standard Django
+# model permissions.
+
+# FILER_IS_PUBLIC_DEFAULT = True
+# Should newly uploaded files have permission checking disabled (be public) by default.
+
+# FILER_STORAGES
+# A dictionary to configure storage backends used for file storage.
+
+# FILER_PAGINATE_BY = 20
+# The number of items (Folders, Files) that should be displayed per page in admin.
+
+# FILER_SUBJECT_LOCATION_IMAGE_DEBUG = False
+# Draws a red circle around to point in the image that was used to do the subject location aware
+# image cropping.
+
+# FILER_ALLOW_REGULAR_USERS_TO_ADD_ROOT_FOLDERS = False
+# Regular users are not allowed to create new folders at the root level, only subfolders of already
+# existing folders, unless this setting is set to True.
+
+# FILER_IMAGE_MODEL = False
+# Defines the dotted path to a custom Image model; please include the model name. Example:
+# ‘my.app.models.CustomImage’
+
+# FILER_CANONICAL_URL = 'canonical/'
+# Defines the path element common to all canonical file URLs.
+
+# FILER_UPLOADER_CONNECTIONS = 3
+# Number of simultaneous AJAX uploads. Defaults to 3.
