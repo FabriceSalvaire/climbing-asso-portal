@@ -1,7 +1,13 @@
 *~
 __pycache__
+du.log
 #
 db.sqlite3
+#
+ClimbingAssoPortal/static/node_modules/
+ClimbingAssoPortal/static/packages/
+ClimbingAssoPortal/static/yarn-error.log
+ClimbingAssoPortal/static/yarn.lock
 # filer
 # packages/
 #
