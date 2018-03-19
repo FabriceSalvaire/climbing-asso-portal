@@ -29,7 +29,7 @@ from django.utils.translation import ugettext as _
 from django.views.generic import ListView
 from django.views.generic.edit import FormMixin
 
-from django.shortcuts import render
+# from django.shortcuts import render
 from django.views.generic.edit import FormView
 
 # from django.contrib.auth.decorators import login_required
