@@ -9,7 +9,7 @@
 {% block content %}
     <div class="row">
         <div class="col-md-5">
-            <form method="post" action="{{ url("account_confirm_email" key=confirmation.key %}">
+            <form method="post" action="{{ url('account_confirm_email', key=confirmation.key) }}">
                 <legend>{{ _("Confirm Email") }}</legend>
                 <fieldset>
                     {% csrf_token %}
