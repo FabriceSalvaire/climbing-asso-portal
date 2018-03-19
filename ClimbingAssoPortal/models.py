@@ -216,7 +216,11 @@ class UserProfile(Model):
 
     @property
     def first_letter(self):
-        return self.user.last_name[0]
+        last_name = self.user.last_name
+        if last_name:
+            return last_name[0]
+        else:
+            return ''
 
     ##############################################
 
