@@ -112,7 +112,7 @@ INSTALLED_APPS = [
     'rest_framework', # http://www.django-rest-framework.org
     'rest_framework_swagger', # https://django-rest-swagger.readthedocs.io/en/latest
 
-    # 'reversion',
+    'reversion', # https://django-reversion.readthedocs.io/en/stable/
 
     'django_jinja', # http://niwinz.github.io/django-jinja/latest/
     'bootstrapform', # https://github.com/tzangms/django-bootstrap-form

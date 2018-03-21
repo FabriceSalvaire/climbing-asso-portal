@@ -22,6 +22,8 @@
 
 from django.contrib import admin
 
+from reversion.admin import VersionAdmin
+
 ####################################################################################################
 
 from .models import (
@@ -30,11 +32,21 @@ from .models import (
 
 ####################################################################################################
 
-class UserProfileAdmin(admin.ModelAdmin):
+# admin.site.unregister(SomeModel)
+
+# @admin.register(SomeModel)
+# class YourModelAdmin(VersionAdmin, SomeModelAdmin):
+#     pass
+
+####################################################################################################
+
+@admin.register(UserProfile)
+# class UserProfileAdmin(admin.ModelAdmin):
+class UserProfileAdmin(VersionAdmin):
     search_fields = ('user__last_name', 'license_id')
     list_filter = ('user__last_name', 'user__first_name')
     list_display = ('last_name', 'first_name')
 
 ####################################################################################################
 
-admin.site.register(UserProfile, UserProfileAdmin)
+# admin.site.register(UserProfile, UserProfileAdmin)
