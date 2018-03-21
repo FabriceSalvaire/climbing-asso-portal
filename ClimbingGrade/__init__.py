@@ -68,8 +68,8 @@ class FrenchGrade:
             self._number = int(number)
             if self._sign == '-' and self._letter is not None:
                 raise ValueError('Bad grade "{}" with letter and inf'.format(grade))
-            elif self._sign == '+' and self._letter is not None and self._number < 6:
-                raise ValueError('Bad grade "{}" with sup < 6'.format(grade))
+            # elif self._sign == '+' and self._letter is not None and self._number < 6:
+            #     raise ValueError('Bad grade "{}" with sup < 6'.format(grade))
         else:
             raise ValueError('Bad grade "{}"'.format(grade))
 
