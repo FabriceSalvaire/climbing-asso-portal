@@ -1,8 +1,11 @@
+ClimbingAssoPortal/migrations/*.py
+
 *~
 __pycache__
 du.log
 trash/
-#
+
+.google-api-credentials/
 ClimbingAssoPortal/fixtures/db.json
 ClimbingAssoPortal/static/node_modules/
 ClimbingAssoPortal/static/packages/
@@ -10,18 +13,25 @@ ClimbingAssoPortal/static/yarn-error.log
 ClimbingAssoPortal/static/yarn.lock
 db.sqlite3
 filer
+filer_public/
+filer_public_thumbnails/
 packages/
 static/
 !ClimbingAssoPortal/static/
-#
-# AdhesionApplication/migrations/
+
+# ClimbingAssoPortal/locale/
 # ClimbingAssoPortal/templates/
 ClimbingAssoPortal/jinja2/include/tmp.html
 ClimbingAssoPortal/jinja2/rename.sh
 ClimbingAssoPortal/jinja2/trash/
+ClimbingAssoPortal/static-ext/node_modules/
+ClimbingAssoPortal/static-ext/yarn-error.log
+ClimbingAssoPortal/static-ext/yarn.lock
+TODO.txt
 data/laposte_commnouv.csv
 data/laposte_hexasmal.csv
 django-application
 password.txt
 paypal-test/
-setup-tools/make-translation-sh
+ressources/
+screenshots/
