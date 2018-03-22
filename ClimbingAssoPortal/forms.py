@@ -26,7 +26,10 @@ from django.utils.translation import ugettext_lazy as _
 # from filer.fields.file import FilerFileField
 # from filer.fields.image import FilerImageField
 
-from .models import UserProfile
+from .models import (
+    UserProfile,
+    Route,
+)
 
 ####################################################################################################
 
@@ -79,3 +82,10 @@ class UserProfileForm(ModelForm):
     # phone_mobile = TextField(
     # medical_certificate_year = PositiveIntegerField(
     # social_discount = BooleanField(
+
+####################################################################################################
+
+class RouteForm(ModelForm):
+    class Meta:
+        model = Route
+        fields = '__all__'

@@ -80,12 +80,14 @@ urlpatterns += [
 from .views.rest import (
     UserViewSet,
     UserProfileViewSet,
+    RouteViewSet,
 )
 from .views.schema_view import schema_view
 
 router = routers.DefaultRouter()
 router.register('user', UserViewSet)
 router.register('user_profile', UserProfileViewSet)
+router.register('route', RouteViewSet)
 
 urlpatterns += [
     path('api/', include(router.urls)),
@@ -123,5 +125,38 @@ urlpatterns += [
     path(r'user_profile/<int:user_profile_id>/delete/',
         user_profile_views.delete,
         name='user_profile.delete',
+    ),
+]
+
+####################################################################################################
+#
+# Routes
+#
+
+from .views import route as route_views
+
+urlpatterns += [
+    path(r'route/',
+         login_required(route_views.RouteListView.as_view()),
+         name='route.index'),
+
+    path(r'route/<int:route_id>/',
+         route_views.details,
+         name='route.details',
+    ),
+
+    path(r'route/create/',
+         route_views.create,
+         name='route.create',
+    ),
+
+    path(r'route/<int:route_id>/update/',
+         route_views.update,
+         name='route.update',
+    ),
+
+    path(r'route/<int:route_id>/delete/',
+         route_views.delete,
+         name='route.delete',
     ),
 ]

@@ -28,6 +28,7 @@ from reversion.admin import VersionAdmin
 
 from .models import (
     UserProfile,
+    Route,
 )
 
 ####################################################################################################
@@ -46,6 +47,13 @@ class UserProfileAdmin(VersionAdmin):
     search_fields = ('user__last_name', 'license_id')
     list_filter = ('user__last_name', 'user__first_name')
     list_display = ('last_name', 'first_name')
+
+@admin.register(Route)
+class RouteAdmin(admin.ModelAdmin):
+# class RouteAdmin(VersionAdmin):
+    # search_fields = ()
+    # list_filter = ()
+    list_display = ('line_number', 'grade', 'name')
 
 ####################################################################################################
 

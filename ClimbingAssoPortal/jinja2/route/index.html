@@ -1,0 +1,49 @@
+{# -*- mode: jinja2 -*- #}
+{% extends "include/base.html" %}
+{% from "include/widgets.html" import new_button_group, search_by_name %}
+
+{% block title %} - {{ _('Routes') }}{% endblock %}
+
+{% block breadcrumb_li %}
+    <li class="breadcrumb-item active">{{ _('Routes') }}</li>
+{% endblock %}
+
+{% block content %}
+    <h2>{{ _('Routes') }}
+	{{ new_button_group(title=_('New route'), href=url('route.create')) }}
+    </h2>
+
+    {{ search_by_name(form) }}
+    <br>
+
+    {# {% if routes %} #}
+    <table class="table">
+	<thead>
+	    <tr>
+		<th scope="col">{{ _('Line Number') }}</th>
+		<th scope="col">{{ _('Grade') }}</th>
+		<th scope="col">{{ _('Colour') }}</th>
+		<th scope="col">{{ _('Name') }}</th>
+		<th scope="col">{{ _('Comment') }}</th>
+		<th scope="col">{{ _('Opener') }}</th>
+		<th scope="col">{{ _('Opening date') }}</th>
+	    </tr>
+	</thead>
+	<tbody>
+	    {% for route in routes %}
+		<tr>
+		    <th scope="row"><a href="{{ url('route.details', route.pk) }}">{{ route.line_number }}</a></th>
+		    <td>{{ route.grade }}</td>
+		    <td>{{ route.get_colour_display() }}</td>
+		    <td>{{ route.name }}</td>
+		    <td>{{ route.comment }}</td>
+		    <td>{{ route.opener }}</td>
+		    <td>{{ route.opening_date }}</td>
+		</tr>
+	    {% endfor %}
+	</tbody>
+    </table>
+    {# {% else %} #}
+    {# 	<p>{{ _('Any route') }}</p> #}
+    {# {% endif %} #}
+{% endblock %}
