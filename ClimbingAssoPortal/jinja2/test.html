@@ -1,0 +1,89 @@
+{# -*- mode: jinja2 -*- #}
+{% extends "include/base.html" %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+
+console.log("Run Test Page Script");
+
+function get_cookie(name) {
+    var cookie_value = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookie_value = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookie_value;
+}
+var csrftoken = get_cookie('csrftoken');
+console.log("csrftoken", csrftoken);
+
+function csrf_safe_method(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrf_safe_method(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
+var license_id = 0;
+
+var request = $.ajax({
+    method: "GET",
+    cache: false,
+    url: "/api/user_profile/1/",
+    dataType: "json"
+})
+
+request.done(function(message) {
+    console.log("xhr done result:", message);
+    license_id = message.license_id;
+
+    console.log("license_id:", license_id);
+    license_id = license_id + 1;
+    console.log("license_id:", license_id);
+
+    $.ajax({
+	method: "PATCH",
+	url: "/api/user_profile/1/",
+	data: {
+	    "license_id": license_id
+	}
+    }).error(function(jqXHR, text_status, error_thrown) {
+	alert("Request failed: " + text_status);
+    });
+
+    $.ajax({
+	method: "GET",
+	cache: false,
+	url: "/api/user_profile/1/",
+	dataType: "json"
+    }).success(function(message) {
+	console.log("xhr result:", message);
+    });
+});
+
+request.fail(function(jqXHR, text_status) {
+    alert("Request failed: " + text_status);
+});
+
+</script>
+{% endblock %}
+
