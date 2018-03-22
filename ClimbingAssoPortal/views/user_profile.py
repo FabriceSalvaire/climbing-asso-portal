@@ -35,12 +35,15 @@ from django.views.generic.edit import FormView
 # from django.contrib.auth.decorators import login_required
 from account.decorators import login_required
 
+import reversion
+from reversion.views import RevisionMixin
+
 from ..forms import UserProfileForm
 from ..models import UserProfile
 
 ####################################################################################################
 
-class UserProfileFormView(FormView):
+class UserProfileFormView(RevisionMixin, FormView):
 
     template_name = 'user_profile_edit.html'
     form_class = UserProfileForm
@@ -142,6 +145,7 @@ def create(request):
 ####################################################################################################
 
 @login_required
+@reversion.views.create_revision(manage_manually=False, using=None, atomic=True)
 def update(request, user_profile_id):
 
     user_profile = get_object_or_404(UserProfile, pk=user_profile_id)
