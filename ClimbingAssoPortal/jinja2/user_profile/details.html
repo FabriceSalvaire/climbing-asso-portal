@@ -5,7 +5,7 @@
 {% block title %} - {{ user_profile.name }}{% endblock %}
 
 {% block breadcrumb_li %}
-    <li class="breadcrumb-item"><a href="{{ url('user_profile.index') }}">{{ _("User Profiles") }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ url('user_profile.index') }}">{{ _('User Profiles') }}</a></li>
     <li class="breadcrumb-item active">{{ user_profile.last_first_name }}</li>
 {% endblock %}
 
@@ -14,27 +14,27 @@
 	{{ update_delete_button_group(href=url('user_profile.update', user_profile.pk)) }}
     </h1>
 
-    {{ delete_modal(title=_("Delete user profile"),
-	body= _("Are you sure you want to delete this user profile?"),
+    {{ delete_modal(title=_('Delete user profile'),
+	body= _('Are you sure you want to delete this user profile?'),
 	href=url('user_profile.delete', user_profile.pk),
     ) }}
 
     <dl>
-	<dt>{{ _("Last Name") }}</dt><dd>{{ user_profile.last_name }}</dd>
-	<dt>{{ _("First Name") }}</dt><dd>{{ user_profile.first_name }}</dd>
-	<dt>{{ _("Registration year") }}</dt><dd>{{ user_profile.registration_year }}</dd>
-        <dt>{{ _("Group") }}</dt><dd>{{ user_profile.get_group_display() }}</dd>
-        <dt>{{ _("License ID") }}</dt><dd>{{ user_profile.license_id }}</dd>
-        <dt>{{ _("License Club") }}</dt><dd>{{ user_profile.get_license_club_display() }}</dd>
-        <dt>{{ _("Birth Date") }}</dt><dd>{{ user_profile.birth_date }}</dd>
-        <dt>{{ _("Sex") }}</dt><dd>{{ user_profile.get_sex_display() }}</dd>
-        <dt>{{ _("Address") }}</dt><dd>{{ user_profile.adresse }}</dd>
-        <dt>{{ _("Zip Code") }}</dt><dd>{{ user_profile.zip_code }}</dd>
-        <dt>{{ _("City") }}</dt><dd>{{ user_profile.city }}</dd>
-        <dt>{{ _("Phone Home") }}</dt><dd>{{ user_profile.phone_home }}</dd>
-        <dt>{{ _("Phone Work") }}</dt><dd>{{ user_profile.phone_work }}</dd>
-        <dt>{{ _("Phone Mobile") }}</dt><dd>{{ user_profile.phone_mobile }}</dd>
-        <dt>{{ _("Medical Certificate Year") }}</dt><dd>{{ user_profile.medical_certificate_year }}</dd>
-        <dt>{{ _("Social Discount") }}</dt><dd>{{ user_profile.social_discount }}</dd>
+	<dt>{{ _('Last Name') }}</dt><dd>{{ user_profile.last_name }}</dd>
+	<dt>{{ _('First Name') }}</dt><dd>{{ user_profile.first_name }}</dd>
+	<dt>{{ _('Registration year') }}</dt><dd>{{ user_profile.registration_year }}</dd>
+        <dt>{{ _('Group') }}</dt><dd>{{ user_profile.get_group_display() }}</dd>
+        <dt>{{ _('License ID') }}</dt><dd>{{ user_profile.license_id }}</dd>
+        <dt>{{ _('License Club') }}</dt><dd>{{ user_profile.get_license_club_display() }}</dd>
+        <dt>{{ _('Birth Date') }}</dt><dd>{{ user_profile.birth_date }}</dd>
+        <dt>{{ _('Sex') }}</dt><dd>{{ user_profile.get_sex_display() }}</dd>
+        <dt>{{ _('Address') }}</dt><dd>{{ user_profile.adresse }}</dd>
+        <dt>{{ _('Zip Code') }}</dt><dd>{{ user_profile.zip_code }}</dd>
+        <dt>{{ _('City') }}</dt><dd>{{ user_profile.city }}</dd>
+        <dt>{{ _('Phone Home') }}</dt><dd>{{ user_profile.phone_home }}</dd>
+        <dt>{{ _('Phone Work') }}</dt><dd>{{ user_profile.phone_work }}</dd>
+        <dt>{{ _('Phone Mobile') }}</dt><dd>{{ user_profile.phone_mobile }}</dd>
+        <dt>{{ _('Medical Certificate Year') }}</dt><dd>{{ user_profile.medical_certificate_year }}</dd>
+        <dt>{{ _('Social Discount') }}</dt><dd>{{ user_profile.social_discount }}</dd>
 </dl>
 {% endblock %}
