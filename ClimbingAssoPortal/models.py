@@ -41,6 +41,10 @@ from django.db.models.fields import (
 
 from account.conf import settings
 
+from ClimbingGrade import FrenchGrade
+
+from .constants import *
+
 ####################################################################################################
 
 def validate_year(value):
@@ -73,12 +77,6 @@ class UserProfile(Model):
         validators=[validate_year],
     )
 
-    MIDI_GROUP = 'm'
-    SOIR_GROUP = 's'
-    GROUP_CHOICES = (
-        (MIDI_GROUP, 'midi'),
-        (SOIR_GROUP, 'soir'),
-    )
     group = CharField(
         verbose_name=_('group'),
         max_length=1,
@@ -94,12 +92,6 @@ class UserProfile(Model):
     )
 
     # club de la licence
-    ROC14 = 'roc14'
-    LICENSE_CLUB_CHOICES  = (
-        (ROC14, ROC14),
-        ('esc15', 'Esc 15'),
-        ('grimpe13', 'Grimpe 13'),
-    )
     license_club = TextField(
         verbose_name=_("license's club"),
         choices=LICENSE_CLUB_CHOICES,
@@ -113,12 +105,6 @@ class UserProfile(Model):
         blank=True,
     )
 
-    MALE = 'm'
-    FEMALE = 'f'
-    SEX_CHOICES = (
-        (MALE, _('male')),
-        (FEMALE, _('female')),
-    )
     sex = CharField(
         verbose_name=_('sex'),
         max_length=1,
@@ -233,3 +219,63 @@ class UserProfile(Model):
 def on_user_save(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
+
+####################################################################################################
+
+SPECIAL_GRADES = ['ENF']
+
+def french_grade_validator(grade):
+    if grade not in SPECIAL_GRADES:
+        try:
+            FrenchGrade(grade)
+        except ValueError:
+            raise ValidationError(_('Invalid French Grade'))
+
+####################################################################################################
+
+class Route(Model):
+
+    line_number = PositiveIntegerField(
+        verbose_name=_('line number'),
+        null=False,
+        blank=False,
+    )
+
+    grade = CharField(
+        verbose_name=_('grade'),
+        max_length=3,
+        null=False,
+        blank=False,
+        validators=[french_grade_validator],
+    )
+
+    colour = PositiveIntegerField(
+        verbose_name=_('colour'),
+        choices=COLOUR_CHOICES,
+        null=False,
+        blank=False,
+    )
+
+    name = TextField(
+        verbose_name=_('name'),
+        null=True,
+        blank=True,
+    )
+
+    comment = TextField(
+        verbose_name=_('comment'),
+        null=True,
+        blank=True,
+    )
+
+    opener = TextField(
+        verbose_name=_('opener'),
+        null=True,
+        blank=True,
+    )
+
+    opening_date = DateField(
+        verbose_name=_('opening date'),
+        null=False,
+        blank=False,
+    )

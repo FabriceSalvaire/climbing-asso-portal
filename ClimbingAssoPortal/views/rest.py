@@ -29,10 +29,12 @@ from rest_framework import viewsets, permissions
 from ..serializers import (
     UserSerializer,
     UserProfileSerializer,
+    RouteSerializer,
 )
 
 from ..models import (
     UserProfile,
+    Route,
 )
 
 ####################################################################################################
@@ -50,3 +52,11 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAdminUser,)
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
+
+####################################################################################################
+
+class RouteViewSet(viewsets.ModelViewSet):
+
+    permission_classes = (permissions.IsAdminUser,)
+    queryset = Route.objects.all()
+    serializer_class = RouteSerializer

@@ -18,45 +18,66 @@
 #
 ####################################################################################################
 
+__all__= [
+    'FEMALE', 'MALE',
+    'SEX_CHOICES',
+    'MIDI_GROUP', 'SOIR_GROUP',
+    'GROUP_CHOICES',
+    'ROC14',
+    'LICENSE_CLUB_CHOICES',
+    'COLOUR_CHOICES',
+]
+
 ####################################################################################################
 
-# from account.conf import settings
-# settings.AUTH_USER_MODEL
-from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
 
-from rest_framework import serializers
+####################################################################################################
 
-from .models import (
-    UserProfile,
-    Route,
+MALE = 'm'
+FEMALE = 'f'
+SEX_CHOICES = (
+    (MALE, _('male')),
+    (FEMALE, _('female')),
 )
 
 ####################################################################################################
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+MIDI_GROUP = 'm'
+SOIR_GROUP = 's'
+GROUP_CHOICES = (
+    (MIDI_GROUP, _('midi')),
+    (SOIR_GROUP, _('soir')),
+)
 
-    class Meta:
-        model = User
-        # fields = '__all__'
-        fields = ('first_name', 'last_name', 'email')
-
-####################################################################################################
-
-class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
-
-    class Meta:
-        model = UserProfile
-        # fields = '__all__'
-        exclude = (
-            # 'user',
-            'medical_certificate_scan',
-            'medical_certificate_pdf',
-        )
+ROC14 = 'roc14'
+LICENSE_CLUB_CHOICES = (
+    (ROC14, ROC14),
+    ('esc15', 'Esc 15'),
+    ('grimpe13', 'Grimpe 13'),
+)
 
 ####################################################################################################
 
-class RouteSerializer(serializers.HyperlinkedModelSerializer):
+COLOURS = (
+    # Keep order to don't break db
+    _('black'),
+    _('white'),
+    #
+    _('blue'),
+    _('green'),
+    _('red'),
+    # cyan
+    _('violet'), # magenta fuchsia
+    _('yellow'),
+    #
+    _('orange'),
+    _('pink'),
+    _('salmon'),
+    #
+    _('red & white'),
+)
 
-    class Meta:
-        model = Route
-        fields = '__all__'
+COLOUR_CHOICES = [(i, colour) for i, colour in enumerate(COLOURS)]
+
+####################################################################################################
