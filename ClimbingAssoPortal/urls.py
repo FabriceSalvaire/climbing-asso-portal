@@ -160,3 +160,15 @@ urlpatterns += [
          name='route.delete',
     ),
 ]
+
+####################################################################################################
+#
+# Test Page
+#
+
+urlpatterns += [
+    path('test',
+         TemplateView.as_view(template_name='test.html'),
+         name='test',
+    ),
+]
