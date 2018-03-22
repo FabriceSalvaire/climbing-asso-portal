@@ -1,0 +1,138 @@
+#! /usr/bin/env python3
+
+####################################################################################################
+#
+# Climbing Asso Portal - A Portal for Climbing Club (Association)
+# Copyright (C) 2018 Fabrice Salvaire
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+####################################################################################################
+
+####################################################################################################
+
+import argparse
+import os
+from datetime import datetime
+from pathlib import Path
+
+from oauth2client import tools
+
+from ClimbingGrade import FrenchGrade
+from GoogleApi import get_credentials, Spreadsheet
+
+####################################################################################################
+
+# cf. http://oauth2client.readthedocs.io/en/latest/source/oauth2client.tools.html#oauth2client.tools.run_flow
+argument_parser = argparse.ArgumentParser(parents=[tools.argparser])
+flags = argument_parser.parse_args()
+
+####################################################################################################
+
+import django
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ClimbingAssoPortalSite.settings')
+django.setup()
+
+from ClimbingAssoPortal.models import Route
+
+####################################################################################################
+
+root_dir = Path(__file__).parents[1]
+credential_dir = root_dir.joinpath('.google-api-credentials').resolve()
+credential_dir.mkdir(exist_ok=True)
+
+application_name = 'Climbing Asso Portal'
+scopes = 'https://www.googleapis.com/auth/spreadsheets.readonly'
+credential_path = credential_dir.joinpath('sheets.ro.json')
+client_secret_file = credential_dir.joinpath('client_secret.json')
+
+credentials = get_credentials(
+    application_name,
+    scopes,
+    str(credential_path),
+    str(client_secret_file),
+    flags
+)
+
+spreadsheet_id = '1xzzypnm80bUooj8ZPMLhtYEQbZtL89QpIBBNFXn5y90'
+range_name = 'Liste des voies!A1:G163'
+
+spreadsheet = Spreadsheet(credentials, spreadsheet_id)
+
+# data = spreadsheet._get()
+# print(json.dumps(data, indent=4))
+
+# sheets = [
+#     'Liste des voies',
+#     'Statistiques - Textuelles',
+#     'Statistiques - Graphique',
+#     'Voies démontées 2017/12',
+#     'Stat démontage 2017/12',
+#     'Data',
+#     'Voies à ouvrir',
+# ]
+
+# for sheet_title in spreadsheet.sheet_titles():
+#     print('\n')
+#     print('='*100, '\n')
+#     print('Title:', sheet_title)
+#     try:
+#         rows = spreadsheet.get_cells(sheet_title)
+#         for row in rows:
+#             print(row)
+#     except: # googleapiclient.errors.HttpError
+#         pass
+
+COLOURS = (
+    'noir',
+    'blanc',
+    #
+    'bleu',
+    'vert',
+    'rouge',
+    #
+    'fuchsia',
+    'jaune',
+    #
+    'orange',
+    'rose',
+    'saumon',
+    #
+    'marbré rouge&blanc',
+)
+COLOUR_MAP = {colour:i for i, colour in enumerate(COLOURS)}
+
+sheet_title = 'Liste des voies'
+rows = spreadsheet.get_cells(sheet_title)
+# colours = set()
+for row in rows:
+    if len(row) == 7:
+        line_number, grade, colour, name, comment, opener, date = row
+        if grade and grade != 'ENF':
+            _ = FrenchGrade(grade)
+        route = Route(
+            line_number=int(line_number),
+            grade=grade,
+            colour=COLOUR_MAP[colour],
+            name=name,
+            comment=comment,
+            opener=opener,
+            opening_date=datetime.strptime(date, '%d/%m/%Y'),
+        )
+        route.save()
+        # colours.add(colour)
+    else:
+        print('SKIPPED:', row)
+# print(colours)
