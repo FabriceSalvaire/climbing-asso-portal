@@ -100,6 +100,7 @@ DATABASES = {
 INSTALLED_APPS = [
     # /!\ ordered list
     'suit', # must be added before admin
+    # http://django-suit.readthedocs.io/en/develop
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
