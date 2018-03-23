@@ -1,5 +1,3 @@
-# -*- mode: Python -*-
-
 ####################################################################################################
 #
 # Climbing Asso Portal - A Portal for Climbing Club (Association)
@@ -36,7 +34,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 ####################################################################################################
 
-import os
+from pathlib import Path
 
 from django.conf import settings
 # from django_jinja.builtins import DEFAULT_EXTENSIONS
@@ -52,7 +50,7 @@ DEBUG = True
 ####################################################################################################
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parents[1]
 
 ####################################################################################################
 
@@ -72,10 +70,10 @@ SECRET_KEY = '#v2=-7xr3=5(^63sc4)374j48j-d23bo4gc%z$+a#nji56k%we'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = str(BASE_DIR.joinpath('static'))
 MEDIA_URL = '/filer_public/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'filer_public')
-MEDIA_ROOT = os.path.join(BASE_DIR)
+# MEDIA_ROOT = str(BASE_DIR.joinpath('filer_public'))
+MEDIA_ROOT = str(BASE_DIR)
 
 ####################################################################################################
 #
@@ -88,7 +86,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': str(BASE_DIR.joinpath('db.sqlite3')),
     }
 }
 
@@ -125,6 +123,10 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'filer',
     'mptt',
+
+     # http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html#using-celery-with-django
+    'django_celery_results', # http://django-celery-results.readthedocs.io/en/latest/
+    'django_celery_beat', # http://django-celery-beat.readthedocs.io/en/latest/
 
     'ClimbingAssoPortal',
 
@@ -397,3 +399,13 @@ THEME_CONTACT_EMAIL = 'admin@foo.org'
 
 # FILER_UPLOADER_CONNECTIONS = 3
 # Number of simultaneous AJAX uploads. Defaults to 3.
+
+####################################################################################################
+#
+# Celery
+#
+
+CELERY_BROKER_URL='pyamqp://guest@localhost//'
+
+# CELERY_RESULT_BACKEND = 'django-db'
+# CELERY_RESULT_BACKEND = 'django-cache'
