@@ -19,25 +19,35 @@
 ####################################################################################################
 
 ####################################################################################################
-
-"""WSGI config for ClimbingAssoPortalSite project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see https://docs.djangoproject.com/en/2.0/howto/deployment/wsgi/
-
-"""
+#
+# http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html
+# http://docs.celeryproject.org/en/latest/userguide/configuration.html
+#
+####################################################################################################
 
 ####################################################################################################
 
 import os
 
-from django.core.wsgi import get_wsgi_application
+from celery import Celery
 
 ####################################################################################################
 
 PROJECT = 'ClimbingAssoPortalSite'
 
+# set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', PROJECT + '.settings')
 
-application = get_wsgi_application()
+application = Celery(PROJECT)
+
+# Using a string here means the worker doesn't have to serialize
+# the configuration object to child processes.
+# - namespace='CELERY' means all celery-related configuration keys should have a `CELERY_` prefix.
+application.config_from_object('django.conf:settings', namespace='CELERY')
+
+# Load task modules from all registered Django app configs.
+application.autodiscover_tasks()
+
+@application.task(bind=True)
+def debug_task(self):
+    print('Request: {0!r}'.format(self.request))
