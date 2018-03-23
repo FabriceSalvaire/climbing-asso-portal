@@ -23,7 +23,7 @@
 from django.contrib import messages
 from django.urls import reverse
 from django.forms import ModelForm, Form, CharField
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils.translation import ugettext as _
 from django.views.generic import ListView
@@ -38,8 +38,53 @@ from account.decorators import login_required
 import reversion
 from reversion.views import RevisionMixin
 
+from ClimbingGrade import FrenchGrade
+from ClimbingGrade.Statistics import FrenchGradeHistogram
+from ClimbingGrade.StatisticsPlot import FrenchGradeHistogramPlot
+
 from ..forms import RouteForm
 from ..models import Route
+
+####################################################################################################
+
+def generate_route_histogram():
+
+    histogram = FrenchGradeHistogram()
+
+    for route in Route.objects.all():
+        grade = route.grade
+        if grade:
+            if grade == 'ENF':
+                grade = '4a'
+            grade = FrenchGrade(grade)
+            histogram.increment(grade)
+
+    histogram_plot = FrenchGradeHistogramPlot(
+        histogram,
+        title=_('Route Grade'),
+        cumulative_title=_('Cumulative histogram of the route grades'),
+        inverse_cumulative_title=_('Inverse cumulative histogram of the route grades'),
+    )
+
+    return histogram_plot
+
+####################################################################################################
+
+def _route_historgam(request, plot):
+
+    histogram = generate_route_histogram()
+    svg_data = histogram[plot].div
+    return HttpResponse(svg_data, content_type='image/svg+xml')
+
+
+def route_historgam(request):
+    return _route_historgam(request, plot='histogram')
+
+def route_cumulative_histogram(request):
+    return _route_historgam(request, plot='cumulative')
+
+def route_inverse_cumulative_histogram(request):
+    return _route_historgam(request, plot='inverse_cumulative')
 
 ####################################################################################################
 

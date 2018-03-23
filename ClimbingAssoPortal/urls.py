@@ -111,26 +111,43 @@ urlpatterns += [
 from .views import route as route_views
 
 urlpatterns += [
-    path(r'route/',
+    path('wall/',
+         TemplateView.as_view(template_name='wall.html'),
+         name='wall',
+    ),
+
+    path('route/',
          login_required(route_views.RouteListView.as_view()),
          name='route.index'),
 
-    path(r'route/<int:route_id>/',
+    path('route/histogram.svg',
+         route_views.route_historgam,
+         name='route.histogram'),
+
+    path('route/cumulative_histogram.svg',
+         route_views.route_cumulative_histogram,
+         name='route.cumulative_histogram'),
+
+    path('route/inverse_cumulative_histogram.svg',
+         route_views.route_inverse_cumulative_histogram,
+         name='route.inverse_cumulative_histogram'),
+
+    path('route/<int:route_id>/',
          route_views.details,
          name='route.details',
     ),
 
-    path(r'route/create/',
+    path('route/create/',
          route_views.create,
          name='route.create',
     ),
 
-    path(r'route/<int:route_id>/update/',
+    path('route/<int:route_id>/update/',
          route_views.update,
          name='route.update',
     ),
 
-    path(r'route/<int:route_id>/delete/',
+    path('route/<int:route_id>/delete/',
          route_views.delete,
          name='route.delete',
     ),
