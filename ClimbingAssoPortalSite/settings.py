@@ -409,3 +409,13 @@ CELERY_BROKER_URL='pyamqp://guest@localhost//'
 
 # CELERY_RESULT_BACKEND = 'django-db'
 # CELERY_RESULT_BACKEND = 'django-cache'
+
+####################################################################################################
+#
+# Google API
+#
+
+GOOGLE_API_CREDENTIAL_DIR = BASE_DIR.joinpath('.google-api-credentials')
+GOOGLE_API_APPLICATION_NAME = 'Climbing Asso Portal'
+GOOGLE_API_ROUTE_SPREADSHEET_ID = '1xzzypnm80bUooj8ZPMLhtYEQbZtL89QpIBBNFXn5y90'
+GOOGLE_API_ROUTE_SHEET = 'Liste des voies'
