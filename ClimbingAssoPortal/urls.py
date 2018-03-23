@@ -171,4 +171,9 @@ urlpatterns += [
          TemplateView.as_view(template_name='test.html'),
          name='test',
     ),
+
+    path('route-angularjs',
+         TemplateView.as_view(template_name='route/index-angularjs.html'),
+         name='route-angularjs',
+    ),
 ]
