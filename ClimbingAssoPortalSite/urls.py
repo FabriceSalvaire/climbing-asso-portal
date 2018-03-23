@@ -1,3 +1,5 @@
+# -*- mode: Python -*-
+
 ####################################################################################################
 #
 # Climbing Asso Portal - A Portal for Climbing Club (Association)
@@ -39,17 +41,21 @@ Including another URLconf
 
 ####################################################################################################
 
-import os
-
-from django.conf import settings
-from django.conf.urls.static import static
+from django.contrib import admin
 from django.urls import include, path
 
 ####################################################################################################
 
 urlpatterns = [
+    # Common part
+    path('admin/', admin.site.urls),
+    path('filer/', include('filer.urls')),
+    path('account/', include('account.urls')),
+
     path('', include('ClimbingAssoPortal.urls')),
 ]
+
+####################################################################################################
 
 # Devel
 # urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
