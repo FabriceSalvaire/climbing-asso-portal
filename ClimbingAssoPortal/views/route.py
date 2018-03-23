@@ -21,11 +21,12 @@
 ####################################################################################################
 
 from django.contrib import messages
-from django.urls import reverse
 from django.forms import ModelForm, Form, CharField
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 from django.utils.translation import ugettext as _
+from django.views.decorators.cache import cache_control
 from django.views.generic import ListView
 from django.views.generic.edit import FormMixin
 
@@ -44,9 +45,13 @@ from ClimbingGrade.StatisticsPlot import FrenchGradeHistogramPlot
 
 from ..forms import RouteForm
 from ..models import Route
+from ..tools.CacheTools import cache_result
 
 ####################################################################################################
 
+ONE_HOUR = 60 * 60 # s
+
+@cache_result
 def generate_route_histogram():
 
     histogram = FrenchGradeHistogram()
@@ -77,12 +82,16 @@ def _route_historgam(request, plot):
     return HttpResponse(svg_data, content_type='image/svg+xml')
 
 
+# Fixme: browser cache ???
+@cache_control(max_age=ONE_HOUR)
 def route_historgam(request):
     return _route_historgam(request, plot='histogram')
 
+@cache_control(max_age=ONE_HOUR)
 def route_cumulative_histogram(request):
     return _route_historgam(request, plot='cumulative')
 
+@cache_control(max_age=ONE_HOUR)
 def route_inverse_cumulative_histogram(request):
     return _route_historgam(request, plot='inverse_cumulative')
 
