@@ -1,3 +1,5 @@
+# -*- mode: Python -*-
+
 ####################################################################################################
 #
 # Climbing Asso Portal - A Portal for Climbing Club (Association)
@@ -20,10 +22,8 @@
 
 ####################################################################################################
 
-from django.conf.urls import include
-from django.contrib import admin
 from django.contrib.auth.decorators import login_required
-from django.urls import path
+from django.urls import include, path
 from django.views.generic.base import TemplateView
 
 from rest_framework import routers
@@ -47,35 +47,10 @@ urlpatterns = [
 
 ####################################################################################################
 #
-# Admin
-#
-
-urlpatterns += [
-    path('admin/', admin.site.urls),
-]
-
-####################################################################################################
-#
-# Filer
-#
-
-urlpatterns += [
-    path('filer/', include('filer.urls')),
-]
-
-####################################################################################################
-#
-# Account
-#
-
-urlpatterns += [
-    path(r'account/', include('account.urls')),
-]
-
-####################################################################################################
-#
 # REST API
 #
+
+# Fixme: move supra ?
 
 from .views.rest import (
     UserViewSet,
