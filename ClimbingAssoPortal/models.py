@@ -279,3 +279,10 @@ class Route(Model):
         null=False,
         blank=False,
     )
+
+    ##############################################
+
+    def __str__(self):
+
+        template = 'Route {0.line_number} {0.grade} {0.name} {0.opening_date}'
+        return template.format(self)

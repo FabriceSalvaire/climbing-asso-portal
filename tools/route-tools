@@ -1,0 +1,70 @@
+#! /usr/bin/env python3
+
+####################################################################################################
+#
+# Climbing Asso Portal - A Portal for Climbing Club (Association)
+# Copyright (C) 2018 Fabrice Salvaire
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+####################################################################################################
+
+####################################################################################################
+
+import argparse
+
+from oauth2client import tools
+
+####################################################################################################
+
+# cf. http://oauth2client.readthedocs.io/en/latest/source/oauth2client.tools.html#oauth2client.tools.run_flow
+argument_parser = argparse.ArgumentParser(parents=[tools.argparser])
+flags = argument_parser.parse_args()
+
+####################################################################################################
+
+import SetupDjango
+
+####################################################################################################
+
+def synchronise_route_from_google_doc():
+
+    from ClimbingAssoPortal.GoogleApi import RouteSpreadsheet
+    route_spreadsheet = RouteSpreadsheet()
+    route_spreadsheet.update(commit=False)
+
+####################################################################################################
+
+from ClimbingAssoPortal.models import Route
+from ClimbingGrade import FrenchGrade
+from ClimbingGrade.Statistics import FrenchGradeHistogram
+from ClimbingGrade.StatisticsPlot import FrenchGradeHistogramPlot
+
+histogram = FrenchGradeHistogram()
+
+for route in Route.objects.all():
+    # print(route)
+    grade = route.grade
+    if grade:
+        if grade == 'ENF':
+            grade = '4a'
+        grade = FrenchGrade(grade)
+        histogram.increment(grade)
+
+# print(histogram.domain)
+# for grade in histogram:
+#     print(repr(grade))
+
+histogram_plot = FrenchGradeHistogramPlot(histogram, title='Route Grade')
+print(histogram_plot.plot.div)
