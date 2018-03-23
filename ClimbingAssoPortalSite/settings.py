@@ -419,3 +419,22 @@ GOOGLE_API_CREDENTIAL_DIR = BASE_DIR.joinpath('.google-api-credentials')
 GOOGLE_API_APPLICATION_NAME = 'Climbing Asso Portal'
 GOOGLE_API_ROUTE_SPREADSHEET_ID = '1xzzypnm80bUooj8ZPMLhtYEQbZtL89QpIBBNFXn5y90'
 GOOGLE_API_ROUTE_SHEET = 'Liste des voies'
+
+####################################################################################################
+#
+# Cache
+#
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+#         'LOCATION': '127.0.0.1:11211',
+#         'LOCATION': 'unix:/tmp/memcached.sock',
+#     }
+# }
