@@ -67,28 +67,68 @@ class FrenchGradeHistogramPlot:
 
     ##############################################
 
-    def __init__(self, histogram, title):
+    def __init__(self, histogram, title, cumulative_title, inverse_cumulative_title):
 
-        self._histogram = histogram
-        self._title = title
+        histogram = histogram
+        title = title
+        cumulative_title = cumulative_title
+        inverse_cumulative_title = inverse_cumulative_title
 
-        grade_counters = self._histogram.domain
+        grade_counters = histogram.domain
         if grade_counters:
-            data = {
-                'labels': [str(grade_counter) for grade_counter in grade_counters],
-                'counts': [grade_counter.count for grade_counter in grade_counters],
-            }
+            labels = [str(grade_counter) for grade_counter in grade_counters]
+            counts = np.array([grade_counter.count for grade_counter in grade_counters])
+            cumulative_counts = counts.cumsum() / counts.sum()
+            inverse_cumulative_counts = np.ones(len(counts))
+            inverse_cumulative_counts[1:] = (1 - cumulative_counts)[:-1]
+
             # engine = self._make_bokeh_barchart
             engine = self._make_svg_barchart
-            self._plot = engine(data, self._title)
+
+            self._histogram = engine(labels, counts, title)
+            self._cumulative = engine(
+                labels,
+                cumulative_counts,
+                cumulative_title,
+                percent=True,
+            )
+            self._inverse_cumulative = engine(
+                labels,
+                inverse_cumulative_counts,
+                inverse_cumulative_title,
+                percent=True,
+            )
         else:
-            return None
+            self._plot = None
+            self._cumulative = None
+            self._inverse_cumulative = None
 
     ##############################################
 
     @property
-    def plot(self):
-        return self._plot
+    def histogram(self):
+        return self._histogram
+
+    @property
+    def cumulative(self):
+        return self._cumulative
+
+    @property
+    def inverse_cumulative(self):
+        return self._inverse_cumulative
+
+    ##############################################
+
+    def __getitem__(self, plot):
+
+        if plot == 'histogram':
+            return self._histogram
+        elif plot == 'cumulative':
+            return self._cumulative
+        elif plot == 'inverse_cumulative':
+            return self._inverse_cumulative
+        else:
+            raise ValueError
 
     ##############################################
 
@@ -98,7 +138,7 @@ class FrenchGradeHistogramPlot:
 
     ##############################################
 
-    # def _make_bokeh_barchart(self, data, title):
+    # def _make_bokeh_barchart(self, labels, counts, title):
 
     #     # Workaround to don't sort labels
     #     label = CatAttr(df=data, columns='labels', sort=False)
@@ -117,7 +157,7 @@ class FrenchGradeHistogramPlot:
 
     ##############################################
 
-    def _make_svg_barchart(self, data, title):
+    def _make_svg_barchart(self, labels, counts, title, percent=False):
 
         dpi = 100
         figure_width = 1000 / dpi
@@ -126,16 +166,28 @@ class FrenchGradeHistogramPlot:
 
         figure = Figure(figsize=(figure_width, figure_height), dpi=dpi, facecolor='white')
         axes = figure.add_subplot(1, 1, 1)
-        y = data['counts']
+        y = counts
+        if percent:
+            y *= 100
         x = np.arange(len(y))
         width = .5
         bar_chart = axes.bar(x, y, width=width, color='r', edgecolor='white')
 
-        axes.set_ylabel('')
         axes.set_title(title, fontsize=20)
+
         axes.set_xticks(x + width/2)
         axes.xaxis.set_tick_params(width=0)
-        axes.set_xticklabels(data['labels'], rotation=45, fontsize=15)
+        axes.set_xticklabels(labels, rotation=45, fontsize=15)
+
+        if percent:
+            major_ticks = np.arange(0, 101, 10)
+            axes.set_yticks(major_ticks)
+            # axes.set_yticks(minor_ticks, minor=True)
+        else:
+            major_ticks = np.arange(0, y[y.argmax()] + 1, 5)
+            axes.set_yticks(major_ticks)
+            # axes.set_yticks(minor_ticks, minor=True)
+        axes.set_ylabel('%' if percent else '')
         axes.grid(axis='y')
 
         canvas = FigureCanvas(figure)

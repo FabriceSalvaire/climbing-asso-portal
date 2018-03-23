@@ -34,10 +34,16 @@
 
     {% if user.is_staff %}
 	<p>
+	    <a class="btn btn-primary btn-lg m-b-1" href="{{ url('wall') }}" role="button">
+		{{ _('Wall') }}</a>
+	</p>
+    {% endif %}
+
+
+    {% if user.is_staff %}
+	<p>
 	    <a class="btn btn-primary btn-lg m-b-1" href="{{ url('user_profile.index') }}" role="button">
 		{{ _('User Profiles') }}</a>
-	    <a class="btn btn-primary btn-lg m-b-1" href="{{ url('route.index') }}" role="button">
-		{{ _('Routes') }}</a>
 	</p>
     {% endif %}
 
