@@ -7,6 +7,8 @@ trash/
 
 .google-api-credentials/
 ClimbingAssoPortal/fixtures/db.json
+ClimbingAssoPortal/static-ext/dist/
+ClimbingAssoPortal/static-ext/package-lock.json
 ClimbingAssoPortal/static/node_modules/
 ClimbingAssoPortal/static/packages/
 ClimbingAssoPortal/static/yarn-error.log
@@ -35,3 +37,8 @@ password.txt
 paypal-test/
 ressources/
 screenshots/
+setup-tools/make-translation-sh
+
+ClimbingAssoPortal/static-ext/webpack-demo/
+ClimbingAssoPortal/static/js-ext/angular-resource.min.js.map
+ClimbingAssoPortal/static/js-ext/angular.min.js.map
