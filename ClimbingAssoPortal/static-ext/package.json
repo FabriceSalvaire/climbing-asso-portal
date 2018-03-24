@@ -20,7 +20,7 @@
       "bootstrap": "^4.0.0",
       "bootstrap-slider": "^10.0.0",
       "fontawesome": "^4.7.2",
-      "jquery": "1.9.1",
+      "jquery": "^3.3.1",
       "popper.js": "^1.12.9"
    },
    "devDependencies": {
