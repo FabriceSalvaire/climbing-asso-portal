@@ -13,6 +13,8 @@ ClimbingAssoPortal/static/node_modules/
 ClimbingAssoPortal/static/packages/
 ClimbingAssoPortal/static/yarn-error.log
 ClimbingAssoPortal/static/yarn.lock
+FrenchZipCode/laposte_commnouv.csv
+FrenchZipCode/laposte_hexasmal.csv
 db.sqlite3
 filer
 filer_public/
@@ -30,8 +32,6 @@ ClimbingAssoPortal/static-ext/node_modules/
 ClimbingAssoPortal/static-ext/yarn-error.log
 ClimbingAssoPortal/static-ext/yarn.lock
 TODO.txt
-data/laposte_commnouv.csv
-data/laposte_hexasmal.csv
 django-application
 password.txt
 paypal-test/
