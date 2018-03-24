@@ -159,13 +159,23 @@ urlpatterns += [
 #
 
 urlpatterns += [
-    path('test',
-         TemplateView.as_view(template_name='test.html'),
-         name='test',
+    path('test/',
+         TemplateView.as_view(template_name='test/index.html'),
+         name='test.index',
     ),
 
-    path('route-angularjs',
-         TemplateView.as_view(template_name='route/index-angularjs.html'),
-         name='route-angularjs',
+    path('test/rest-ajax',
+         TemplateView.as_view(template_name='test/rest-ajax.html'),
+         name='test.rest-ajax',
+    ),
+
+    path('test/select2',
+         TemplateView.as_view(template_name='test/select2.html'),
+         name='test.select2',
+    ),
+
+    path('test/route-angularjs',
+         TemplateView.as_view(template_name='test/index-angularjs.html'),
+         name='test.route-angularjs',
     ),
 ]

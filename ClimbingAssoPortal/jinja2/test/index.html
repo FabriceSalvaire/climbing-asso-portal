@@ -1,0 +1,19 @@
+{# -*- mode: jinja2 -*- #}
+{% extends "include/base.html" %}
+
+{% block breadcrumb_li %}
+    <li class="breadcrumb-item active">{{ _('Tests') }}</li>
+{% endblock %}
+
+{% block content %}
+    <h2>Table of Contents</h2>
+    <ul>
+	<li><a href="{{ url('test.rest-ajax') }}">{{ _('REST AJAX') }}</a></li>
+	<li><a href="{{ url('test.select2') }}">{{ _('Select2') }}</a></li>
+	<li><a href="{{ url('test.route-angularjs') }}">{{ _('Route AngularJS') }}</a></li>
+    </ul>
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+
