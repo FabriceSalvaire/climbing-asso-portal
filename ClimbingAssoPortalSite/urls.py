@@ -51,6 +51,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('filer/', include('filer.urls')),
     path('account/', include('account.urls')),
+    path('select2/', include('django_select2.urls')),
 
     path('', include('ClimbingAssoPortal.urls')),
 ]

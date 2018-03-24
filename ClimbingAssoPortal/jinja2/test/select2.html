@@ -1,0 +1,37 @@
+{# -*- mode: jinja2 -*- #}
+{% extends "include/base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href={{ static('css-ext/select2.min.css') }}>
+    {# <link rel="stylesheet" href={{ static('css-ext/select2-bootstrap4.min.css') }}> #}
+{% endblock %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+    <h2>Select2</h2>
+    <select class="js-example-basic-single" name="state">
+	<optgroup label="Alaskan/Hawaiian Time Zone">
+	    <option value="AK">Alaska</option>
+	    <option value="HI">Hawaii</option>
+	</optgroup>
+	<optgroup label="Pacific Time Zone">
+	    <option value="CA">California</option>
+	    <option value="NV">Nevada</option>
+	    <option value="OR">Oregon</option>
+	    <option value="WA">Washington</option>
+	</optgroup>
+    </select>
+    <p></p>
+
+    <h3>Ajax</h3>
+    <select class="route-name" style="width: 50%"></select>
+{% endblock %}
+
+{% block script %}
+    {# after JQuery #}
+    <script src={{ static('js-ext/select2.min.js') }}></script>
+    <script src={{ static('js/select2-test.js') }}></script>
+{% endblock %}
+

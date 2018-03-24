@@ -50,7 +50,7 @@ var request = $.ajax({
     cache: false,
     url: "/api/user_profile/1/",
     dataType: "json"
-})
+});
 
 request.done(function(message) {
     console.log("xhr done result:", message);
@@ -66,7 +66,7 @@ request.done(function(message) {
 	data: {
 	    "license_id": license_id
 	}
-    }).error(function(jqXHR, text_status, error_thrown) {
+    }).fail(function(jqXHR, text_status, error_thrown) {
 	alert("Request failed: " + text_status);
     });
 
@@ -75,7 +75,7 @@ request.done(function(message) {
 	cache: false,
 	url: "/api/user_profile/1/",
 	dataType: "json"
-    }).success(function(message) {
+    }).done(function(message) {
 	console.log("xhr result:", message);
     });
 });
