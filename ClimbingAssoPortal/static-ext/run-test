@@ -1,0 +1,2 @@
+#! /usr/bin/bash
+npx webpack ./src/test.js && node dist/test.js
