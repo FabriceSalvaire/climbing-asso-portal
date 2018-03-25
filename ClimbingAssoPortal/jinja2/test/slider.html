@@ -1,0 +1,96 @@
+{# -*- mode: jinja2 -*- #}
+{% extends "include/base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href={{ static('css-ext/bootstrap-slider.min.css') }}>
+{% endblock %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+    <h2>Range Slider</h2>
+    <div style="width: 50%; text-align: center;">
+	<label><span>Climbing Grade</span></label>
+	<br>
+	<input class="range-between" type="range" style="width: 100%; display: none;">
+	<span class="slider-min-max" style="display: inline-flex; width: 100%;">
+	    <p id="min-value" style="text-align:  left; width: 50%"></p>
+	    <p id="max-value" style="text-align: right; width: 50%"></p>
+	</span>
+    </div>
+
+    <h2>Slider</h2>
+    <p>
+	<input id="slider1" type="text" value=""
+	       data-slider-min="0" data-slider-max="100" data-slider-step="5"
+	       data-slider-value="[10,90]"
+	       tooltip="show"
+	       tooltip_split="false"
+	       tooltip_position="top"
+	       />
+    </p>
+    <p>
+	<input id="slider2" type="text" value=""
+	       data-slider-ticks="[0, 100, 200, 300, 400]"
+	       data-slider-ticks-snap-bounds="30"
+	       data-slider-ticks-labels='["$0", "$100", "$200", "$300", "$400"]'
+	       />
+    </p>
+    <p>
+	<input id="slider3" type="text" value=""
+	       data-slider-value="[1,6]"
+	       data-slider-ticks="[1, 2, 3, 4, 5, 6]"
+	       data-slider-ticks-labels='["a", "b", "c", "d", "e", "f"]'
+	       />
+    </p>
+    <p>
+	<input id="slider4" type="text" value=""
+	       data-slider-value="[1,6]"
+	       data-slider-ticks="[1, 2, 3, 4, 5, 6]"
+	       data-slider-ticks-labels='["a", "b", "c", "d", "e", "f"]'
+	       tooltip="always"
+	       tooltip_split="false"
+	       tooltip_position="top"
+	       ticks_tooltip="false"
+	       />
+    </p>
+{% endblock %}
+
+{% block script %}
+    {# after JQuery #}
+    <script src={{ static('js-ext/bootstrap-slider.min.js') }}></script>
+    <script type="text/javascript">
+	var grades = [
+	    '2','3a','3b','3c','4a','4b','4c',
+	    '5a','5a+','5b','5b+','5c','5c+',
+	    '6a','6a+','6b','6b+','6c','6c+',
+	    '7a','7a+','7b','7b+','7c','7c+',
+	    '8a','8a+','8b','8b+','8c','8c+',
+	    '9a','9a+','9b','9b+','9c','9c+'
+	];
+	var number_of_grades = grades.length;
+	var i_max = number_of_grades -1;
+
+	$("#min-value").text(grades[0]);
+        $("#max-value").text(grades[i_max]);
+
+	$(".range-between").slider({
+	    min: 0,
+	    max: i_max,
+	    step: 1,
+	    value: [0, i_max]
+	}).on("change", function(slide_event) {
+  	    // console.log(slide_event);
+	    var value = slide_event.value.newValue;
+	    $("#min-value").text(grades[value[0]]);
+            $("#max-value").text(grades[value[1]]);
+	});
+
+	$("#slider1").slider({});
+	$("#slider2").slider({});
+	$("#slider3").slider({});
+	$("#slider4").slider({});
+    </script>
+{% endblock %}
+
