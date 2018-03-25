@@ -1,0 +1,33 @@
+{# -*- mode: jinja2 -*- #}
+{% extends "include/base.html" %}
+
+{% block title %} - {{ _('Rest API') }}{% endblock %}
+
+{% block breadcrumb_li %}
+    <li class="breadcrumb-item active">{{ _('Rest API') }}</li>
+{% endblock %}
+
+{% block content %}
+    <ul class="nav justify-content-center">
+	<li class="nav-item">
+	    <a class="nav-link" href="/api">
+		{{ _('Rest API') }}
+	    </a>
+	</li>
+	<li class="nav-item">
+	    <a class="nav-link" href={{ url('schema-swagger-ui') }}>
+		{{ _('Swagger Doc') }}
+	    </a>
+	</li>
+	<li class="nav-item">
+	    <a class="nav-link" href={{ url('schema-redoc') }}>
+		{{ _('Redoc') }}
+	    </a>
+	</li>
+	<li class="nav-item">
+	    <a class="nav-link" href={{ url('old-swagger') }}>
+		{{ _('Old Swagger Doc') }}
+	    </a>
+	</li>
+    </ul>
+   {% endblock %}

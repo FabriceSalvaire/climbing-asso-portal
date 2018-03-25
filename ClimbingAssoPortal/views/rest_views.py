@@ -89,6 +89,9 @@ class ZipCodeViewSet(viewsets.ReadOnlyModelViewSet):
 
     def retrieve(self, request, pk=None):
 
+        # Fixme: pk, swagger show 'id'
+        #    look get_object API
+
         self._load_zip_code_database()
         try:
             zip_code = self.__zip_code_database__[pk]

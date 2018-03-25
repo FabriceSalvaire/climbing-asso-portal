@@ -49,11 +49,8 @@
 
     {% if user.is_staff %}
 	<p>
-	    <a class="btn btn-primary btn-lg m-b-1" href="/api-docs" role="button">
-		{{ _('REST API Doc') }}
-	    </a>
-	    <a class="btn btn-primary btn-lg m-b-1" href="/api" role="button">
-		{{ _('REST API') }}
+	    <a class="btn btn-primary btn-lg m-b-1" href={{ url('api-summary') }} role="button">
+		{{ _('Rest API') }}
 	    </a>
 	</p>
     {% endif %}

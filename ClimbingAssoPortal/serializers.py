@@ -30,6 +30,8 @@
 # settings.AUTH_USER_MODEL
 from django.contrib.auth.models import User
 
+from django.utils.translation import ugettext_lazy as _
+
 from rest_framework import serializers
 
 from .models import (
@@ -63,6 +65,8 @@ class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
 
 class RouteSerializer(serializers.HyperlinkedModelSerializer):
 
+    # Fixme: swagger don't show descriptions for colour
+
     class Meta:
         model = Route
         fields = '__all__'
@@ -71,5 +75,14 @@ class RouteSerializer(serializers.HyperlinkedModelSerializer):
 
 class ZipCodeSerializer(serializers.Serializer):
 
-    zip_code = serializers.IntegerField(read_only=True)
-    cities = serializers.ListField(read_only=True)
+    zip_code = serializers.IntegerField(
+        read_only=True,
+        label=_('zip code'),
+        help_text=_('ZIP code'),
+    )
+
+    cities = serializers.ListField(
+        read_only=True,
+        label=_('cities'),
+        help_text=_('String list of cities'),
+    )
