@@ -19,15 +19,26 @@
 ####################################################################################################
 
 ####################################################################################################
+#
+# cf. https://django-rest-swagger.readthedocs.io/en/latest/schema/
+#
+####################################################################################################
+
+####################################################################################################
 
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework import response, schemas
 from rest_framework_swagger.renderers import OpenAPIRenderer, SwaggerUIRenderer
+
+from ..apps import ClimbingAssoPortalConfig
 
 ####################################################################################################
 
 @api_view()
 @renderer_classes([OpenAPIRenderer, SwaggerUIRenderer])
 def schema_view(request):
-    generator = schemas.SchemaGenerator(title='REST API')
+    # Fixme: OpenAPIRenderer json doc
+    #  "detail": "Could not satisfy the request Accept header."
+    title = '{} API'.format(ClimbingAssoPortalConfig.verbose_name)
+    generator = schemas.SchemaGenerator(title=title)
     return response.Response(generator.get_schema(request=request))

@@ -303,36 +303,8 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 100,
 }
 
+# cf. https://django-rest-swagger.readthedocs.io/en/latest/settings/
 SWAGGER_SETTINGS = {
-    'exclude_namespaces': [],
-    'api_key': '',
-    'api_version': '1.0',
-    # 'api_path': '/',
-    # 'base_path': '',
-    'doc_expansion': 'none',
-    'enabled_methods': [
-        'get',
-        'post',
-        'put',
-        'patch',
-        'delete'
-    ],
-    'info': {
-        'title': 'REST API',
-        'description': '''
-        This page provides an automatically generated documentation for the <a href="/about-rest-api">REST API</a>.
-        You can learn the data schemas and try it out.
-        ''',
-        # 'contact': 'fabrice.salvaire@orange.fr',
-        # 'license': 'CC BY-NC-SA 3.0',
-        # 'licenseUrl': 'http://creativecommons.org/licenses/by-nc-sa/3.0/',
-        # 'termsOfServiceUrl': '/mentions-legales',
-    },
-    'is_authenticated': True,
-    'is_superuser': True,
-    'permission_denied_handler': None,
-    'resource_access_handler': None,
-    # 'token_type': Token,
 }
 
 ####################################################################################################
