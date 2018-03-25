@@ -1,0 +1,7 @@
+#! /usr/bin/bash
+
+#BABEL_ENV=browser
+BABEL_ENV=latest-browser
+
+export BABEL_ENV
+npx webpack -w

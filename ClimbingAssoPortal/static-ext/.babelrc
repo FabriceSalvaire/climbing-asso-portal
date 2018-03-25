@@ -1,4 +1,32 @@
 {
-  "presets": ["es2015"],
-  "plugins": [["angularjs-annotate", { "explicitOnly" : true}]]
+    "env": {
+	"browser": {
+	    "presets": ["es2015"],
+	    "plugins": [
+		["angularjs-annotate", { "explicitOnly" : true}]
+	    ]
+	},
+	"latest-browser": {
+	    "presets": [
+		["env", {
+		    "targets": {
+			"browsers": ["last 2 versions"]
+		    },
+		    "debug": true
+		}]
+	    ],
+	    "plugins": [
+		["angularjs-annotate", { "explicitOnly" : true}]
+	    ]
+	},
+	"node": {
+	    "presets": [
+		["env", {
+		    "targets": {
+			"node": "8.10"
+		    }
+		}]
+	    ]
+	}
+    }
 }
