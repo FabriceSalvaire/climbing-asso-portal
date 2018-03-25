@@ -24,10 +24,12 @@
 ####################################################################################################
 
 from django.contrib.auth.decorators import login_required
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.views.generic.base import TemplateView
 
 from rest_framework import routers
+
+from .apps import ClimbingAssoPortalConfig
 
 ####################################################################################################
 #
@@ -44,6 +46,11 @@ urlpatterns = [
          TemplateView.as_view(template_name='mentions-legales.html'),
          name='mentions-legales',
     ),
+
+    path('api-summary',
+         login_required(TemplateView.as_view(template_name='api-summary.html')),
+         name='api-summary',
+    ),
 ]
 
 ####################################################################################################
@@ -54,7 +61,6 @@ urlpatterns = [
 # Fixme: move supra ?
 
 from .views import rest_views
-from .views.schema_view import schema_view
 
 router = routers.DefaultRouter()
 router.register('users', rest_views.UserViewSet)
@@ -65,7 +71,43 @@ router.register('zip_codes', rest_views.ZipCodeViewSet, base_name='zip_code')
 urlpatterns += [
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('api-docs/', schema_view),
+]
+
+####################################################################################################
+#
+# REST API Doc
+#
+
+from .views.schema_view import schema_view
+
+urlpatterns += [
+    path('api-docs/', schema_view, name='old-swagger'),
+]
+
+
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework import permissions as rest_permissions
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title='{} API'.format(ClimbingAssoPortalConfig.verbose_name),
+        default_version='v1',
+        description='Description ...',
+        terms_of_service='Terms of service ...',
+        contact=openapi.Contact(email='contact AT fabrice DOT salvaire .fr'),
+        license=openapi.License(name='License ...'),
+    ),
+    # Fixme: drf_yasg.errors.SwaggerValidationError: spec validation failed
+    # validators=['flex', 'ssv'],
+    public=True,
+    permission_classes=(rest_permissions.IsAdminUser,),
+)
+
+urlpatterns += [
+    re_path('^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=None), name='schema-json'),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=None), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=None), name='schema-redoc'),
 ]
 
 ####################################################################################################

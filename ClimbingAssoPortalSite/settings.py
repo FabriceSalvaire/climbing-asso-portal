@@ -110,6 +110,7 @@ INSTALLED_APPS = [
 
     'rest_framework', # http://www.django-rest-framework.org
     'rest_framework_swagger', # https://django-rest-swagger.readthedocs.io/en/latest
+    'drf_yasg', # https://github.com/axnsan12/drf-yasg
 
     'reversion', # https://django-reversion.readthedocs.io/en/stable
 
