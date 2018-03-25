@@ -1,3 +1,4 @@
+
 # -*- mode: Python -*-
 
 ####################################################################################################
@@ -172,6 +173,11 @@ urlpatterns += [
     path('test/select2',
          TemplateView.as_view(template_name='test/select2.html'),
          name='test.select2',
+    ),
+
+    path('test/slider',
+         TemplateView.as_view(template_name='test/slider.html'),
+         name='test.slider',
     ),
 
     path('test/route-angularjs',
