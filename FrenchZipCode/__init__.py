@@ -18,14 +18,71 @@
 #
 ####################################################################################################
 
+__all__ = [
+    'FrenchZipCode',
+    'FrenchZipCodeDataBase',
+]
+
 ####################################################################################################
 
 import json
 from pathlib import Path
 
+from ClimbingAssoPortalTools.Singleton import SingletonMetaClass
+
 ####################################################################################################
 
 class FrenchZipCode:
+
+    ##############################################
+
+    def __init__(self, zip_code, cities):
+
+        self._zip_code = int(zip_code)
+        self._cities = list(cities)
+
+    ##############################################
+
+    @property
+    def zip_code(self):
+        return self._zip_code
+
+    @property
+    def cities(self):
+        return self._cities # Fixme: iter, list ?
+
+    ##############################################
+
+    def __int__(self):
+        return self._zip_code
+
+    ##############################################
+
+    def __str__(self):
+
+        if len(self._cities) == 1:
+            return self._cities[0]
+        else:
+            return None
+
+    ##############################################
+
+    def __len__(self):
+        return len(self._cities)
+
+    ##############################################
+
+    def __iter__(self):
+        return iter(self._cities)
+
+    ##############################################
+
+    def __getitem__(self,_slice):
+        return self._cities[_slice]
+
+####################################################################################################
+
+class FrenchZipCodeDataBase(metaclass=SingletonMetaClass):
 
     __json_path__ = Path(__file__).parent.joinpath('french_zip_code.json')
 
@@ -42,10 +99,15 @@ class FrenchZipCode:
         if self._zip_code_map is None:
             with open(self.__json_path__) as fh:
                 data = json.load(fh)
-            self._zip_code_map = {int(zip_code):cities for zip_code, cities in data.items()}
+
+            zip_codes = [FrenchZipCode(*args) for args in data.items()]
+            self._zip_codes = zip_codes
+
+            self._zip_code_map = {int(zip_code):zip_code for zip_code in zip_codes}
+
             self._city_map = {}
-            for zip_code, cities in self._zip_code_map.items():
-                for city in cities:
+            for zip_code in zip_codes:
+                for city in zip_code:
                     if city not in self._city_map:
                         self._city_map[city] = [zip_code]
                     else:
@@ -53,17 +115,47 @@ class FrenchZipCode:
 
     ##############################################
 
-    def __getitem__(self, zip_code):
-
+    @property
+    def zip_codes(self):
         self._load()
-        return self._zip_code_map[int(zip_code)]
+        return self._zip_codes
+
+    @property
+    def _lazy_zip_codes(self):
+        self._load()
+        return self._zip_codes
+
+    @property
+    def _lazy_zip_code_map(self):
+        self._load()
+        return self._zip_code_map
+
+    @property
+    def _lazy_city_map(self):
+        self._load()
+        return self._city_map
+
+    ##############################################
+
+    def __len__(self):
+        return len(self._lazy_zip_codes)
+
+    ##############################################
+
+    def __iter__(self):
+        return iter(self._lazy_zip_codes)
+
+    ##############################################
+
+    def __getitem__(self, zip_code):
+        return self._lazy_zip_code_map[int(zip_code)]
 
     ##############################################
 
     def zip_code_for(self, city):
 
-        self._load()
-        zip_codes = self._city_map[str(city).upper()]
+        city = str(city).upper()
+        zip_codes = [int(zip_code) for zip_code in self._lazy_city_map[city]]
         zip_codes.sort()
         return list(zip_codes)
 
@@ -74,7 +166,7 @@ class FrenchZipCode:
         # Fixme: speedup using prefix cache
         # Fixme: sort
         prefix = prefix.upper()
-        for city in self._city_map.keys():
+        for city in self._lazy_city_map.keys():
             if city.startswith(prefix):
                 yield city
 

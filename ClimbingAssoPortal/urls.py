@@ -53,17 +53,14 @@ urlpatterns = [
 
 # Fixme: move supra ?
 
-from .views.rest import (
-    UserViewSet,
-    UserProfileViewSet,
-    RouteViewSet,
-)
+from .views import rest_views
 from .views.schema_view import schema_view
 
 router = routers.DefaultRouter()
-router.register('user', UserViewSet)
-router.register('user_profile', UserProfileViewSet)
-router.register('route', RouteViewSet)
+router.register('users', rest_views.UserViewSet)
+router.register('user_profiles', rest_views.UserProfileViewSet)
+router.register('routes', rest_views.RouteViewSet)
+router.register('zip_codes', rest_views.ZipCodeViewSet, base_name='zip_code')
 
 urlpatterns += [
     path('api/', include(router.urls)),

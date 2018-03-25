@@ -24,18 +24,13 @@
 # settings.AUTH_USER_MODEL
 from django.contrib.auth.models import User
 
+from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, permissions
+from rest_framework.response import Response
 
-from ..serializers import (
-    UserSerializer,
-    UserProfileSerializer,
-    RouteSerializer,
-)
-
-from ..models import (
-    UserProfile,
-    Route,
-)
+from .. import serializers as _serializers
+from .. import models as _models
 
 ####################################################################################################
 
@@ -43,20 +38,62 @@ class UserViewSet(viewsets.ModelViewSet):
 
     permission_classes = (permissions.IsAdminUser,)
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = _serializers.UserSerializer
 
 ####################################################################################################
 
 class UserProfileViewSet(viewsets.ModelViewSet):
 
     permission_classes = (permissions.IsAdminUser,)
-    queryset = UserProfile.objects.all()
-    serializer_class = UserProfileSerializer
+    queryset = _models.UserProfile.objects.all()
+    serializer_class = _serializers.UserProfileSerializer
 
 ####################################################################################################
 
 class RouteViewSet(viewsets.ModelViewSet):
 
     permission_classes = (permissions.IsAdminUser,)
-    queryset = Route.objects.all()
-    serializer_class = RouteSerializer
+    queryset = _models.Route.objects.all()
+    serializer_class = _serializers. RouteSerializer
+
+####################################################################################################
+
+class ZipCodeViewSet(viewsets.ReadOnlyModelViewSet):
+
+    serializer_class = _serializers.ZipCodeSerializer
+
+    __zip_code_database__ = None
+
+    ##############################################
+
+    @classmethod
+    def _load_zip_code_database(cls):
+
+        if cls.__zip_code_database__ is None:
+            from FrenchZipCode import FrenchZipCodeDataBase
+            cls.__zip_code_database__ = FrenchZipCodeDataBase()
+
+    ##############################################
+
+    def filter_queryset(self, queryset):
+        return queryset
+
+    ##############################################
+
+    def get_queryset(self):
+
+        self._load_zip_code_database()
+        return self.__zip_code_database__.zip_codes
+
+    ##############################################
+
+    def retrieve(self, request, pk=None):
+
+        self._load_zip_code_database()
+        try:
+            zip_code = self.__zip_code_database__[pk]
+            serializer = self.get_serializer(zip_code)
+            return Response(serializer.data)
+        except KeyError:
+            # raise Http404('Zip Code not found')
+            return Response()

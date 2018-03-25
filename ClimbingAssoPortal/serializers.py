@@ -19,6 +19,12 @@
 ####################################################################################################
 
 ####################################################################################################
+#
+# Django REST Framework Serializers
+#
+####################################################################################################
+
+####################################################################################################
 
 # from account.conf import settings
 # settings.AUTH_USER_MODEL
@@ -60,3 +66,10 @@ class RouteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Route
         fields = '__all__'
+
+####################################################################################################
+
+class ZipCodeSerializer(serializers.Serializer):
+
+    zip_code = serializers.IntegerField(read_only=True)
+    cities = serializers.ListField(read_only=True)
