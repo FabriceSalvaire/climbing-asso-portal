@@ -125,7 +125,7 @@ class FrenchGrade:
                 value += 1/2
             else: # c
                 value += 3/4
-            if sign == "+":
+            if sign == '+':
                 value += 1/8
         else:
             # Old system: 5 -/inf < 5 < 5 +/sup

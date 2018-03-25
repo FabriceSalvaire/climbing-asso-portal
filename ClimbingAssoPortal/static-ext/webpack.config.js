@@ -5,7 +5,8 @@ module.exports = {
     // mode: 'production',
 
     entry: {
-	route_page: './src/route-page.js',
+	test: './src/test.js',
+	route_page: './src/pages/wall/route-page.js',
     },
 
     output: {
