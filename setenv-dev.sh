@@ -19,4 +19,4 @@ append_to_python_path_if_not $PWD
 export DJANGO_SETTINGS_MODULE='ClimbingAssoPortalSite.settings.dev'
 
 # Colors for logging
-export DJANGO_COLORS='light;warning=red
+export DJANGO_COLORS='light;warning=red'

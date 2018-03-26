@@ -29,15 +29,25 @@ import sys
 
 if __name__ == '__main__':
 
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ClimbingAssoPortalSite.settings')
+    # os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ClimbingAssoPortalSite.settings.XXX')
+
+    try:
+        DJANGO_SETTINGS_MODULE = os.environ['DJANGO_SETTINGS_MODULE']
+        print('DJANGO_SETTINGS_MODULE is {}'.format(DJANGO_SETTINGS_MODULE))
+    except KeyError:
+        message = '''
+You must define the DJANGO_SETTINGS_MODULE environment variable, either
+
+export DJANGO_SETTINGS_MODULE={0}.settings.dev
+
+export DJANGO_SETTINGS_MODULE={0}.settings.prod
+'''
+        print(message.format('ClimbingAssoPortalSite'))
+        sys.exit(1)
 
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exception:
-        raise ImportError(
-            "Couldn't import Django. Are you sure it's installed and "
-            "available on your PYTHONPATH environment variable? Did you "
-            "forget to activate a virtual environment?"
-        ) from exception
+        raise ImportError("Couldn't import Django") from exception
 
     execute_from_command_line(sys.argv)

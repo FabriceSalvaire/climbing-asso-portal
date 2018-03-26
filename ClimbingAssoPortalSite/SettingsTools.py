@@ -19,16 +19,45 @@
 ####################################################################################################
 
 ####################################################################################################
-#
-#                     !!! NEVER COMMIT SECURITY DATA IN PUBLIC REPOSITORY !!!
-#
-####################################################################################################
+
+from pathlib import Path
+import importlib.util
+import os
 
 ####################################################################################################
 
-from .base import *
-# from .prod_secuity_data import * # could store security data here
+PROJECT = Path(__file__).parent.name
 
 ####################################################################################################
 
-print('Load', __name__)
+def add_mode_option(parser):
+
+    parser.add_argument(
+        '--mode',
+        default='prod',
+        help='Mode is dev or prod',
+    )
+
+####################################################################################################
+
+def settings_module(mode):
+
+    return '.'.join((PROJECT, 'settings', mode))
+
+####################################################################################################
+
+def set_DJANGO_SETTINGS_MODULE(mode):
+
+    # set the default Django settings module for the 'celery' program.
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_module(mode))
+
+####################################################################################################
+
+def load_settings(mode):
+
+    settings_path = Path(__file__).parent.joinpath('settings', mode + '.py')
+
+    spec = importlib.util.spec_from_file_location(settings_module(mode), settings_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
