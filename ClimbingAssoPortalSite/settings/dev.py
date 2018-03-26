@@ -100,11 +100,21 @@ AUTH_PASSWORD_VALIDATORS = [ # FOR DEV TEST ONLY !!!
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
+# https://docs.djangoproject.com/en/2.0/ref/databases/
+
+POSTGRESQL_DESCRIPTION = 'Climbing Asso Portal Database'
+POSTGRESQL_LOCAL = 'fr_FR.UTF8'
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': str(BASE_DIR.joinpath('db.sqlite3')),
+    # },
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(BASE_DIR.joinpath('db.sqlite3')),
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'climbing_asso_portal',
+        'USER': 'climbing_asso_portal',
+        'PASSWORD': 'climbing_asso_portal', # FOR DEV TEST ONLY !!!
     }
 }
 

@@ -61,3 +61,10 @@ def load_settings(mode):
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
+####################################################################################################
+
+def setup_django():
+
+    import django
+    django.setup()

@@ -18,16 +18,29 @@
 #
 ####################################################################################################
 
+__all__ = [
+    'celery_ application',
+]
+
 ####################################################################################################
 
 print('Load', __name__)
 
 ####################################################################################################
 
-# This will make sure the app is always imported when Django starts
-# so that shared_task will use this app.
-from .celery import application as celery_application
+try:
+    # This will make sure the app is always imported when Django starts
+    # so that shared_task will use this app.
+    from .celery import application as celery_application
+except ImportError:
+    # Handle
+    #   ImportError: cannot import name 'Celery'
+    from pathlib import Path
+    import sys
+    command = Path(sys.argv[0]).name
+    skip = False
+    if command not in (
+        'create-postgres-database',
+    ):
+        raise
 
-__all__ = [
-    'celery_ application',
-]
