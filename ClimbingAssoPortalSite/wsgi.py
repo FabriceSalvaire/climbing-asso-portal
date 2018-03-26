@@ -31,13 +31,17 @@ For more information on this file, see https://docs.djangoproject.com/en/2.0/how
 ####################################################################################################
 
 import argparse
-import os
+import pathlib
+import sys
 
 from django.core.wsgi import get_wsgi_application
 
+sys.path.insert(0, str(pathlib.Path(__file__).parent))
+from SettingsTools import *
+
 ####################################################################################################
 
-PROJECT = 'ClimbingAssoPortalSite'
+print('Load ClimbingAssoPortalSite.wsgi')
 
 ####################################################################################################
 
@@ -45,19 +49,12 @@ parser = argparse.ArgumentParser(
     description='Start WSGI server for {}'.format(PROJECT),
 )
 
-parser.add_argument(
-    '--mode',
-    default='prod',
-    help='Mode is dev or prod',
-)
+add_mode_option(parser)
 
 args = parser.parse_args()
 
 ####################################################################################################
 
-settings_path = PROJECT + '.settings.' + args.mode
+set_DJANGO_SETTINGS_MODULE(args.mode)
 
-# set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_path)
-
-application = get_wsgi_application()
+#! application = get_wsgi_application()
