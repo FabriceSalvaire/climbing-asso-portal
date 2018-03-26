@@ -40,14 +40,6 @@ from django.conf import settings
 # from django_jinja.builtins import DEFAULT_EXTENSIONS
 
 ####################################################################################################
-#
-# Debug
-#
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-####################################################################################################
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parents[1]
@@ -57,38 +49,6 @@ BASE_DIR = Path(__file__).resolve().parents[1]
 ROOT_URLCONF = 'ClimbingAssoPortalSite.urls'
 
 WSGI_APPLICATION = 'ClimbingAssoPortalSite.wsgi.application'
-
-SITE_ID = 1
-
-ALLOWED_HOSTS = []
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '#v2=-7xr3=5(^63sc4)374j48j-d23bo4gc%z$+a#nji56k%we'
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.0/howto/static-files/
-STATIC_URL = '/static/'
-STATIC_ROOT = str(BASE_DIR.joinpath('static'))
-MEDIA_URL = '/filer_public/'
-# MEDIA_ROOT = str(BASE_DIR.joinpath('filer_public'))
-MEDIA_ROOT = str(BASE_DIR)
-
-####################################################################################################
-#
-# Database
-#
-
-# Database
-# https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(BASE_DIR.joinpath('db.sqlite3')),
-    }
-}
 
 ####################################################################################################
 #
@@ -232,41 +192,9 @@ TEMPLATES = [
 
 ####################################################################################################
 #
-# Password validation
+#                                      Applications Settings
 #
-
-# Password validation
-# https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
-
-# Fixme: Not in production !
-AUTH_PASSWORD_VALIDATORS = [
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    # },
-]
-
 ####################################################################################################
-#
-# Internationalization
-#
-
-# Internationalization
-# https://docs.djangoproject.com/en/2.0/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_L10N = True
-USE_TZ = True
 
 ####################################################################################################
 #
@@ -310,20 +238,11 @@ SWAGGER_SETTINGS = {
 
 ####################################################################################################
 #
-# Email
-#
-
-# Log to console
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-####################################################################################################
-#
 # Account
 #
 
 ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
 ACCOUNT_DELETION_MARK_CALLBACK = None # Fixme:
-THEME_CONTACT_EMAIL = 'admin@foo.org'
 
 ####################################################################################################
 #
@@ -374,42 +293,3 @@ THEME_CONTACT_EMAIL = 'admin@foo.org'
 
 # FILER_UPLOADER_CONNECTIONS = 3
 # Number of simultaneous AJAX uploads. Defaults to 3.
-
-####################################################################################################
-#
-# Celery
-#
-
-CELERY_BROKER_URL='pyamqp://guest@localhost//'
-
-# CELERY_RESULT_BACKEND = 'django-db'
-# CELERY_RESULT_BACKEND = 'django-cache'
-
-####################################################################################################
-#
-# Google API
-#
-
-GOOGLE_API_CREDENTIAL_DIR = BASE_DIR.joinpath('.google-api-credentials')
-GOOGLE_API_APPLICATION_NAME = 'Climbing Asso Portal'
-GOOGLE_API_ROUTE_SPREADSHEET_ID = '1xzzypnm80bUooj8ZPMLhtYEQbZtL89QpIBBNFXn5y90'
-GOOGLE_API_ROUTE_SHEET = 'Liste des voies'
-
-####################################################################################################
-#
-# Cache
-#
-
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-    }
-}
-
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-#         'LOCATION': '127.0.0.1:11211',
-#         'LOCATION': 'unix:/tmp/memcached.sock',
-#     }
-# }
