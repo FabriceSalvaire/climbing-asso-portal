@@ -18,7 +18,7 @@ application.config(/* @ngInject */ $httpProvider => {
 
 application.factory('Route', /* @ngInject */ $resource => {
     // Fixme: angularjs can remove trailing / -> useless redirection
-    return $resource('/api/route/?limit=1000', {}, {
+    return $resource('/api/routes/?limit=1000', {}, {
 	query: {
 	    method: 'GET',
 	    // params: {},
