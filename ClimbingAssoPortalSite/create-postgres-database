@@ -1,0 +1,146 @@
+#! /usr/bin/env python3
+
+####################################################################################################
+
+from pathlib import Path
+import argparse
+import os
+import subprocess
+import sys
+
+script_path = Path(__file__).resolve()
+sys.path.insert(0, str(script_path.parents[1]))
+sys.path.insert(0, str(script_path.parent))
+from SettingsTools import *
+
+####################################################################################################
+
+parser = argparse.ArgumentParser(
+    description='Create PostgreSQL database for {}'.format(PROJECT),
+)
+
+add_mode_option(parser)
+
+parser.add_argument(
+    '--create',
+    action='store_true', default=False,
+    help='Create the database',
+)
+
+parser.add_argument(
+    '--drop',
+    action='store_true', default=False,
+    help='Drop the database',
+)
+
+args = parser.parse_args()
+
+####################################################################################################
+
+# user = os.getlogin()
+user = os.environ['USER']
+if user != 'postgres':
+    message = '''
+You have to login to postgres before to run this script:
+
+  su - # login as root
+  su postgres # switch to postgres
+  {}
+'''
+    print(message.format(Path( __file__).resolve()))
+    sys.exit(1)
+
+####################################################################################################
+
+settings = load_settings(args.mode)
+
+default_database = settings.DATABASES['default']
+
+engine = default_database['ENGINE']
+name = default_database['NAME']
+owner = default_database['USER']
+password = default_database['PASSWORD']
+
+if engine not in (
+        'django.contrib.gis.db.backends.postgis',
+):
+    print('Wrong engine: {}'.format(engine))
+    sys.exit(1)
+
+####################################################################################################
+
+if args.drop:
+    print('\nDrop database {} and role {}'.format(name, owner))
+    # SELECT pg_catalog.set_config('search_path', '', false)
+    # DROP DATABASE climbing_asso_portal;
+    # SELECT pg_catalog.set_config('search_path', '', false)
+    # DROP ROLE climbing_asso_portal;
+    command = (
+        'dropdb',
+        '--echo',
+        name,
+    )
+    subprocess.run(
+        command,
+        stdout=sys.stdout,
+        stderr=sys.stderr,
+        check=True,
+    )
+
+    command = (
+        'dropuser',
+        '--echo',
+        owner,
+    )
+    subprocess.run(
+        command,
+        stdout=sys.stdout,
+        stderr=sys.stderr,
+        check=True,
+    )
+
+####################################################################################################
+
+if args.create:
+
+    print('\nCreate role {} with password {}'.format(owner, password))
+    # SELECT pg_catalog.set_config('search_path', '', false)
+    # CREATE ROLE climbing_asso_portal PASSWORD 'md5...' NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;
+    command = (
+        'createuser',
+        '--echo',
+        '--pwprompt', # prompt for password
+        owner,
+    )
+    subprocess.run(
+        command,
+        # input='{0}\n{0}\n'.format(password).encode('ascii'), # Fixme: don't work ???
+        stdout=sys.stdout,
+        stderr=sys.stderr,
+        check=True,
+    )
+
+    print('\nCreate database {}'.format(name))
+    # SELECT pg_catalog.set_config('search_path', '', false)
+    # CREATE DATABASE climbing_asso_portal OWNER climbing_asso_portal ENCODING 'UTF8';
+    # COMMENT ON DATABASE climbing_asso_portal IS 'Climbing Asso Portal Database';
+    command = (
+        'createdb',
+        '--echo',
+        '--encoding', 'UTF8',
+        # '--locale', settings.POSTGRESQL_LOCAL, # Fixme: template issue
+        '--owner', owner,
+        # '--password', # prompt for password
+        name,
+        settings.POSTGRESQL_DESCRIPTION,
+    )
+    subprocess.check_call(command, stdout=sys.stdout, stderr=sys.stderr)
+
+    print('\nCreate PostGIS extension')
+    subprocess.run(
+        ('psql', name),
+        input='CREATE EXTENSION postgis;'.encode('ascii'), # Fixme: don't work ???
+        stdout=sys.stdout,
+        stderr=sys.stderr,
+        check=True,
+    )

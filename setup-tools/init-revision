@@ -1,1 +1,0 @@
-./manage.py createinitialrevisions ClimbingAssoPortal.UserProfile --comment="Initial revision."

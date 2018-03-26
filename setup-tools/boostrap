@@ -1,0 +1,128 @@
+#! /usr/bin/env python3
+
+####################################################################################################
+#
+# Climbing Asso Portal - A Portal for Climbing Club (Association)
+# Copyright (C) 2018 Fabrice Salvaire
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+####################################################################################################
+
+####################################################################################################
+
+import argparse
+import subprocess
+
+####################################################################################################
+
+ALL_ACTIONS = (
+    'check',
+    'migrate',
+    'collect_static',
+    'create_super_user',
+    'create_initial_revisions',
+)
+
+####################################################################################################
+
+parser = argparse.ArgumentParser(description='Boostrap Climbing Asso Portal.')
+
+parser.add_argument(
+    'actions', metavar='ACTION',
+    nargs='+',
+    help="Run an action, use 'all' or {}".format(ALL_ACTIONS),
+)
+
+parser.add_argument(
+    '--super-user', default='admin',
+    help='Super user name',
+)
+
+parser.add_argument(
+    '--super-user-email', default='admin@climbing-asso-portal.fr',
+    help='Super user email',
+)
+
+args = parser.parse_args()
+
+####################################################################################################
+
+def print_banner(title, width=100):
+    print('\n')
+    rule = '=' * width
+    print(rule)
+    print(title.center(width))
+    print(rule)
+    print()
+
+####################################################################################################
+
+def manage(*args):
+    subprocess.check_call(('manage.py', *args))
+
+####################################################################################################
+
+if args.actions[0] == 'all':
+    actions = ALL_ACTIONS
+else:
+    actions = args.actions
+
+####################################################################################################
+
+if 'check' in actions:
+    print_banner('Check')
+    manage('check')
+
+
+if 'migrate' in actions:
+    print_banner('Migrate database')
+    manage('makemigrations')
+    manage('migrate')
+
+
+if 'collect_static' in actions:
+    print_banner('Collect static')
+    manage(
+        'collectstatic',
+        '--noinput',
+        '--clear',
+        '--link',
+    )
+
+
+if 'create_super_user' in actions:
+    print_banner('Create superuser')
+    manage(
+        'createsuperuser',
+        # '--noinput',
+        '--username', args.super_user,
+        '--email', args.super_user_email,
+    )
+
+
+if 'load_fixtures' in actions:
+    print_banner('Load fixtures')
+    manage(
+        'loaddata',
+    )
+
+
+if 'create_initial_revisions' in actions:
+    print_banner('Create initial revisions')
+    manage(
+        'createinitialrevisions',
+        'ClimbingAssoPortal.UserProfile',
+        '--comment', 'Initial revision.'
+    )
