@@ -30,6 +30,7 @@ For more information on this file, see https://docs.djangoproject.com/en/2.0/how
 
 ####################################################################################################
 
+import argparse
 import os
 
 from django.core.wsgi import get_wsgi_application
@@ -38,6 +39,25 @@ from django.core.wsgi import get_wsgi_application
 
 PROJECT = 'ClimbingAssoPortalSite'
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', PROJECT + '.settings')
+####################################################################################################
+
+parser = argparse.ArgumentParser(
+    description='Start WSGI server for {}'.format(PROJECT),
+)
+
+parser.add_argument(
+    '--mode',
+    default='prod',
+    help='Mode is dev or prod',
+)
+
+args = parser.parse_args()
+
+####################################################################################################
+
+settings_path = PROJECT + '.settings.' + args.mode
+
+# set the default Django settings module for the 'celery' program.
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_path)
 
 application = get_wsgi_application()

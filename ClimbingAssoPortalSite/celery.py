@@ -27,6 +27,7 @@
 
 ####################################################################################################
 
+import argparse
 import os
 
 from celery import Celery
@@ -35,8 +36,26 @@ from celery import Celery
 
 PROJECT = 'ClimbingAssoPortalSite'
 
+####################################################################################################
+
+parser = argparse.ArgumentParser(
+    description='Start Celery for {}'.format(PROJECT),
+)
+
+parser.add_argument(
+    '--mode',
+    default='prod',
+    help='Mode is dev or prod',
+)
+
+args = parser.parse_args()
+
+####################################################################################################
+
+settings_path = PROJECT + '.settings.' + args.mode
+
 # set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', PROJECT + '.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_path)
 
 application = Celery(PROJECT)
 
