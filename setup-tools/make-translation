@@ -21,7 +21,15 @@
 ####################################################################################################
 
 ####################################################################################################
+#
+# See also ./manage.py makemessages
+#   but --exclude is tricky
+#
+####################################################################################################
 
+####################################################################################################
+
+from pathlib import Path
 import argparse
 import os
 import subprocess
@@ -37,10 +45,10 @@ args = parser.parse_args()
 
 ####################################################################################################
 
-source_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-locale_dir = os.path.join(source_path, 'ClimbingAssoPortal', 'locale')
-babel_cfg_path = os.path.join(locale_dir, 'babel.cfg')
-message_pot_path = os.path.join(locale_dir, 'messages.pot')
+source_path = Path(__file__).parents[1].resolve()
+locale_dir = source_path.joinpath('ClimbingAssoPortal', 'locale')
+babel_cfg_path = locale_dir.joinpath('babel.cfg')
+message_pot_path = locale_dir.joinpath('messages.pot')
 
 domain = 'ClimbingAssoPortal'
 
@@ -56,7 +64,7 @@ if args.update:
 
     if args.init:
         for language in ('en', 'fr'):
-            if not os.path.exists(os.path.join(locale_dir, language, 'LC_MESSAGES', 'portal.po')):
+            if not locale_dir.joinpath(language, 'LC_MESSAGES', 'portal.po').exists:
                 # Create a new translations catalog based on a PO template file
                 subprocess.call(('pybabel', 'init',
                                  '-D', domain,           # domain of PO file (default 'messages')
