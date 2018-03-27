@@ -223,14 +223,3 @@ class Member(Model):
 def on_user_save(sender, instance, created, **kwargs):
     if created:
         Member.objects.create(user=instance)
-
-####################################################################################################
-
-SPECIAL_GRADES = ['ENF']
-
-def french_grade_validator(grade):
-    if grade not in SPECIAL_GRADES:
-        try:
-            FrenchGrade(grade)
-        except ValueError:
-            raise ValidationError(_('Invalid French Grade'))
