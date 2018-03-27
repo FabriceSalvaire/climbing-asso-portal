@@ -42,11 +42,11 @@ class UserViewSet(viewsets.ModelViewSet):
 
 ####################################################################################################
 
-class UserProfileViewSet(viewsets.ModelViewSet):
+class MemberViewSet(viewsets.ModelViewSet):
 
     permission_classes = (permissions.IsAdminUser,)
-    queryset = _models.UserProfile.objects.all()
-    serializer_class = _serializers.UserProfileSerializer
+    queryset = _models.Member.objects.all()
+    serializer_class = _serializers.MemberSerializer
 
 ####################################################################################################
 

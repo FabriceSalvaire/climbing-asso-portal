@@ -48,7 +48,7 @@ var license_id = 0;
 var request = $.ajax({
     method: "GET",
     cache: false,
-    url: "/api/user_profile/1/",
+    url: "/api/member/1/",
     dataType: "json"
 });
 
@@ -62,7 +62,7 @@ request.done(function(message) {
 
     $.ajax({
 	method: "PATCH",
-	url: "/api/user_profile/1/",
+	url: "/api/member/1/",
 	data: {
 	    "license_id": license_id
 	}
@@ -73,7 +73,7 @@ request.done(function(message) {
     $.ajax({
 	method: "GET",
 	cache: false,
-	url: "/api/user_profile/1/",
+	url: "/api/member/1/",
 	dataType: "json"
     }).done(function(message) {
 	console.log("xhr result:", message);

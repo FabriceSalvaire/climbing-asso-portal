@@ -18,6 +18,10 @@
 #
 ####################################################################################################
 
+__all__ = [
+    'Member',
+]
+
 ####################################################################################################
 
 # from django.contrib.auth.models import User
@@ -43,7 +47,7 @@ from account.conf import settings
 
 from ClimbingGrade import FrenchGrade
 
-from .constants import *
+from ..constants import *
 
 ####################################################################################################
 
@@ -56,7 +60,7 @@ def validate_year(value):
 
 ####################################################################################################
 
-class UserProfile(Model):
+class Member(Model):
 
     """This class defines a user profile."""
 
@@ -163,14 +167,14 @@ class UserProfile(Model):
 
     medical_certificate_scan = FilerImageField(
         verbose_name=_('medical certificate scan'),
-        related_name="medical_certificate_scan_user_profile",
+        related_name="medical_certificate_scan_member",
         null=True,
         blank=True,
     )
 
     medical_certificate_pdf = FilerFileField(
         verbose_name=_('medical certificate PDF'),
-        related_name="medical_certificate_pdf_user_profile",
+        related_name="medical_certificate_pdf_member",
         null=True,
         blank=True,
     )
@@ -218,7 +222,7 @@ class UserProfile(Model):
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def on_user_save(sender, instance, created, **kwargs):
     if created:
-        UserProfile.objects.create(user=instance)
+        Member.objects.create(user=instance)
 
 ####################################################################################################
 
@@ -230,59 +234,3 @@ def french_grade_validator(grade):
             FrenchGrade(grade)
         except ValueError:
             raise ValidationError(_('Invalid French Grade'))
-
-####################################################################################################
-
-class Route(Model):
-
-    line_number = PositiveIntegerField(
-        verbose_name=_('line number'),
-        null=False,
-        blank=False,
-    )
-
-    grade = CharField(
-        verbose_name=_('grade'),
-        max_length=3,
-        null=False,
-        blank=False,
-        validators=[french_grade_validator],
-    )
-
-    colour = PositiveIntegerField(
-        verbose_name=_('colour'),
-        choices=COLOUR_CHOICES,
-        null=False,
-        blank=False,
-    )
-
-    name = TextField(
-        verbose_name=_('name'),
-        null=True,
-        blank=True,
-    )
-
-    comment = TextField(
-        verbose_name=_('comment'),
-        null=True,
-        blank=True,
-    )
-
-    opener = TextField(
-        verbose_name=_('opener'),
-        null=True,
-        blank=True,
-    )
-
-    opening_date = DateField(
-        verbose_name=_('opening date'),
-        null=False,
-        blank=False,
-    )
-
-    ##############################################
-
-    def __str__(self):
-
-        template = 'Route {0.line_number} {0.grade} {0.name} {0.opening_date}'
-        return template.format(self)

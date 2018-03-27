@@ -4,28 +4,28 @@
 
 {% block title %} -
     {% if update %}
-	{{ _('Update') }} {{ user_profile.last_first_name }}
+	{{ _('Update') }} {{ member.last_first_name }}
     {% else %}
 	{{ _('New user profile') }}
     {% endif %}
 {% endblock %}
 
 {% block breadcrumb_li %}
-    <li class="breadcrumb-item"><a href="{{ url('user_profile.index') }}">{{ _('User Profiles') }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ url('member.index') }}">{{ _('User Profiles') }}</a></li>
     {% if update %}
-	<li class="breadcrumb-item"><a href="{{ url('user_profile.details', user_profile.pk) }}">{{ user_profile.last_first_name }}</a></li>
+	<li class="breadcrumb-item"><a href="{{ url('member.details', member.pk) }}">{{ member.last_first_name }}</a></li>
 	<li class="breadcrumb-item active">{{ _('Update') }}</li>
     {% else %}
-	<li class="breadcrumb-item active">{{ _('New user_profile') }}</li>
+	<li class="breadcrumb-item active">{{ _('New member') }}</li>
     {% endif %}
 {% endblock %}
 
 {% block content %}
     <h2>
 	{% if update %}
-	    {{ _('Update:') }} {{ user_profile.last_first_name }}
+	    {{ _('Update:') }} {{ member.last_first_name }}
 	{% else %}
-	    {{ _('New user_profile') }}
+	    {{ _('New member') }}
 	{% endif %}
     </h2>
 

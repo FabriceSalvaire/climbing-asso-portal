@@ -38,15 +38,15 @@ from account.decorators import login_required
 import reversion
 from reversion.views import RevisionMixin
 
-from ..forms import UserProfileForm
-from ..models import UserProfile
+from ..forms import MemberForm
+from ..models import Member
 
 ####################################################################################################
 
-class UserProfileFormView(RevisionMixin, FormView):
+class MemberFormView(RevisionMixin, FormView):
 
-    template_name = 'user_profile_edit.html'
-    form_class = UserProfileForm
+    template_name = 'member_edit.html'
+    form_class = MemberForm
     success_url = '/.../'
 
     ##############################################
@@ -58,7 +58,7 @@ class UserProfileFormView(RevisionMixin, FormView):
 
 ####################################################################################################
 
-class UserProfileSearchForm(Form):
+class MemberSearchForm(Form):
 
     name = CharField(label=_('Name'), required=False, initial='')
 
@@ -70,18 +70,18 @@ class UserProfileSearchForm(Form):
 
 ####################################################################################################
 
-class UserProfileListView(FormMixin, ListView):
+class MemberListView(FormMixin, ListView):
 
-    template_name = 'user_profile/index.html'
+    template_name = 'member/index.html'
 
     # ListView
-    model = UserProfile
-    queryset = UserProfile.objects.all().order_by('user__last_name')
-    context_object_name = 'user_profiles' # else object_list
+    model = Member
+    queryset = Member.objects.all().order_by('user__last_name')
+    context_object_name = 'members' # else object_list
     paginate_by = None
 
     # FormMixin
-    form_class = UserProfileSearchForm
+    form_class = MemberSearchForm
 
     ##############################################
 
@@ -117,11 +117,11 @@ class UserProfileListView(FormMixin, ListView):
 ####################################################################################################
 
 @login_required
-def details(request, user_profile_id):
+def details(request, member_id):
 
-    user_profile = get_object_or_404(UserProfile, pk=user_profile_id)
+    member = get_object_or_404(Member, pk=member_id)
 
-    return render(request, 'user_profile/details.html', {'user_profile': user_profile})
+    return render(request, 'member/details.html', {'member': member})
 
 ####################################################################################################
 
@@ -129,44 +129,44 @@ def details(request, user_profile_id):
 def create(request):
 
     if request.method == 'POST':
-        form = UserProfileForm(request.POST)
+        form = MemberForm(request.POST)
         if form.is_valid():
-            user_profile = form.save(commit=False)
-            user_profile.save()
-            messages.success(request, _("UserProfile créé avec succès."))
-            return HttpResponseRedirect(reverse('user_profile.details', args=[user_profile.pk]))
+            member = form.save(commit=False)
+            member.save()
+            messages.success(request, _("Member créé avec succès."))
+            return HttpResponseRedirect(reverse('member.details', args=[member.pk]))
         else:
             messages.error(request, _("Des informations sont manquantes ou incorrectes"))
     else:
-        form = UserProfileForm()
+        form = MemberForm()
 
-    return render(request, 'user_profile/create.html', {'form': form})
+    return render(request, 'member/create.html', {'form': form})
 
 ####################################################################################################
 
 @login_required
 @reversion.views.create_revision(manage_manually=False, using=None, atomic=True)
-def update(request, user_profile_id):
+def update(request, member_id):
 
-    user_profile = get_object_or_404(UserProfile, pk=user_profile_id)
+    member = get_object_or_404(Member, pk=member_id)
 
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=user_profile)
+        form = MemberForm(request.POST, instance=member)
         if form.is_valid():
-            user_profile = form.save()
-            return HttpResponseRedirect(reverse('user_profile.details', args=[user_profile.pk]))
+            member = form.save()
+            return HttpResponseRedirect(reverse('member.details', args=[member.pk]))
     else:
-        form = UserProfileForm(instance=user_profile)
+        form = MemberForm(instance=member)
 
-    return render(request, 'user_profile/create.html', {'form': form, 'update': True, 'user_profile': user_profile})
+    return render(request, 'member/create.html', {'form': form, 'update': True, 'member': member})
 
 ####################################################################################################
 
 @login_required
-def delete(request, user_profile_id):
+def delete(request, member_id):
 
-    user_profile = get_object_or_404(UserProfile, pk=user_profile_id)
-    messages.success(request, _("UserProfile «{0.name}» supprimé").format(user_profile))
-    user_profile.delete()
+    member = get_object_or_404(Member, pk=member_id)
+    messages.success(request, _("Member «{0.name}» supprimé").format(member))
+    member.delete()
 
-    return HttpResponseRedirect(reverse('user_profile.index'))
+    return HttpResponseRedirect(reverse('member.index'))

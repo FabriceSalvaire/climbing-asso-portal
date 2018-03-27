@@ -64,7 +64,7 @@ from .views import rest_views
 
 router = routers.DefaultRouter()
 router.register('users', rest_views.UserViewSet)
-router.register('user_profiles', rest_views.UserProfileViewSet)
+router.register('members', rest_views.MemberViewSet)
 router.register('routes', rest_views.RouteViewSet)
 router.register('zip_codes', rest_views.ZipCodeViewSet, base_name='zip_code')
 
@@ -115,31 +115,31 @@ urlpatterns += [
 # User Profile
 #
 
-from .views import user_profile as user_profile_views
+from .views import member as member_views
 
 urlpatterns += [
-    path(r'user_profile/',
-         login_required(user_profile_views.UserProfileListView.as_view()),
-         name='user_profile.index'),
+    path(r'member/',
+         login_required(member_views.MemberListView.as_view()),
+         name='member.index'),
 
-    path(r'user_profile/<int:user_profile_id>/',
-         user_profile_views.details,
-         name='user_profile.details',
+    path(r'member/<int:member_id>/',
+         member_views.details,
+         name='member.details',
     ),
 
-    path(r'user_profile/create/',
-         user_profile_views.create,
-         name='user_profile.create',
+    path(r'member/create/',
+         member_views.create,
+         name='member.create',
     ),
 
-    path(r'user_profile/<int:user_profile_id>/update/',
-         user_profile_views.update,
-         name='user_profile.update',
+    path(r'member/<int:member_id>/update/',
+         member_views.update,
+         name='member.update',
     ),
 
-    path(r'user_profile/<int:user_profile_id>/delete/',
-         user_profile_views.delete,
-         name='user_profile.delete',
+    path(r'member/<int:member_id>/delete/',
+         member_views.delete,
+         name='member.delete',
     ),
 ]
 
