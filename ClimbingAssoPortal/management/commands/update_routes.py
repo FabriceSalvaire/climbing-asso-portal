@@ -1,5 +1,3 @@
-#! /usr/bin/env python3
-
 ####################################################################################################
 #
 # Climbing Asso Portal - A Portal for Climbing Club (Association)
@@ -20,37 +18,38 @@
 #
 ####################################################################################################
 
-####################################################################################################
-
-from ClimbingAssoPortalSite.SettingsTools import setup_django
-setup_django()
-
-from ClimbingAssoPortal.models import Route
-from ClimbingGrade import FrenchGrade
-from ClimbingGrade.Statistics import FrenchGradeHistogram
-from ClimbingGrade.StatisticsPlot import FrenchGradeHistogramPlot
+# cf. https://docs.djangoproject.com/en/2.0/howto/custom-management-commands/
 
 ####################################################################################################
 
-histogram = FrenchGradeHistogram()
+from django.core.management.base import BaseCommand, CommandError
 
-for route in Route.objects.all():
-    # print(route)
-    grade = route.grade
-    if grade:
-        if grade == 'ENF':
-            grade = '4a'
-        grade = FrenchGrade(grade)
-        histogram.increment(grade)
+from ClimbingAssoPortal.GoogleApi import RouteSpreadsheet
 
-# print(histogram.domain)
-# for grade in histogram:
-#     print(repr(grade))
+####################################################################################################
 
-histogram_plot = FrenchGradeHistogramPlot(
-    histogram,
-    title='Route Grade',
-    cumulative_title='',
-    inverse_cumulative_title='',
-)
-print(histogram_plot.histogram)
+# from oauth2client import tools
+
+# cf. http://oauth2client.readthedocs.io/en/latest/source/oauth2client.tools.html#oauth2client.tools.run_flow
+# argument_parser = argparse.ArgumentParser(parents=[tools.argparser])
+# flags = argument_parser.parse_args()
+
+####################################################################################################
+
+class Command(BaseCommand):
+
+    help = 'Update routes from Google Sheet'
+
+    ##############################################
+
+    def handle(self, *args, **options):
+
+        route_spreadsheet = RouteSpreadsheet()
+        route_spreadsheet.update(commit=True)
+
+        # try:
+        #     pass
+        # except Exception:
+        #     raise CommandError()
+
+        self.stdout.write(self.style.SUCCESS('Success'))
