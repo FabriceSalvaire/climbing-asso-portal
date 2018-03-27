@@ -10,18 +10,18 @@
 
 {% block content %}
     <h2>{{ _('User Profiles') }}
-	{{ new_button_group(title=_('New user profile'), href=url('user_profile.create')) }}
+	{{ new_button_group(title=_('New user profile'), href=url('member.create')) }}
     </h2>
 
     {{ search_by_name(form) }}
     <br>
 
-    {% if user_profiles %}
-	{% for group in user_profiles|groupby('first_letter') %}
+    {% if members %}
+	{% for group in members|groupby('first_letter') %}
 	    <h2>{{ group.grouper|upper }}</h2>
 	    <ul class="list-unstyled">
-		{% for user_profile in group.list %}
-		    <li><a href="{{ url('user_profile.details', user_profile.pk) }}">{{ user_profile.last_first_name }}</a></li>
+		{% for member in group.list %}
+		    <li><a href="{{ url('member.details', member.pk) }}">{{ member.last_first_name }}</a></li>
 		{% endfor %}
 	    </ul>
 	{% endfor %}

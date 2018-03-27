@@ -35,7 +35,7 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
 
 from .models import (
-    UserProfile,
+    Member,
     Route,
 )
 
@@ -50,10 +50,10 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 ####################################################################################################
 
-class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
+class MemberSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        model = UserProfile
+        model = Member
         # fields = '__all__'
         exclude = (
             # 'user',

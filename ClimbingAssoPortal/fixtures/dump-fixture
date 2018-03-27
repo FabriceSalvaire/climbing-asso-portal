@@ -65,7 +65,7 @@ from filer.models import (
 )
 
 from ClimbingAssoPortal.models import (
-    UserProfile,
+    Member,
 )
 
 ####################################################################################################
@@ -100,7 +100,7 @@ model_list = (
     FolderPermission,
     ThumbnailOption,
 
-    UserProfile,
+    Member,
 )
 
 json_content = '['

@@ -27,15 +27,15 @@ from django.utils.translation import ugettext_lazy as _
 # from filer.fields.image import FilerImageField
 
 from .models import (
-    UserProfile,
+    Member,
     Route,
 )
 
 ####################################################################################################
 
-class UserProfileForm(ModelForm):
+class MemberForm(ModelForm):
     class Meta:
-        model = UserProfile
+        model = Member
         fields = '__all__'
         # fields = [
         #     'registration_year',
@@ -58,7 +58,7 @@ class UserProfileForm(ModelForm):
 
 ####################################################################################################
 
-# class UserProfileForm(forms.Form):
+# class MemberForm(forms.Form):
 
     # email = forms.EmailField(
     #     label=_("Email"),
