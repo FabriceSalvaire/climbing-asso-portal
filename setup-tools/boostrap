@@ -32,6 +32,7 @@ ALL_ACTIONS = (
     'migrate',
     'collect_static',
     'create_super_user',
+    'load_data',
     'create_initial_revisions',
 )
 
@@ -114,10 +115,11 @@ if 'create_super_user' in actions:
 
 if 'load_fixtures' in actions:
     print_banner('Load fixtures')
-    manage(
-        'loaddata',
-    )
-
+    # manage(
+    #     'loaddata',
+    # )
+    manage('update_routes')
+    # manage('import_members')
 
 if 'create_initial_revisions' in actions:
     print_banner('Create initial revisions')
