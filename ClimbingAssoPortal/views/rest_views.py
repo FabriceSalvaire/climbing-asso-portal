@@ -61,68 +61,10 @@ class RouteViewSet(viewsets.ModelViewSet):
 
 class FrenchCityViewSet(viewsets.ReadOnlyModelViewSet):
 
-    # http://localhost:8000/api/french_cities/?zip_code=95870
-
     permission_classes = (permissions.IsAdminUser,)
     queryset = _models.FrenchCity.objects.all()
     serializer_class = _serializers.FrenchCitySerializer
 
-    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
-    filter_fields = ('zip_code', 'name')
-
-####################################################################################################
-
-class FrenchCityListView_1(generics.ListAPIView):
-
-    # http://localhost:8000/api2/french_cities/95870/
-
-    permission_classes = (permissions.IsAdminUser,)
-    serializer_class = _serializers.FrenchCitySerializer
-
-    ##############################################
-
-    def get_queryset(self):
-
-        queryset = _models.FrenchCity.objects.all()
-        zip_code = self.kwargs['zip_code']
-        print('zip_code', zip_code)
-        if zip_code is not None:
-            queryset = queryset.filter(zip_code=zip_code)
-
-        return queryset
-
-####################################################################################################
-
-class FrenchCityListView_2(generics.ListAPIView):
-
-    # http://localhost:8000/api2/french_cities2/?zip_code=95870
-
-    permission_classes = (permissions.IsAdminUser,)
-    serializer_class = _serializers.FrenchCitySerializer
-
-    ##############################################
-
-    def get_queryset(self):
-
-        print('kwargs', self.kwargs)
-        queryset = _models.FrenchCity.objects.all()
-        zip_code = self.request.query_params.get('zip_code', None)
-        print('zip_code', zip_code)
-        if zip_code is not None:
-            queryset = queryset.filter(zip_code=zip_code)
-
-        return queryset
-
-####################################################################################################
-
-class FrenchCityListView_3(generics.ListAPIView):
-
-    # http://localhost:8000/api2/french_cities3/?zip_code=95870
-    # http://localhost:8000/api2/french_cities3/?name=BEZONS
-
-    permission_classes = (permissions.IsAdminUser,)
-    queryset = _models.FrenchCity.objects.all()
-    serializer_class = _serializers.FrenchCitySerializer
-
+    # to filter using http://localhost:8000/api/french_cities/?zip_code=95870
     filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
     filter_fields = ('zip_code', 'name')

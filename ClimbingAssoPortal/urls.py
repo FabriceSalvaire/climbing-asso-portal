@@ -70,10 +70,6 @@ router.register('french_cities', rest_views.FrenchCityViewSet)
 urlpatterns += [
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-
-    path('api2/french_cities1/<str:zip_code>/', rest_views.FrenchCityListView_1.as_view()),
-    path('api2/french_cities2/', rest_views.FrenchCityListView_2.as_view()),
-    path('api2/french_cities3/', rest_views.FrenchCityListView_3.as_view()),
 ]
 
 ####################################################################################################
