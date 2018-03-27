@@ -3,8 +3,8 @@
 	"model": "sites.site",
 	"pk": 1,
 	"fields": {
-	    "domain": "localhost",
-	    "name": "localhost"
+	    "domain": "climbing-asso-portal.org",
+	    "name": "Climbing Asso Portal"
 	}
     }
 ]
