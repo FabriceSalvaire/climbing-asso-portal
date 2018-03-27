@@ -1,0 +1,10 @@
+/* Override DJR CSS */
+
+body {
+  background: none;
+  background-attachment: fixed;
+}
+
+.navbar {
+    border-top: none;
+}
