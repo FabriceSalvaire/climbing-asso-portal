@@ -26,8 +26,9 @@ from django.contrib.auth.models import User
 
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, generics, mixins
 from rest_framework.response import Response
+import django_filters.rest_framework
 
 from .. import serializers as _serializers
 from .. import models as _models
@@ -54,49 +55,74 @@ class RouteViewSet(viewsets.ModelViewSet):
 
     permission_classes = (permissions.IsAdminUser,)
     queryset = _models.Route.objects.all()
-    serializer_class = _serializers. RouteSerializer
+    serializer_class = _serializers.RouteSerializer
 
 ####################################################################################################
 
-class ZipCodeViewSet(viewsets.ReadOnlyModelViewSet):
+class FrenchCityViewSet(viewsets.ReadOnlyModelViewSet):
 
-    serializer_class = _serializers.ZipCodeSerializer
+    # http://localhost:8000/api/french_cities/?zip_code=95870
 
-    __zip_code_database__ = None
+    permission_classes = (permissions.IsAdminUser,)
+    queryset = _models.FrenchCity.objects.all()
+    serializer_class = _serializers.FrenchCitySerializer
 
-    ##############################################
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
+    filter_fields = ('zip_code', 'name')
 
-    @classmethod
-    def _load_zip_code_database(cls):
+####################################################################################################
 
-        if cls.__zip_code_database__ is None:
-            from FrenchZipCode import FrenchZipCodeDataBase
-            cls.__zip_code_database__ = FrenchZipCodeDataBase()
+class FrenchCityListView_1(generics.ListAPIView):
 
-    ##############################################
+    # http://localhost:8000/api2/french_cities/95870/
 
-    def filter_queryset(self, queryset):
-        return queryset
+    permission_classes = (permissions.IsAdminUser,)
+    serializer_class = _serializers.FrenchCitySerializer
 
     ##############################################
 
     def get_queryset(self):
 
-        self._load_zip_code_database()
-        return self.__zip_code_database__.zip_codes
+        queryset = _models.FrenchCity.objects.all()
+        zip_code = self.kwargs['zip_code']
+        print('zip_code', zip_code)
+        if zip_code is not None:
+            queryset = queryset.filter(zip_code=zip_code)
+
+        return queryset
+
+####################################################################################################
+
+class FrenchCityListView_2(generics.ListAPIView):
+
+    # http://localhost:8000/api2/french_cities2/?zip_code=95870
+
+    permission_classes = (permissions.IsAdminUser,)
+    serializer_class = _serializers.FrenchCitySerializer
 
     ##############################################
 
-    def retrieve(self, request, pk=None):
+    def get_queryset(self):
 
-        # Fixme: pk, swagger show 'id'
-        #    look get_object API
+        print('kwargs', self.kwargs)
+        queryset = _models.FrenchCity.objects.all()
+        zip_code = self.request.query_params.get('zip_code', None)
+        print('zip_code', zip_code)
+        if zip_code is not None:
+            queryset = queryset.filter(zip_code=zip_code)
 
-        self._load_zip_code_database()
-        try:
-            zip_code = self.__zip_code_database__[pk]
-            serializer = self.get_serializer(zip_code)
-            return Response(serializer.data)
-        except KeyError:
-            # raise Http404('Zip Code not found')
-            return Response()
+        return queryset
+
+####################################################################################################
+
+class FrenchCityListView_3(generics.ListAPIView):
+
+    # http://localhost:8000/api2/french_cities3/?zip_code=95870
+    # http://localhost:8000/api2/french_cities3/?name=BEZONS
+
+    permission_classes = (permissions.IsAdminUser,)
+    queryset = _models.FrenchCity.objects.all()
+    serializer_class = _serializers.FrenchCitySerializer
+
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
+    filter_fields = ('zip_code', 'name')

@@ -1,4 +1,3 @@
-
 # -*- mode: Python -*-
 
 ####################################################################################################
@@ -66,11 +65,15 @@ router = routers.DefaultRouter()
 router.register('users', rest_views.UserViewSet)
 router.register('members', rest_views.MemberViewSet)
 router.register('routes', rest_views.RouteViewSet)
-router.register('zip_codes', rest_views.ZipCodeViewSet, base_name='zip_code')
+router.register('french_cities', rest_views.FrenchCityViewSet)
 
 urlpatterns += [
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    path('api2/french_cities1/<str:zip_code>/', rest_views.FrenchCityListView_1.as_view()),
+    path('api2/french_cities2/', rest_views.FrenchCityListView_2.as_view()),
+    path('api2/french_cities3/', rest_views.FrenchCityListView_3.as_view()),
 ]
 
 ####################################################################################################

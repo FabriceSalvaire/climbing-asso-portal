@@ -71,8 +71,13 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     'rest_framework', # http://www.django-rest-framework.org
+    'django_filters', # https://django-filter.readthedocs.io/en/latest
+    'rest_framework_gis', # https://github.com/djangonauts/django-rest-framework-gis
     'rest_framework_swagger', # https://django-rest-swagger.readthedocs.io/en/latest
     'drf_yasg', # https://github.com/axnsan12/drf-yasg
+
+    # used by DRF filter
+    'crispy_forms', # http://django-crispy-forms.readthedocs.io/en/latest/
 
     'reversion', # https://django-reversion.readthedocs.io/en/stable
 
@@ -226,6 +231,12 @@ SUIT_CONFIG = {
 #
 
 REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+
     # http://www.django-rest-framework.org/api-guide/permissions/
     'DEFAULT_PERMISSION_CLASSES': (
         # DjangoModelPermissionsOrAnonReadOnly
@@ -234,7 +245,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAdminUser',
     ),
 
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 100,
 }
 
