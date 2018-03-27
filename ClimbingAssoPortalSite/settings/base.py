@@ -74,7 +74,7 @@ INSTALLED_APPS = [
     'django_filters', # https://django-filter.readthedocs.io/en/latest
     'rest_framework_gis', # https://github.com/djangonauts/django-rest-framework-gis
     'rest_framework_swagger', # https://django-rest-swagger.readthedocs.io/en/latest
-    'drf_yasg', # https://github.com/axnsan12/drf-yasg
+    'drf_yasg', # https://drf-yasg.readthedocs.io/en/stable/
 
     # used by DRF filter
     'crispy_forms', # http://django-crispy-forms.readthedocs.io/en/latest/
