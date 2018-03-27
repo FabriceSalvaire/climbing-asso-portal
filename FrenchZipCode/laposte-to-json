@@ -57,16 +57,33 @@ args = parser.parse_args()
 
 ####################################################################################################
 
+# City names are not unique
+#
+#   AIGREMONT 30350
+#   AIGREMONT 52400
+#   AIGREMONT 78240
+
+# Some cities have ligne_5 or several zip codes
+#
+# 01247 | MIJOUX | 01170 | MIJOUX |  | 46.3286268081, 6.03059799732
+# 01247 | MIJOUX | 01410 | MIJOUX |  | 46.2796643227, 5.91198359476
+
+####################################################################################################
+
 zip_code_database = FrenchZipCodeDataBase()
 
 with open(args.csv_file) as fh:
     for line in fh.readlines()[1:]:
         columns = line.strip().split(';')
         insee_code, name, zip_code, libelle_acheminement, ligne_5, coordinate = columns
-        if name != libelle_acheminement:
-            print(' | '.join((insee_code, name, zip_code, libelle_acheminement, ligne_5, coordinate)))
-        zip_codes = [int(zip_code)]
-        zip_code_database.make_city(libelle_acheminement, coordinate, zip_codes)
+        zip_codes = int(zip_code)
+        if coordinate and isinstance(coordinate, str):
+            coordinate = [float(x) for x in coordinate.split(',')]
+        else:
+            coordinate = None
+        # if name != libelle_acheminement:
+        # print(' | '.join((insee_code, name, zip_code, libelle_acheminement, ligne_5, coordinate)))
+        zip_code_database.make_city(insee_code, name, zip_code, libelle_acheminement, ligne_5)
 
 with open(args.update_csv_file) as fh:
     #  0 Prise en compte
@@ -90,7 +107,7 @@ with open(args.update_csv_file) as fh:
         libelle_acheminement = columns[9]
         # print('Update', zip_code, libelle_acheminement)
         zip_codes = [int(zip_code)]
-        zip_code_database.make_city(libelle_acheminement, None, zip_codes)
+        # zip_code_database.make_city(libelle_acheminement, None, zip_codes)
 
 with open(args.json_file, 'w') as fh:
    json_data = zip_code_database.to_json()
