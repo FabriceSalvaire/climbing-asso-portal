@@ -22,6 +22,7 @@
 
 # import argparse
 from datetime import datetime
+import logging
 
 # from oauth2client import tools
 
@@ -34,6 +35,10 @@ from ..models import Route
 
 ####################################################################################################
 
+_module_logger = logging.getLogger(__name__)
+
+####################################################################################################
+
 # cf. http://oauth2client.readthedocs.io/en/latest/source/oauth2client.tools.html#oauth2client.tools.run_flow
 # argument_parser = argparse.ArgumentParser(parents=[tools.argparser])
 # flags = argument_parser.parse_args()
@@ -42,9 +47,13 @@ from ..models import Route
 
 class GoogleApiAbc:
 
+    _logger = _module_logger.getChild('GoogleApiAbc')
+
     ##############################################
 
-    def __init__(self):
+    def __init__(self, command=None):
+
+        self._command = command
 
         credential_dir = settings.GOOGLE_API_CREDENTIAL_DIR
         credential_dir.mkdir(exist_ok=True)
@@ -55,6 +64,7 @@ class GoogleApiAbc:
 
         flags = None
 
+        self.log('Get Google API credentials')
         self._credentials = get_credentials(
             settings.GOOGLE_API_APPLICATION_NAME,
             scopes,
@@ -68,6 +78,15 @@ class GoogleApiAbc:
     @property
     def credentials(self):
         return self._credentials
+
+    ##############################################
+
+    def log(self, message, level='info'):
+
+        if self._command is not None:
+            self._command.stdout.write(message)
+        else:
+            self._logger.log(level, message)
 
 ####################################################################################################
 
@@ -92,13 +111,16 @@ class RouteSpreadsheet(GoogleApiAbc):
     )
     COLOUR_MAP = {colour:i for i, colour in enumerate(COLOURS)}
 
+    _logger = _module_logger.getChild('RouteSpreadsheet')
+
     ##############################################
 
-    def __init__(self):
+    def __init__(self, command=None):
 
-        super().__init__()
+        super().__init__(command)
 
         spreadsheet_id = settings.GOOGLE_API_ROUTE_SPREADSHEET_ID
+        self.log('Request spreadsheet {}'.format(spreadsheet_id))
         self._spreadsheet = Spreadsheet(self.credentials, spreadsheet_id)
 
     ##############################################
@@ -106,9 +128,11 @@ class RouteSpreadsheet(GoogleApiAbc):
     def update(self, commit=True):
 
         if commit:
+            self.log('Delete routes')
             Route.objects.all().delete()
 
         rows = self._spreadsheet.get_cells(settings.GOOGLE_API_ROUTE_SHEET)
+        routes = []
         # colours = set()
         for row in rows:
             if len(row) == 7:
@@ -124,12 +148,17 @@ class RouteSpreadsheet(GoogleApiAbc):
                     opener=opener,
                     opening_date=datetime.strptime(date, '%d/%m/%Y'),
                 )
-                print(route)
-                if commit:
-                    route.save()
+                routes.append(route)
+                # print(route)
+                # if commit:
+                #    route.save()
                 # colours.add(colour)
             else:
-                print('SKIPPED:', row)
+                self.log('SKIPPED: {}'.format(row))
+        self.log('Retrieved {} routes'.format(len(routes)))
+        if commit:
+            Route.objects.bulk_create(routes)
+
         # print(colours)
 
 ####################################################################################################

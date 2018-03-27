@@ -44,7 +44,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        route_spreadsheet = RouteSpreadsheet()
+        route_spreadsheet = RouteSpreadsheet(command=self)
         route_spreadsheet.update(commit=True)
 
         # try:
