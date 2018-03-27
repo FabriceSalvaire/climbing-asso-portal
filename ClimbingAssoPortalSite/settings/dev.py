@@ -20,6 +20,8 @@
 
 ####################################################################################################
 
+import os
+
 from django.conf import settings
 
 from .base import *
@@ -36,6 +38,42 @@ print('Load', __name__)
 # SECURITY WARNING: don't run with debug turned on in production !
 
 DEBUG = True # FOR DEV TEST ONLY !!!
+
+####################################################################################################
+#
+# Logging
+#
+
+### LOGGING = {
+###     'version': 1,
+###     'disable_existing_loggers': False,
+###     'handlers': {
+###         'console': {
+###             'class': 'logging.StreamHandler',
+###         },
+###     },
+###     'loggers': {
+###         'django': {
+###             'handlers': ['console'],
+###             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+###         },
+###     },
+### 
+###     # 'handlers': {
+###     #     'file': {
+###     #         'level': 'DEBUG',
+###     #         'class': 'logging.FileHandler',
+###     #         'filename': '.../debug.log',
+###     #     },
+###     # },
+###     # 'loggers': {
+###     #     'django': {
+###     #         'handlers': ['file'],
+###     #         'level': 'DEBUG',
+###     #         'propagate': True,
+###     #     },
+###     # },
+### }
 
 ####################################################################################################
 #
