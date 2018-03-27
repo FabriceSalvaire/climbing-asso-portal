@@ -42,3 +42,12 @@ setup-tools/make-translation-sh
 ClimbingAssoPortal/static-ext/webpack-demo/
 ClimbingAssoPortal/static/js-ext/angular-resource.min.js.map
 ClimbingAssoPortal/static/js-ext/angular.min.js.map
+
+ClimbingAssoPortal/serializers-removed.py
+ClimbingAssoPortal/static-ext/node_modules
+ClimbingAssoPortal/static-ext/src/test.js
+ClimbingAssoPortal/views/rest_views-disabled.py
+data/
+node_modules/
+tools/trash.py
+trash.py
