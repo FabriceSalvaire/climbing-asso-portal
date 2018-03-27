@@ -25,6 +25,8 @@
 import argparse
 import json
 
+from FrenchZipCode import FrenchZipCodeDataBase
+
 ####################################################################################################
 
 parser = argparse.ArgumentParser(description='La Poste CSV to JSON')
@@ -42,38 +44,29 @@ parser.add_argument(
 )
 parser.add_argument(
     '--indent',
-    action='store_true', default=False,
+    action='store_true',
     help='indent JSON file',
 )
 parser.add_argument(
-    '--gps',
-    action='store_true', default=False,
-    help='add gps coordinate to JSON file',
+    '--coordinate',
+    action='store_true',
+    help='add coordinate to JSON file',
 )
 
 args = parser.parse_args()
 
 ####################################################################################################
 
-zip_codes = {}
-
-def add_zip_code(zip_code, name, coordinate=None):
-    if zip_code not in zip_codes:
-        zip_codes[zip_code] = []
-    if args.gps:
-        names = [city['name'] for city in zip_codes[zip_code]]
-        if name not in names:
-            zip_codes[zip_code].append({'name':name, 'gps':coordinate})
-    else:
-        if name not in zip_codes[zip_code]:
-            zip_codes[zip_code].append(name)
+zip_code_database = FrenchZipCodeDataBase()
 
 with open(args.csv_file) as fh:
     for line in fh.readlines()[1:]:
         columns = line.strip().split(';')
         insee_code, name, zip_code, libelle_acheminement, ligne_5, coordinate = columns
-        # print(insee_code, name, zip_code, libelle_acheminement, ligne_5, coordinate)
-        add_zip_code(zip_code, libelle_acheminement, coordinate or None)
+        if name != libelle_acheminement:
+            print(' | '.join((insee_code, name, zip_code, libelle_acheminement, ligne_5, coordinate)))
+        zip_codes = [int(zip_code)]
+        zip_code_database.make_city(libelle_acheminement, coordinate, zip_codes)
 
 with open(args.update_csv_file) as fh:
     #  0 Prise en compte
@@ -95,14 +88,11 @@ with open(args.update_csv_file) as fh:
         columns = line.strip().split(';')
         zip_code = columns[8]
         libelle_acheminement = columns[9]
-        print('Update', zip_code, libelle_acheminement)
-        add_zip_code(zip_code, libelle_acheminement)
-
-# sort name
-if not args.gps:
-    for names in zip_codes.values():
-        names.sort()
+        # print('Update', zip_code, libelle_acheminement)
+        zip_codes = [int(zip_code)]
+        zip_code_database.make_city(libelle_acheminement, None, zip_codes)
 
 with open(args.json_file, 'w') as fh:
-    indent = 4 if args.indent else None
-    json.dump(zip_codes, fh, sort_keys=True, indent=indent)
+   json_data = zip_code_database.to_json()
+   indent = 4 if args.indent else None
+   json.dump(json_data, fh, indent=indent)

@@ -19,6 +19,7 @@
 ####################################################################################################
 
 __all__ = [
+    'City',
     'FrenchZipCode',
     'FrenchZipCodeDataBase',
 ]
@@ -29,6 +30,83 @@ import json
 from pathlib import Path
 
 from ClimbingAssoPortalTools.Singleton import SingletonMetaClass
+
+####################################################################################################
+
+class City:
+
+    # Fixme: use slots
+
+    ##############################################
+
+    def __init__(self, name, coordinate=None, zip_codes=[]):
+
+        self._name = name
+        self._latitude = coordinate[0] if coordinate else None
+        self._longitude = coordinate[1] if coordinate else None
+        self._zip_codes = set(zip_codes)
+
+    ##############################################
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def latitude(self):
+        return self._latitude
+
+    @property
+    def longitude(self):
+        return self._longitude
+
+    @property
+    def coordinate(self):
+        return (self._latitude, self._longitude)
+
+    @property
+    def zip_code(self):
+        if len(self._zip_codes) == 1:
+            return list(self._zip_codes)[0]
+        else:
+            return None
+
+    @property
+    def zip_codes(self):
+        return sorted(self._zip_codes)
+
+    ##############################################
+
+    def __str__(self):
+        return self._name
+
+    ##############################################
+
+    def add_zip_code(self, zip_codes):
+
+        for zip_code in zip_codes:
+            self._zip_codes.add(zip_code)
+
+    ##############################################
+
+    def to_json(self):
+
+        return dict(
+            name=self._name,
+            coord=(self._longitude, self._latitude),
+            zip_codes=list(self._zip_codes),
+        )
+
+    ##############################################
+
+    @classmethod
+    def from_json(cls, json_data):
+
+        return cls(
+            json_data['name'],
+            json_data['coord'],
+            json_data['zip_codes'],
+        )
 
 ####################################################################################################
 
@@ -47,10 +125,6 @@ class FrenchZipCode:
     def zip_code(self):
         return self._zip_code
 
-    @property
-    def cities(self):
-        return self._cities # Fixme: iter, list ?
-
     ##############################################
 
     def __int__(self):
@@ -58,10 +132,16 @@ class FrenchZipCode:
 
     ##############################################
 
+    @property
+    def cities(self):
+        return self._cities # Fixme: iter, list ?
+
+    ##############################################
+
     def __str__(self):
 
         if len(self._cities) == 1:
-            return self._cities[0]
+            return str(self._cities[0])
         else:
             return None
 
@@ -80,6 +160,16 @@ class FrenchZipCode:
     def __getitem__(self,_slice):
         return self._cities[_slice]
 
+    ##############################################
+
+    def __contains__(self, city):
+        return city in self._cities
+
+    ##############################################
+
+    def add_city(self, city):
+        self._cities.append(city)
+
 ####################################################################################################
 
 class FrenchZipCodeDataBase(metaclass=SingletonMetaClass):
@@ -90,35 +180,69 @@ class FrenchZipCodeDataBase(metaclass=SingletonMetaClass):
 
     def __init__(self):
 
-        self._zip_code_map = None # lazy loading
+        # lazy loading
+        self._cities = {}
+        self._zip_codes = {}
 
     ##############################################
 
     def _load(self):
 
-        if self._zip_code_map is None:
+        if not self._cities:
             with open(self.__json_path__) as fh:
-                data = json.load(fh)
-
-            zip_codes = [FrenchZipCode(*args) for args in data.items()]
-            self._zip_codes = zip_codes
-
-            self._zip_code_map = {int(zip_code):zip_code for zip_code in zip_codes}
-
-            self._city_map = {}
-            for zip_code in zip_codes:
-                for city in zip_code:
-                    if city not in self._city_map:
-                        self._city_map[city] = [zip_code]
-                    else:
-                        self._city_map[city].append(zip_code)
+                json_data = json.load(fh)
+            for city_json_data in json_data:
+                city = City.from_json(city_json_data)
+                self.add_city(city)
 
     ##############################################
 
-    @property
-    def zip_codes(self):
-        self._load()
-        return self._zip_codes
+    def _register_zip_codes(self, city, zip_codes):
+
+        for zip_code in zip_codes:
+            if zip_code in self._zip_codes:
+                french_zip_code = self._zip_codes[zip_code]
+                if city not in french_zip_code:
+                    self._zip_codes[zip_code].add_city(city)
+                # else:
+                #     raise NameError("Zip code {} has already city {} / {}".format(
+                #         zip_code,
+                #         city,
+                #         [str(x) for x in french_zip_code.cities],
+                #     ))
+            else:
+                self._zip_codes[zip_code] = FrenchZipCode(zip_code, (city,))
+
+    ##############################################
+
+    def make_city(self, name, coordinate, zip_codes):
+
+        city = None
+        if name not in self._cities:
+            if coordinate and isinstance(coordinate, str):
+                coordinate = [float(x) for x in coordinate.split(',')]
+            else:
+                coordinate = None
+            city = City(name, coordinate, zip_codes)
+            self._cities[name] = city
+        else:
+            city = self._cities[name]
+            city.add_zip_code(zip_codes)
+
+        self._register_zip_codes(city, zip_codes)
+
+    ##############################################
+
+    def add_city(self, city):
+
+        if city.name not in self._cities:
+            self._cities[city.name] = city
+        else:
+            raise NameError("City {} is already registered".format(city))
+
+        self._register_zip_codes(city, city.zip_codes)
+
+    ##############################################
 
     @property
     def _lazy_zip_codes(self):
@@ -126,14 +250,9 @@ class FrenchZipCodeDataBase(metaclass=SingletonMetaClass):
         return self._zip_codes
 
     @property
-    def _lazy_zip_code_map(self):
+    def _lazy_cities(self):
         self._load()
-        return self._zip_code_map
-
-    @property
-    def _lazy_city_map(self):
-        self._load()
-        return self._city_map
+        return self._cities
 
     ##############################################
 
@@ -147,17 +266,20 @@ class FrenchZipCodeDataBase(metaclass=SingletonMetaClass):
 
     ##############################################
 
-    def __getitem__(self, zip_code):
-        return self._lazy_zip_code_map[int(zip_code)]
+    def zip_code(self, zip_code):
+        return self._lazy_zip_codes[int(zip_code)]
 
     ##############################################
 
-    def zip_code_for(self, city):
+    def city(self, city):
 
         city = str(city).upper()
-        zip_codes = [int(zip_code) for zip_code in self._lazy_city_map[city]]
-        zip_codes.sort()
-        return list(zip_codes)
+        return self._cities[city]
+
+    ##############################################
+
+    def to_json(self):
+        return [city.to_json() for city in self._cities.values()]
 
     ##############################################
 
@@ -166,7 +288,7 @@ class FrenchZipCodeDataBase(metaclass=SingletonMetaClass):
         # Fixme: speedup using prefix cache
         # Fixme: sort
         prefix = prefix.upper()
-        for city in self._lazy_city_map.keys():
+        for city in self._lazy_cities.keys():
             if city.startswith(prefix):
                 yield city
 
