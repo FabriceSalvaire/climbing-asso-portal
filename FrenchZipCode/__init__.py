@@ -39,9 +39,11 @@ class City:
 
     ##############################################
 
-    def __init__(self, name, coordinate=None, zip_codes=[]):
+    def __init__(self, insee_code, name, label, coordinate=None, zip_codes=[]):
 
+        self._insee_code = insee_code
         self._name = name
+        self._label = label
         self._latitude = coordinate[0] if coordinate else None
         self._longitude = coordinate[1] if coordinate else None
         self._zip_codes = set(zip_codes)
@@ -49,8 +51,16 @@ class City:
     ##############################################
 
     @property
+    def insee_code(self):
+        return self._insee_code
+
+    @property
     def name(self):
         return self._name
+
+    @property
+    def label(self):
+        return self._label
 
     @property
     def latitude(self):
@@ -215,21 +225,17 @@ class FrenchZipCodeDataBase(metaclass=SingletonMetaClass):
 
     ##############################################
 
-    def make_city(self, name, coordinate, zip_codes):
+    def make_city(self, insee_code, name, zip_code, label, coordinate):
 
-        city = None
         if name not in self._cities:
-            if coordinate and isinstance(coordinate, str):
-                coordinate = [float(x) for x in coordinate.split(',')]
-            else:
-                coordinate = None
-            city = City(name, coordinate, zip_codes)
-            self._cities[name] = city
+            city = City(insee_code, name, label, coordinate, [zip_code])
+            self._cities[insee_code] = city
         else:
-            city = self._cities[name]
-            city.add_zip_code(zip_codes)
+            print(name, zip_code)
+            # city = self._cities[name]
+            # city.add_zip_code(zip_codes)
 
-        self._register_zip_codes(city, zip_codes)
+        # self._register_zip_codes(city, zip_codes)
 
     ##############################################
 
