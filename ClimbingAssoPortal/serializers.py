@@ -34,10 +34,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
 
-from .models import (
-    Member,
-    Route,
-)
+from . import models
 
 ####################################################################################################
 
@@ -53,7 +50,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class MemberSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        model = Member
+        model = models.Member
         # fields = '__all__'
         exclude = (
             # 'user',
@@ -68,21 +65,13 @@ class RouteSerializer(serializers.HyperlinkedModelSerializer):
     # Fixme: swagger don't show descriptions for colour
 
     class Meta:
-        model = Route
+        model = models.Route
         fields = '__all__'
 
 ####################################################################################################
 
-class ZipCodeSerializer(serializers.Serializer):
+class FrenchCitySerializer(serializers.HyperlinkedModelSerializer):
 
-    zip_code = serializers.IntegerField(
-        read_only=True,
-        label=_('zip code'),
-        help_text=_('ZIP code'),
-    )
-
-    cities = serializers.ListField(
-        read_only=True,
-        label=_('cities'),
-        help_text=_('String list of cities'),
-    )
+    class Meta:
+        model = models.FrenchCity
+        fields = '__all__'

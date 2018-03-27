@@ -20,3 +20,4 @@
 
 from .member import *
 from .route import *
+from .city import *
