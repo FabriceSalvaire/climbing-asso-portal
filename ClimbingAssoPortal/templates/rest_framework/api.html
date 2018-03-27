@@ -1,0 +1,23 @@
+{# -*- mode: web; engine: django; -*- #}
+{# http://www.django-rest-framework.org/topics/browsable-api/ #}
+
+{% extends "rest_framework/base.html" %}
+{% load staticfiles %}
+
+{% block title %}Climbing Asso Portal – REST API{% endblock %}
+
+{% block branding %}
+<a class='navbar-brand' rel="nofollow" href="{% url 'home' %}">
+  Climbing Asso Portal – REST API
+</a>
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/bootstrap.min.css" %}"/>
+<link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/bootstrap-tweaks.css" %}"/>
+
+<link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/prettify.css" %}"/>
+<link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/default.css" %}"/>
+<link rel="stylesheet" type="text/css" href="{% static "css/rest_framework.css" %}"/>
+{% endblock %}
+
