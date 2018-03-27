@@ -22,7 +22,9 @@
 
 ####################################################################################################
 
+from pathlib import Path
 import argparse
+import glob
 import subprocess
 
 ####################################################################################################
@@ -35,6 +37,8 @@ ALL_ACTIONS = (
     'load_data',
     'create_initial_revisions',
 )
+
+BASE_DIR = Path(__file__).parents[1].resolve()
 
 ####################################################################################################
 
@@ -113,12 +117,16 @@ if 'create_super_user' in actions:
     )
 
 
-if 'load_fixtures' in actions:
-    print_banner('Load fixtures')
-    # manage(
-    #     'loaddata',
-    # )
+if 'load_data' in actions:
+    print_banner('Load Data')
+    pattern = str(BASE_DIR.joinpath('ClimbingAssoPortal', 'fixtures', '*.json'))
+    fixtures = glob.glob(pattern)
+    fixtures.sort()
+    for fixture in fixtures:
+        print('load', fixture)
+    manage('loaddata', *fixtures)
     manage('update_routes')
+    manage('update_french_cities')
     # manage('import_members')
 
 if 'create_initial_revisions' in actions:
