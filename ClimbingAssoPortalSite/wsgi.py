@@ -45,16 +45,18 @@ print('Load ClimbingAssoPortalSite.wsgi')
 
 ####################################################################################################
 
-parser = argparse.ArgumentParser(
-    description='Start WSGI server for {}'.format(PROJECT),
-)
+if __name__ == '__main__':
 
-add_mode_option(parser)
+    parser = argparse.ArgumentParser(
+        description='Start WSGI server for {}'.format(PROJECT),
+    )
 
-args = parser.parse_args()
+    add_mode_option(parser)
+
+    args = parser.parse_args()
+
+    set_DJANGO_SETTINGS_MODULE(args.mode)
 
 ####################################################################################################
 
-set_DJANGO_SETTINGS_MODULE(args.mode)
-
-#! application = get_wsgi_application()
+application = get_wsgi_application()
