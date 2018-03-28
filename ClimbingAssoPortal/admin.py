@@ -26,10 +26,7 @@ from reversion.admin import VersionAdmin
 
 ####################################################################################################
 
-from .models import (
-    Member,
-    Route,
-)
+from . import models
 
 ####################################################################################################
 
@@ -41,14 +38,20 @@ from .models import (
 
 ####################################################################################################
 
-@admin.register(Member)
+@admin.register(models.FrenchCity)
+class FrenchCityAdmin(admin.ModelAdmin):
+    search_fields = ('zip_code', 'name')
+    list_filter = ('name', 'zip_code')
+    list_display = ('name', 'zip_code')
+
+@admin.register(models.Member)
 # class MemberAdmin(admin.ModelAdmin):
 class MemberAdmin(VersionAdmin):
     search_fields = ('user__last_name', 'license_id')
     list_filter = ('user__last_name', 'user__first_name')
     list_display = ('last_name', 'first_name')
 
-@admin.register(Route)
+@admin.register(models.Route)
 class RouteAdmin(admin.ModelAdmin):
 # class RouteAdmin(VersionAdmin):
     # search_fields = ()
