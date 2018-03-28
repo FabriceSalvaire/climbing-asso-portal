@@ -25,6 +25,8 @@
 from pathlib import Path
 import argparse
 import glob
+import json
+import os
 import subprocess
 
 ####################################################################################################
@@ -32,13 +34,17 @@ import subprocess
 ALL_ACTIONS = (
     'check',
     'migrate',
+    'drop_migrations', # Danger !
     'collect_static',
     'create_super_user',
     'load_data',
     'create_initial_revisions',
+
+    'dump_data',
 )
 
-BASE_DIR = Path(__file__).parents[1].resolve()
+BASE_DIR = Path(__file__).parent.resolve()
+APPLICATION = 'ClimbingAssoPortal'
 
 ####################################################################################################
 
@@ -79,6 +85,14 @@ def manage(*args):
 
 ####################################################################################################
 
+def yes_no(message, default='y'):
+    response = input(message + ' : y/n [{}]'.format(default)).lower().strip()
+    if not response:
+        response = default
+    return response == 'y'
+
+####################################################################################################
+
 if args.actions[0] == 'all':
     actions = ALL_ACTIONS
 else:
@@ -89,6 +103,17 @@ else:
 if 'check' in actions:
     print_banner('Check')
     manage('check')
+
+
+# Dangerous action !
+if 'drop_migrations' in actions:
+    print_banner('Drop migrations')
+    pattern = str(BASE_DIR.joinpath(APPLICATION, 'migrations', '0*.py'))
+    migrations = glob.glob(pattern)
+    migrations.sort()
+    for path in migrations:
+        if yes_no('Drop {} ?'.format(path), default='n'):
+            os.unlink(path)
 
 
 if 'migrate' in actions:
@@ -108,7 +133,7 @@ if 'collect_static' in actions:
 
 
 if 'create_super_user' in actions:
-    print_banner('Create superuser')
+    print_banner('Create superuser / admin')
     manage(
         'createsuperuser',
         # '--noinput',
@@ -119,20 +144,42 @@ if 'create_super_user' in actions:
 
 if 'load_data' in actions:
     print_banner('Load Data')
-    pattern = str(BASE_DIR.joinpath('ClimbingAssoPortal', 'fixtures', '*.json'))
+    # pattern = str(BASE_DIR.joinpath(APPLICATION, 'fixtures', '*.json'))
+    pattern = str(BASE_DIR.joinpath('fixtures', '*.json'))
     fixtures = glob.glob(pattern)
     fixtures.sort()
     for fixture in fixtures:
-        print('load', fixture)
-    manage('loaddata', *fixtures)
-    manage('update_routes')
-    manage('update_french_cities')
+        # print('load', fixture)
+        if yes_no('Load {} ?'.format(fixture), default='y'):
+            manage('loaddata', fixture)
+    # manage('loaddata', *fixtures)
+    if yes_no('Update french cities ?', default='y'):
+        # manage('update_french_cities')
+        json_path = BASE_DIR.joinpath('data', 'base_des_communes', 'laposte_hexasmal.json')
+        manage('update_french_cities', '--laposte-hexasmal-json', json_path)
+    if yes_no('Update routes ?', default='y'):
+        manage('update_routes')
     # manage('import_members')
 
 if 'create_initial_revisions' in actions:
     print_banner('Create initial revisions')
     manage(
         'createinitialrevisions',
-        'ClimbingAssoPortal.UserProfile',
+        APPLICATION + '.UserProfile',
         '--comment', 'Initial revision.'
     )
+
+####################################################################################################
+
+if 'dump_data' in actions:
+    print_banner('Dump Data')
+
+    model_name = 'auth.Group'
+    fixture_name = '002_Group'
+    output_path = BASE_DIR.joinpath('fixtures', fixture_name + '.json')
+    print('Dump {} to {}'.format(model_name, output_path))
+    manage('dumpdata', model_name, '-o', output_path)
+    with open(output_path) as fh:
+        json_data = json.load(fh)
+    with open(output_path, 'w') as fh:
+        json.dump(json_data, fh, indent=4, sort_keys=True)
