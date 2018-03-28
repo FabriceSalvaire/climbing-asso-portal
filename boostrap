@@ -34,6 +34,9 @@ import subprocess
 BASE_DIR = Path(__file__).parent.resolve()
 APPLICATION = 'ClimbingAssoPortal'
 
+SUPERUSER = 'admin'
+SUPERUSER_EMAIL = 'admin@climbing-asso-portal.fr'
+
 ####################################################################################################
 
 def print_banner(title, width=100):
@@ -104,9 +107,12 @@ def create_superuser(args=None):
 
     print_banner('Create superuser / admin')
 
+    # Fixme: how ot pass for all
     if args is None:
-        superuser = create_superuser_parser.get_default('superuser')
-        superuser_email = create_superuser_parser.get_default('superuser_email')
+        # superuser = create_superuser_parser.get_default('superuser')
+        # superuser_email = create_superuser_parser.get_default('superuser_email')
+        superuser = SUPERUSER
+        superuser_email = SUPERUSER_EMAIL
     else:
         superuser = args.superuser
         superuser_email = args.superuser_email
@@ -157,15 +163,15 @@ def dump_data(args=None):
 
     print_banner('Dump Data')
 
-    model_name = 'auth.Group'
-    fixture_name = '002_Group'
-    output_path = BASE_DIR.joinpath('fixtures', fixture_name + '.json')
-    print('Dump {} to {}'.format(model_name, output_path))
-    manage('dumpdata', model_name, '-o', output_path)
-    with open(output_path) as fh:
-        json_data = json.load(fh)
-    with open(output_path, 'w') as fh:
-        json.dump(json_data, fh, indent=4, sort_keys=True)
+    output_path = BASE_DIR.joinpath('fixtures', args.fixture + '.json')
+    print('Dump {} to {}'.format(args.model, output_path))
+    manage('dumpdata', args.model, '-o', output_path)
+
+    if args.indent:
+        with open(output_path) as fh:
+            json_data = json.load(fh)
+        with open(output_path, 'w') as fh:
+            json.dump(json_data, fh, indent=4, sort_keys=True)
 
 ####################################################################################################
 
@@ -236,12 +242,12 @@ create_superuser_parser = subparsers.add_parser(
 )
 
 create_superuser_parser.add_argument(
-    '--superuser', default='admin',
+    '--superuser', default=SUPERUSER,
     help='Super user name',
 )
 
 create_superuser_parser.add_argument(
-    '--superuser-email', default='admin@climbing-asso-portal.fr',
+    '--superuser-email', default=SUPERUSER_EMAIL,
     help='Super user email',
 )
 
@@ -279,6 +285,22 @@ drop_migrations_parser.set_defaults(func=drop_migrations)
 dump_data_parser = subparsers.add_parser(
     'dump_data',
     help='Dump data',
+)
+
+dump_data_parser.add_argument(
+    '--indent',
+    action='store_true',
+    help='Indent JSON',
+)
+
+dump_data_parser.add_argument(
+    'model', metavar='MODEL',
+    help='model python path',
+)
+
+dump_data_parser.add_argument(
+    'fixture', metavar='FIXTURE',
+    help='fixture base name',
 )
 
 dump_data_parser.set_defaults(func=dump_data)
