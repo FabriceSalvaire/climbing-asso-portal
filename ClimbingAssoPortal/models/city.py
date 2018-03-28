@@ -79,8 +79,11 @@ __all__ = [
 
 ####################################################################################################
 
+import hashlib
+
 from django.contrib.gis.db.models import (
     Model,
+    BigIntegerField,
     CharField,
     # DateField,
     # IntegerField,
@@ -108,7 +111,15 @@ class FrenchCity(Model):
 
     """
 
+    # id = models.AutoField(primary_key=True)
+    # id = CharField(
+    #     primary_key=True,
+    #     max_length=8,
+    # )
+    id = BigIntegerField(primary_key=True)
+
     insee_code = CharField(
+        # Not unique
         max_length=5,
         verbose_name=_('Code INSEE'),
     )
@@ -123,7 +134,7 @@ class FrenchCity(Model):
         verbose_name=_('ZIP Code'),
     )
 
-    libelle_acheminement = CharField(
+    libelle = CharField(
         max_length=128, # Fixme: measure
         verbose_name=_('libéllé acheminement'),
     )
@@ -140,6 +151,30 @@ class FrenchCity(Model):
         null=True,
         verbose_name=_('GPS coordinate'),
     )
+
+    ##############################################
+
+    @staticmethod
+    def pk_for_city(**kwargs):
+
+        # Set the pk as a deterministic and unique 64-bit integer
+        pk = kwargs['insee_code'] + kwargs['zip_code'] + kwargs['libelle'] + (kwargs['ligne_5'] or '')
+        pk = pk.encode('utf-8')
+        pk = hashlib.sha1(pk).hexdigest()
+        pk = int(pk[:8], base=16) # 40k entriesw
+
+        return pk
+
+    ##############################################
+
+    @classmethod
+    def create_city(cls, **kwargs):
+
+        pk = cls.pk_for_city(**kwargs)
+
+        cls = cls(id=pk, **kwargs)
+        # cls.save()
+        return cls
 
 ####################################################################################################
 
