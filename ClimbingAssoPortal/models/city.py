@@ -176,6 +176,15 @@ class FrenchCity(Model):
         # cls.save()
         return cls
 
+    ##############################################
+
+    def __str__(self):
+
+        name =  '{0.zip_code} {0.libelle}'.format(self)
+        if self.ligne_5:
+            name += self.ligne_5
+        return name
+
 ####################################################################################################
 
 # class NewFrenchCity(Model):

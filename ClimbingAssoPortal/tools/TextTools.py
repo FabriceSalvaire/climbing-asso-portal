@@ -16,57 +16,14 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-####################################################################################################
-
-__all__= [
-    'FEMALE', 'MALE',
-    'SEX_CHOICES',
-    'MIDI_GROUP', 'SOIR_GROUP',
-    'GROUP_CHOICES',
-    'COLOUR_CHOICES',
-]
+####################################################################################
 
 ####################################################################################################
 
-from django.utils.translation import ugettext_lazy as _
+import unicodedata
 
 ####################################################################################################
 
-MALE = 'm'
-FEMALE = 'f'
-SEX_CHOICES = (
-    (MALE, _('male')),
-    (FEMALE, _('female')),
-)
-
-####################################################################################################
-
-MIDI_GROUP = 'm'
-SOIR_GROUP = 's'
-GROUP_CHOICES = (
-    (MIDI_GROUP, _('midi')),
-    (SOIR_GROUP, _('soir')),
-)
-
-####################################################################################################
-
-COLOURS = (
-    # Keep order to don't break db
-    _('black'),
-    _('white'),
-    #
-    _('blue'),
-    _('green'),
-    _('red'),
-    # cyan
-    _('violet'), # magenta fuchsia
-    _('yellow'),
-    #
-    _('orange'),
-    _('pink'),
-    _('salmon'),
-    #
-    _('red & white'),
-)
-
-COLOUR_CHOICES = [(i, colour) for i, colour in enumerate(COLOURS)]
+def strip_accents(string):
+    return ''.join(c for c in unicodedata.normalize('NFD', string)
+                   if unicodedata.category(c) != 'Mn')

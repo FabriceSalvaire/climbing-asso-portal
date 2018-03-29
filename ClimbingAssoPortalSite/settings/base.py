@@ -257,6 +257,8 @@ SWAGGER_SETTINGS = {
 # Account
 #
 
+# http://django-user-accounts.readthedocs.io/en/latest/usage.html#using-email-address-for-authentication
+# ACCOUNT_EMAIL_UNIQUE = True
 ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
 ACCOUNT_DELETION_MARK_CALLBACK = None # Fixme:
 

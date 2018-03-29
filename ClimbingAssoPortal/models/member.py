@@ -19,16 +19,18 @@
 ####################################################################################################
 
 __all__ = [
+    'Club',
     'Member',
+    'ClubMember',
 ]
 
 ####################################################################################################
 
 # from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.db.models import Model, OneToOneField, CASCADE
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+from django.db.models import Model, ForeignKey, OneToOneField
+# from django.db.models.signals import post_save
+# from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 import django.db.models as models
 
@@ -45,9 +47,9 @@ from django.db.models.fields import (
 
 from account.conf import settings
 
-from ClimbingGrade import FrenchGrade
-
 from ..constants import *
+
+from .city import FrenchCity
 
 ####################################################################################################
 
@@ -60,16 +62,193 @@ def validate_year(value):
 
 ####################################################################################################
 
-class Member(Model):
+class AddressMixin(Model):
 
-    """This class defines a user profile."""
+    """Adresse Mixin"""
+
+    class Meta:
+        abstract = True
+
+    address = TextField(
+        verbose_name=_('address'),
+        blank=True,
+        null=True,
+    )
+
+    city = ForeignKey(
+        FrenchCity,
+        verbose_name=_('city'),
+        on_delete=models.DO_NOTHING,
+        null=True,
+    )
+
+####################################################################################################
+
+class Club(AddressMixin):
+
+    """Model for club"""
+
+    name = CharField(
+        max_length=128,
+        verbose_name='name',
+    )
+
+    ##############################################
+
+    def __str__(self):
+        return self.name
+
+####################################################################################################
+
+class Member(AddressMixin):
+
+    """Model for member"""
 
     # Fixme: implement history ?
 
     user = OneToOneField(
         settings.AUTH_USER_MODEL,
-        related_name='profile',
+        related_name='member',
         verbose_name=_('user'),
+        null=True,
+        on_delete=models.SET_NULL, # Will lose name ...
+    )
+
+    # Fixme: How to enforce first and last name ???
+
+    # In auth/models.py
+    # first_name = models.CharField(_('first name'), max_length=30, blank=True)
+    # last_name = models.CharField(_('last name'), max_length=150, blank=True)
+
+    license_club = ForeignKey(
+        Club,
+        verbose_name=_("club's license"),
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+
+    license_id = PositiveIntegerField(
+        verbose_name=_('license id'),
+    )
+
+    birth_date = DateField(
+        verbose_name=_('birth date'),
+    )
+
+    sex = CharField(
+        verbose_name=_('sex'),
+        max_length=1,
+        choices=SEX_CHOICES,
+        default=MALE, # should be most frequent
+    )
+
+    phone_home = CharField(
+        verbose_name=_('phone home'),
+        max_length=16,
+        null=True,
+        blank=True,
+    )
+
+    phone_work = CharField(
+        verbose_name=_('phone work'),
+        max_length=16,
+        null=True,
+        blank=True,
+    )
+
+    phone_mobile = CharField(
+        verbose_name=_('phone mobile'),
+        max_length=16,
+        null=True,
+        blank=True,
+    )
+
+    avatar = FilerImageField(
+        verbose_name=_('avatar'),
+        related_name='member_avatar',
+        null=True,
+        blank=True,
+    )
+
+    # Fixme: date ???
+    medical_certificate_year = PositiveIntegerField(
+        verbose_name=_('medical certificate year'),
+        validators=[validate_year],
+    )
+
+    medical_certificate_scan = FilerImageField(
+        verbose_name=_('medical certificate scan'),
+        related_name='member_medical_certificate_scan',
+        null=True,
+        blank=True,
+    )
+
+    medical_certificate_pdf = FilerFileField(
+        verbose_name=_('medical certificate PDF'),
+        related_name='member_medical_certificate_pdf',
+        null=True,
+        blank=True,
+    )
+
+    ##############################################
+
+    @property
+    def last_name(self):
+
+        if self.user is not None:
+            return self.user.last_name
+        else:
+            return None
+
+    @property
+    def first_name(self):
+
+        if self.user is not None:
+            return self.user.first_name
+        else:
+            return None
+
+    # auth define get_full_name() as first last name
+
+    @property
+    def last_first_name(self):
+
+        if self.user is not None:
+            return self.user.last_name.title() + ' ' + self.user.first_name.title()
+        else:
+            return None
+
+    @property
+    def first_letter(self):
+
+        if self.user is not None:
+            last_name = self.user.last_name
+            if last_name:
+                return last_name[0]
+        return ''
+
+    ##############################################
+
+    def __str__(self):
+        return "{0.user}".format(self)
+
+####################################################################################################
+
+# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
+# def on_user_save(sender, instance, created, **kwargs):
+#     if created:
+#         Member.objects.create(user=instance)
+
+####################################################################################################
+
+class ClubMember(Model):
+
+    """Model for club's member data"""
+
+    member = OneToOneField(
+        Member,
+        related_name='cub_member',
+        verbose_name=_('member'),
         on_delete=models.CASCADE,
     )
 
@@ -88,95 +267,9 @@ class Member(Model):
         default=SOIR_GROUP,
     )
 
-    # n° licence fsgt
-    license_id = PositiveIntegerField(
-        verbose_name=_('license id'),
-        null=True,
-        blank=True,
-    )
-
-    # club de la licence
-    license_club = TextField(
-        verbose_name=_("license's club"),
-        choices=LICENSE_CLUB_CHOICES,
-        default=ROC14,
-    )
-
-    # date de naissance
-    birth_date = DateField(
-        verbose_name=_('birth date'),
-        null=True,
-        blank=True,
-    )
-
-    sex = CharField(
-        verbose_name=_('sex'),
-        max_length=1,
-        choices=SEX_CHOICES,
-        default=MALE, # should be most frequent
-    )
-
-    adresse = TextField(
-        verbose_name=_('adresse'),
-        null=True,
-        blank=True,
-    )
-
-    # FR-75000
-    zip_code = PositiveIntegerField(
-        verbose_name=_('zip code'),
-        null=True,
-        blank=True,
-    )
-
-    city = TextField(
-        verbose_name=_('city'),
-        null=True,
-        blank=True,
-    )
-
-    phone_home = TextField(
-        verbose_name=_('phone home'),
-        null=True,
-        blank=True,
-    )
-
-    phone_work = TextField(
-        verbose_name=_('phone work'),
-        null=True,
-        blank=True,
-    )
-
-    phone_mobile = TextField(
-        verbose_name=_('phone mobile'),
-        null=True,
-        blank=True,
-    )
-
-    medical_certificate_year = PositiveIntegerField(
-        verbose_name=_('medical certificate year'),
-        null=True,
-        blank=True,
-        validators=[validate_year],
-    )
-
     social_discount = BooleanField(
         verbose_name=_('social discount'),
         default=False,
-    )
-
-    medical_certificate_scan = FilerImageField(
-        verbose_name=_('medical certificate scan'),
-        related_name="medical_certificate_scan_member",
-        null=True,
-        blank=True,
-    )
-
-    medical_certificate_pdf = FilerFileField(
-        verbose_name=_('medical certificate PDF'),
-        related_name="medical_certificate_pdf_member",
-        null=True,
-        blank=True,
     )
 
     # id membre
@@ -192,34 +285,31 @@ class Member(Model):
 
     ##############################################
 
-    @property
-    def last_name(self):
-        return self.user.last_name
-
-    @property
-    def first_name(self):
-        return self.user.first_name
-
-    @property
-    def last_first_name(self):
-        return self.user.last_name.title() + ' ' + self.user.first_name.title()
-
-    @property
-    def first_letter(self):
-        last_name = self.user.last_name
-        if last_name:
-            return last_name[0]
-        else:
-            return ''
+    def __str__(self):
+        return str(self.member)
 
     ##############################################
 
-    def __str__(self):
-        return "{0.user}".format(self)
+    @property
+    def license_id(self):
 
-####################################################################################################
+        if self.member is not None:
+            return self.member.license_id
+        else:
+            return None
 
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def on_user_save(sender, instance, created, **kwargs):
-    if created:
-        Member.objects.create(user=instance)
+    @property
+    def last_name(self):
+
+        if self.member is not None:
+            return self.member.last_name
+        else:
+            return None
+
+    @property
+    def first_name(self):
+
+        if self.member is not None:
+            return self.member.first_name
+        else:
+            return None
