@@ -39,7 +39,8 @@ from ClimbingAssoPortal.models.city import FrenchCity
 from ClimbingAssoPortal.models.member import Club, Member, ClubMember
 from ClimbingAssoPortal.tools.TextTools import strip_accents
 
-from .MemberFixes import DOMAIN_FIXES, CLUB_FIXES
+# Else listed as command ...
+from ClimbingAssoPortal.models.MemberFixes import DOMAIN_FIXES, CLUB_FIXES
 
 ####################################################################################################
 
