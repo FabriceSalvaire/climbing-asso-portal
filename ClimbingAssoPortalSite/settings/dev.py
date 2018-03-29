@@ -93,9 +93,12 @@ ALLOWED_HOSTS = []
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 STATIC_URL = '/static/'
 STATIC_ROOT = str(BASE_DIR.joinpath('static'))
-MEDIA_URL = '/filer_public/'
-# MEDIA_ROOT = str(BASE_DIR.joinpath('filer_public'))
-MEDIA_ROOT = str(BASE_DIR)
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR.joinpath('media')
+
+PRIVATE_MEDIA_URL = '/smedia/'
+PRIVATE_MEDIA_ROOT = BASE_DIR.joinpath('smedia')
 
 ####################################################################################################
 #
@@ -226,6 +229,51 @@ CELERY_BROKER_URL='pyamqp://guest@localhost//'
 #
 
 THEME_CONTACT_EMAIL = 'admin@foo.org'
+
+####################################################################################################
+#
+# Filer
+#
+
+
+FILER_STORAGES = {
+    'public': {
+        'main': {
+            'ENGINE': 'filer.storage.PublicFileSystemStorage',
+            'OPTIONS': {
+                'location': str(MEDIA_ROOT.joinpath('filer')),
+                'base_url': MEDIA_URL + 'filer/',
+            },
+            'UPLOAD_TO': 'filer.utils.generate_filename.randomized',
+            'UPLOAD_TO_PREFIX': 'filer_public',
+        },
+        'thumbnails': {
+            'ENGINE': 'filer.storage.PublicFileSystemStorage',
+            'OPTIONS': {
+                'location': str(MEDIA_ROOT.joinpath('filer_thumbnails')),
+                'base_url': MEDIA_URL + 'filer_thumbnails/',
+            },
+        },
+    },
+    'private': {
+        'main': {
+            'ENGINE': 'filer.storage.PrivateFileSystemStorage',
+            'OPTIONS': {
+                'location': str(PRIVATE_MEDIA_ROOT.joinpath('filer')),
+                'base_url': PRIVATE_MEDIA_URL + 'filer/',
+            },
+            'UPLOAD_TO': 'filer.utils.generate_filename.randomized',
+            'UPLOAD_TO_PREFIX': 'filer_public',
+        },
+        'thumbnails': {
+            'ENGINE': 'filer.storage.PrivateFileSystemStorage',
+            'OPTIONS': {
+                'location': str(PRIVATE_MEDIA_ROOT.joinpath('filer_thumbnails')),
+                'base_url': PRIVATE_MEDIA_URL + 'filer_thumbnails/',
+            },
+        },
+    },
+}
 
 ####################################################################################################
 #

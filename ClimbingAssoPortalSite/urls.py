@@ -42,6 +42,8 @@ Including another URLconf
 ####################################################################################################
 
 # from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib.gis import admin
 from django.urls import include, path
 
@@ -59,6 +61,8 @@ urlpatterns = [
 
 ####################################################################################################
 
-# Devel
-# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# For devel only !
+if settings.MEDIA_ROOT and settings.DEBUG:
+    # urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=str(settings.MEDIA_ROOT))
+    urlpatterns += static(settings.PRIVATE_MEDIA_URL, document_root=str(settings.PRIVATE_MEDIA_ROOT))
