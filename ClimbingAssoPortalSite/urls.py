@@ -41,7 +41,8 @@ Including another URLconf
 
 ####################################################################################################
 
-from django.contrib import admin
+# from django.contrib import admin
+from django.contrib.gis import admin
 from django.urls import include, path
 
 ####################################################################################################
