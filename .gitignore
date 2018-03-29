@@ -28,6 +28,7 @@ fixtures/202_user.json
 fixtures/203_account.json
 fixtures/204_member.json
 fixtures/206_filer.json
+fixtures/301_route.json
 
 ClimbingAssoPortal/jinja2/include/tmp.html
 ClimbingAssoPortal/jinja2/rename.sh
