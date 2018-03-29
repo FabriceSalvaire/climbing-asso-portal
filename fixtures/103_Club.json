@@ -1,0 +1,20 @@
+[
+    {
+        "fields": {
+            "adresse": "Gymnase Alice Milliat\r\n11ter rue d\u2019Al\u00e9sia",
+            "city": 913972692,
+            "name": "Roc 14"
+        },
+        "model": "ClimbingAssoPortal.club",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "adresse": "le mur",
+            "city": 169064006,
+            "name": "Le Mur"
+        },
+        "model": "ClimbingAssoPortal.club",
+        "pk": 2
+    }
+]
