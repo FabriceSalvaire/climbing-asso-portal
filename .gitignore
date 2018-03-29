@@ -51,3 +51,11 @@ data/
 node_modules/
 tools/trash.py
 trash.py
+
+ClimbingAssoPortal/management/commands/member-isssues.txt
+ClimbingAssoPortal/templates/disabled/
+fabrice-login.txt
+fixtures/001_SuperUser.json
+fixtures/101_FrenchCity.json
+fixtures/102_Route.json
+import-members.sh
