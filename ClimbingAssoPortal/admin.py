@@ -21,6 +21,7 @@
 ####################################################################################################
 
 from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
 
 from reversion.admin import VersionAdmin
 
@@ -40,23 +41,104 @@ from . import models
 
 @admin.register(models.FrenchCity)
 class FrenchCityAdmin(admin.ModelAdmin):
+    # Fixme: slow ...
     search_fields = ('zip_code', 'name')
-    list_filter = ('name', 'zip_code')
     list_display = ('name', 'zip_code')
+
+####################################################################################################
+
+@admin.register(models.Club)
+# class MemberAdmin(admin.ModelAdmin):
+class MemberAdmin(VersionAdmin):
+    search_fields = ['name']
+    list_display = ['name']
+    # endoint is http://localhost:8000/admin/ClimbingAssoPortal/frenchcity/autocomplete/?term=bez
+    autocomplete_fields = ['city']
+    fieldsets = [
+        [_('Identity'), {
+            'fields': [
+                'name',
+            ]
+        }],
+        [_('Address'), {
+            'fields': [
+                'address',
+                'city',
+            ]
+        }],
+    ]
 
 @admin.register(models.Member)
 # class MemberAdmin(admin.ModelAdmin):
 class MemberAdmin(VersionAdmin):
-    search_fields = ('user__last_name', 'license_id')
-    list_filter = ('user__last_name', 'user__first_name')
-    list_display = ('last_name', 'first_name')
+    search_fields = ['user__last_name', 'license_id']
+    list_display = ['last_name', 'first_name', 'license_id']
+    autocomplete_fields = ['city']
+    fieldsets = [
+        [_('User'), {
+            'fields': [
+                'user',
+                'avatar',
+                'birth_date',
+                'sex',
+            ]
+        }],
+        [_('License'), {
+            'fields': [
+                'license_id',
+                'license_club',
+            ]
+        }],
+        [_('Address'), {
+            'fields': [
+                'address',
+                'city',
+            ]
+        }],
+        [_('Contact'), {
+            'fields': [
+                'phone_mobile',
+                'phone_home',
+                'phone_work',
+            ]
+        }],
+        [_('Medical Certificate'), {
+            'fields': [
+                'medical_certificate_year',
+                'medical_certificate_scan',
+                'medical_certificate_pdf',
+            ]
+        }],
+    ]
+
+@admin.register(models.ClubMember)
+# class MemberAdmin(admin.ModelAdmin):
+class MemberAdmin(VersionAdmin):
+    search_fields = ['member__user__last_name', 'member__user__first_name', 'member__license_id']
+    list_display = ['last_name', 'first_name', 'license_id']
+    fieldsets = [
+        [_('Member'), {
+            'fields': [
+                'member',
+            ]
+        }],
+        [_('Adhesion'), {
+            'fields': [
+                'group',
+                'social_discount',
+                'registration_year',
+            ]
+        }],
+    ]
+
+####################################################################################################
 
 @admin.register(models.Route)
 class RouteAdmin(admin.ModelAdmin):
 # class RouteAdmin(VersionAdmin):
-    # search_fields = ()
-    # list_filter = ()
-    list_display = ('line_number', 'grade', 'name')
+    # search_fields = []
+    # list_filter = []
+    list_display = ['line_number', 'grade', 'name']
 
 ####################################################################################################
 
