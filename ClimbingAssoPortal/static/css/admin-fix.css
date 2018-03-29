@@ -1,0 +1,39 @@
+body.suit_layout_vertical.filebrowser #container #content{
+    margin-left:0 !important;
+}
+
+.suit_layout_horizontal.filebrowser .filter-files-container, .suit_layout_vertical.filebrowser .filter-files-container{
+    width:360px;
+}
+
+/* filer box overshoot */
+div.content.row-fluid {
+    width: initial;
+}
+
+/* Reset text-indent for fa icon */
+div.control-group a.related-lookup span.edit-file {
+    text-indent: initial;
+}
+
+/* Filer right column is to small */
+.inner-two-columns .inner-center-column {
+    margin-right: 320px;
+}
+.inner-two-columns .inner-right-column {
+    float: right;
+    width: 300px;
+}
+
+/* Fix padding for image-info-detail */
+.popup .image-info-detail {
+    padding: 25px !important;
+}
+
+/* Suit v2 fixes
+
+#footer {
+    position: initial !important;
+    margin-top: 0 !important;
+}
+*/
