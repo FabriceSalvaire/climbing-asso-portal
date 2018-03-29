@@ -95,7 +95,8 @@ from django.utils.translation import ugettext_lazy as _
 
 class FrenchCity(Model):
 
-    """
+    """Model to define French City
+
     A French address is made of these lines:
 
     * Ligne 1 : Identité du destinataire :
@@ -110,6 +111,10 @@ class FrenchCity(Model):
     * Ligne 6 : Code postal et localisation de destinataire
 
     """
+
+    class Meta:
+        verbose_name = _('French City')
+        verbose_name_plural = _('French Cities')
 
     # id = models.AutoField(primary_key=True)
     # id = CharField(
@@ -126,7 +131,7 @@ class FrenchCity(Model):
 
     name = CharField(
         max_length=128, # Fixme: measure
-        verbose_name=_('name'),
+        verbose_name=_('city name'),
     )
 
     zip_code = CharField(
@@ -136,7 +141,7 @@ class FrenchCity(Model):
 
     libelle = CharField(
         max_length=128, # Fixme: measure
-        verbose_name=_('libéllé acheminement'),
+        verbose_name=_("libéllé d'acheminement"),
     )
 
     ligne_5 = CharField(
@@ -182,7 +187,7 @@ class FrenchCity(Model):
 
         name =  '{0.zip_code} {0.libelle}'.format(self)
         if self.ligne_5:
-            name += self.ligne_5
+            name += ' / ' + self.ligne_5
         return name
 
 ####################################################################################################
