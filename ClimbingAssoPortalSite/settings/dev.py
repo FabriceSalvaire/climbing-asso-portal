@@ -193,11 +193,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Cache
 #
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-    }
-}
+# Note: django_select2 don't work with a dummy cache !
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+#     }
+# }
 
 # CACHES = {
 #     'default': {

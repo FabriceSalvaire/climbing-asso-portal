@@ -205,9 +205,11 @@ urlpatterns += [
 # Test Page
 #
 
+from .views import test as test_views
+
 urlpatterns += [
     path('test/',
-         TemplateView.as_view(template_name='test/index.html'),
+         login_required(TemplateView.as_view(template_name='test/index.html')),
          name='test.index',
     ),
 
@@ -219,6 +221,12 @@ urlpatterns += [
     path('test/select2',
          TemplateView.as_view(template_name='test/select2.html'),
          name='test.select2',
+    ),
+
+    path('test/django_selet2',
+         # test_views.test_django_selet2,
+         test_views.TemplateFormView.as_view(),
+         name='test.django_select2',
     ),
 
     path('test/slider',
