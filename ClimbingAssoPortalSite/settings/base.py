@@ -59,6 +59,7 @@ WSGI_APPLICATION = 'ClimbingAssoPortalSite.wsgi.application'
 INSTALLED_APPS = [
     # /!\ ordered list
     'suit', # must be added before admin
+    # 'ClimbingAssoPortal.apps.SuitConfig', # custom suit v2 config
     # http://django-suit.readthedocs.io/en/develop
     'django.contrib.admin',
     'django.contrib.auth',
@@ -222,7 +223,7 @@ SUIT_CONFIG = {
     'SHOW_REQUIRED_ASTERISK': True,
     'CONFIRM_UNSAVED_CHANGES': True,
 
-    'LIST_PER_PAGE': 15
+    'LIST_PER_PAGE': 20,
 }
 
 ####################################################################################################

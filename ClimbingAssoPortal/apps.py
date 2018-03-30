@@ -22,8 +22,19 @@
 
 from django.apps import AppConfig
 
+# from suit.apps import DjangoSuitConfig
+
+####################################################################################################
+
+### class SuitConfig(DjangoSuitConfig):
+###
+###     """Custom Suit v2 Configuration"""
+###
+###     list_per_page = 10
+
 ####################################################################################################
 
 class ClimbingAssoPortalConfig(AppConfig):
-    name = 'ClimbingAssoPortal'
+
+    name = 'ClimbingAssoPortal' # Fixme: -> climbing_asso_portal ?
     verbose_name = 'Climbing Asso Portal'
