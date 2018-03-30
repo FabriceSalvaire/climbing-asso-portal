@@ -133,9 +133,8 @@ class MemberListView(FormMixin, ListView):
 def details(request, member_id):
 
     member = get_object_or_404(Member, pk=member_id)
-    club_member = get_object_or_404(ClubMember, member=member_id)
 
-    return render(request, 'member/details.html', {'member': member, 'club_member':club_member})
+    return render(request, 'member/details.html', {'member': member})
 
 ####################################################################################################
 

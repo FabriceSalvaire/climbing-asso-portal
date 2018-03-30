@@ -10,6 +10,8 @@
 {% endblock %}
 
 {% block content %}
+    {% set club_member = member.club_member %}
+
     <h1>{{member.last_first_name}} {{ update_delete_button_group(href=url('member.update', member.pk)) }}</h1>
 
     {{ delete_modal(title=_('Delete member'),
@@ -55,14 +57,14 @@
 
     <h2>{{_('Adhesion')}}</h2>
     <dl>
-        <dt>{{ _('Group') }}</dt><dd>{{ club_member.get_group_display() }}</dd> 
-	<dt>{{ _('Registration year') }}</dt><dd>{{ club_member.registration_year }}</dd> 
-        <dt>{{ _('Social Discount') }}</dt><dd>{{ club_member.social_discount }}</dd> 
+        <dt>{{ _('Group') }}</dt><dd>{{ club_member.get_group_display() }}</dd>
+	<dt>{{ _('Registration year') }}</dt><dd>{{ club_member.registration_year }}</dd>
+        <dt>{{ _('Social Discount') }}</dt><dd>{{ club_member.social_discount }}</dd>
     </dl>
 
     <h2>{{_('Medical Certificate')}}</h2>
     <dl>
-	<dt>{{ _('Medical Certificate Year') }}</dt><dd>{{ member.medical_certificate_year }}</dd> 
+	<dt>{{ _('Medical Certificate Year') }}</dt><dd>{{ member.medical_certificate_year }}</dd>
     </dl>
 </dl>
 {% endblock %}

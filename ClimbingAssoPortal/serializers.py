@@ -38,12 +38,28 @@ from . import models
 
 ####################################################################################################
 
+class FrenchCitySerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = models.FrenchCity
+        fields = '__all__'
+
+####################################################################################################
+
+class ClubSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = models.Club
+        fields = '__all__'
+
+####################################################################################################
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = User
         # fields = '__all__'
-        fields = ('first_name', 'last_name', 'email')
+        fields = ('username', 'first_name', 'last_name', 'email')
 
 ####################################################################################################
 
@@ -53,10 +69,18 @@ class MemberSerializer(serializers.HyperlinkedModelSerializer):
         model = models.Member
         # fields = '__all__'
         exclude = (
-            # 'user',
+            'avatar',
             'medical_certificate_scan',
             'medical_certificate_pdf',
         )
+
+####################################################################################################
+
+class ClubMemberSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = models.ClubMember
+        fields = '__all__'
 
 ####################################################################################################
 
@@ -66,12 +90,4 @@ class RouteSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.Route
-        fields = '__all__'
-
-####################################################################################################
-
-class FrenchCitySerializer(serializers.HyperlinkedModelSerializer):
-
-    class Meta:
-        model = models.FrenchCity
         fields = '__all__'
