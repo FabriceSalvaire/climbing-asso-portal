@@ -102,6 +102,17 @@ class Club(AddressMixin):
 
     ##############################################
 
+    class Meta:
+        verbose_name = _('Club')
+        verbose_name_plural = _('Clubs')
+        ordering = ['name']
+        # permissions = admin
+        indexes = [
+            models.Index(fields=['name'], name='name_idx'),
+        ]
+
+    ##############################################
+
     def __str__(self):
         return self.name
 
@@ -199,6 +210,17 @@ class Member(AddressMixin):
 
     ##############################################
 
+    class Meta:
+        verbose_name = _('Member')
+        verbose_name_plural = _('Members')
+        ordering = ['license_id']
+        # permissions = board
+        indexes = [
+            models.Index(fields=['license_id'], name='license_id_idx'),
+        ]
+
+    ##############################################
+
     @property
     def last_name(self):
 
@@ -254,7 +276,7 @@ class ClubMember(Model):
 
     member = OneToOneField(
         Member,
-        related_name='cub_member',
+        related_name='club_member',
         verbose_name=_('member'),
         on_delete=models.CASCADE,
     )
@@ -282,13 +304,24 @@ class ClubMember(Model):
     # id membre
     # nom du saisisseur
     # tarif 2017/18
-    # pôle1
-    # pôle2
+    # pôle1 pôle2
+
     # no chèque
     # nom titulaire du chèque
     # nom banque
     # montant total du chèque
+
     # commentaire
+
+    ##############################################
+
+    class Meta:
+        verbose_name = _('Club Member')
+        verbose_name_plural = _('Club Members')
+        # ordering = ['license_id']
+        # permissions = board
+        indexes = [
+        ]
 
     ##############################################
 
