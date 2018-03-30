@@ -83,6 +83,7 @@ import hashlib
 
 from django.contrib.gis.db.models import (
     Model,
+    Index,
     BigIntegerField,
     CharField,
     # DateField,
@@ -161,8 +162,8 @@ class FrenchCity(Model):
         ordering = ['zip_code', 'libelle', 'ligne_5']
         # permissions = admin
         indexes = [
-            models.Index(fields=['zip_code'], name='zip_code_idx'),
-            models.Index(fields=['libelle'], name='libelle_idx'),
+            Index(fields=['zip_code'], name='zip_code_idx'),
+            Index(fields=['libelle'], name='libelle_idx'),
         ]
 
     ##############################################
