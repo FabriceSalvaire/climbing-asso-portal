@@ -1,0 +1,28 @@
+{# -*- mode: jinja2 -*- #}
+{% extends "include/base.html" %}
+
+{% block head %}
+    {{ form.media.css }}
+    <style type="text/css">
+	select {
+	width: 200px;
+	}
+    </style>
+{% endblock %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+	{% csrf_token %}
+	{{ form }}
+	<input type="submit" value="Submit" />
+    </form>
+{% endblock %}
+
+{% block script %}
+    {# after JQuery #}
+    {{ form.media.js }}
+{% endblock %}
+
