@@ -20,18 +20,17 @@
 
 ####################################################################################################
 
+import csv
+
 from django.contrib import messages
 from django.db.models import Q
 from django.forms import ModelForm, Form, CharField
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 from django.views.generic import ListView
-from django.views.generic.edit import FormMixin
-
-# from django.shortcuts import render
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormMixin, FormView
 
 # from django.contrib.auth.decorators import login_required
 from account.decorators import login_required
@@ -41,6 +40,7 @@ from reversion.views import RevisionMixin
 
 from ..forms import MemberForm
 from ..models import Member, ClubMember
+from ..models.Tools import field_to_verbose_name
 
 ####################################################################################################
 
@@ -82,6 +82,7 @@ class MemberSearchForm(Form):
 
 ####################################################################################################
 
+# @login_required is done in urls
 class MemberListView(FormMixin, ListView):
 
     template_name = 'member/index.html'
@@ -126,6 +127,71 @@ class MemberListView(FormMixin, ListView):
 
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
+
+####################################################################################################
+
+@login_required
+def member_as_csv(request):
+
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
+
+    writer = csv.writer(response)
+
+    # User = Member.user.field.related_model
+
+    header = [field_to_verbose_name(field) for field in (
+        # Identify
+        'User.username',
+        'User.last_name', 'User.first_name',
+        'Member.birth_date', 'Member.sex',
+        # License
+        'Member.license_id', 'Club.name',
+        # Adresse
+        'Member.address', 'FrenchCity.zip_code', 'FrenchCity.libelle', 'FrenchCity.ligne_5',
+        # Contact',
+        'User.email',
+        'Member.phone_mobile', 'Member.phone_home', 'Member.phone_work',
+        # Adhesion
+        'ClubMember.group',
+        'ClubMember.registration_year',
+        'ClubMember.social_discount',
+    )]
+
+    writer.writerow(header)
+    for member in Member.objects.order_by('user__last_name', 'user__first_name'):
+        user = member.user
+        city = member.city
+        club_member = member.club_member
+        fields = [
+            # Identify
+            user.username,
+            user.last_name, user.first_name,
+            member.birth_date, # Fixme: format ???
+            member.get_sex_display(),
+            # License
+            member.license_id, member.license_club.name,
+        ]
+        if city is not None:
+            fields += [
+                # Adresse
+                member.address, city.zip_code, city.libelle, city.ligne_5,
+            ]
+        else:
+            fields += [None]*4
+        fields += [
+            # Contact,
+            user.email,
+            member.phone_mobile, member.phone_home, member.phone_work,
+            # Adhesion
+            club_member.get_group_display(),
+            club_member.registration_year,
+            club_member.social_discount,
+        ]
+        writer.writerow(fields)
+
+    return response
 
 ####################################################################################################
 

@@ -113,32 +113,38 @@ urlpatterns += [
 
 ####################################################################################################
 #
-# User Profile
+# Member
 #
 
 from .views import member as member_views
 
 urlpatterns += [
-    path(r'member/',
+    path('member/',
          login_required(member_views.MemberListView.as_view()),
-         name='member.index'),
+         name='member.index',
+    ),
 
-    path(r'member/<int:member_id>/',
+    path('member_as_csv/',
+         member_views.member_as_csv,
+         name='member_as_csv',
+    ),
+
+    path('member/<int:member_id>/',
          member_views.details,
          name='member.details',
     ),
 
-    path(r'member/create/',
+    path('member/create/',
          member_views.create,
          name='member.create',
     ),
 
-    path(r'member/<int:member_id>/update/',
+    path('member/<int:member_id>/update/',
          member_views.update,
          name='member.update',
     ),
 
-    path(r'member/<int:member_id>/delete/',
+    path('member/<int:member_id>/delete/',
          member_views.delete,
          name='member.delete',
     ),
