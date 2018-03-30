@@ -43,6 +43,7 @@ from django.db.models.fields import (
     DateField,
     PositiveIntegerField,
     TextField,
+    URLField,
 )
 
 from account.conf import settings
@@ -91,6 +92,12 @@ class Club(AddressMixin):
     name = CharField(
         max_length=128,
         verbose_name='name',
+    )
+
+    home_page = URLField(
+        null=True,
+        blank=True,
+        verbose_name='home page',
     )
 
     ##############################################

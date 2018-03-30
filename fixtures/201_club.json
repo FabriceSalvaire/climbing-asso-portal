@@ -1,8 +1,9 @@
 [
     {
         "fields": {
-            "adresse": "Gymnase Alice Milliat\r\n11ter rue d\u2019Al\u00e9sia",
+            "address": "Roc14 \u2013 Gymnase Alice Milliat\r\n11ter rue d\u2019Al\u00e9sia",
             "city": 913972692,
+            "home_page": "https://roc14.org",
             "name": "Roc 14"
         },
         "model": "ClimbingAssoPortal.club",
@@ -10,8 +11,9 @@
     },
     {
         "fields": {
-            "adresse": "le mur",
+            "address": "1 rue Paul Meurice",
             "city": 169064006,
+            "home_page": "http://www.lemur-escalade.org",
             "name": "Le Mur"
         },
         "model": "ClimbingAssoPortal.club",
