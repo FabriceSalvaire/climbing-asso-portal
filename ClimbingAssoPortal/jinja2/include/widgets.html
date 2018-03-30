@@ -9,14 +9,17 @@
 {%- endmacro %}
 
 
-{% macro search_by_name(form) -%}
-    <form class="form-inline" action=".">
-	{% csrf_token %}
-	<label for="id_name">{{ _('Name') }}</label>
-	<input type="search" class="form-control mx-sm-2" id="id_name"
-	       name="name" placeholder="{{ _('Name') }}" value="{{ form.name.value() }}">
-	<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> {{ _('Search') }}</button>
-    </form>
+{% macro search_by(form) -%}
+    {% with field = form.query %}
+	<form class="form-inline pb-3" action=".">
+	    {% csrf_token %}
+	    {% if field.label %}<label for="id_query">{{ field.label }}</label>{% endif %}
+	    <input type="search" class="form-control mx-sm-2" id="id_query"
+		   name={{ field.name }} placeholder="{{ field.help_text }}" value="{{ field.value() }}" style="width: 25em">
+	    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> {{ _('Search') }}</button>
+	</form>
+	{# double-click to select all the query #}
+    {% endwith %}
 {%- endmacro %}
 
 

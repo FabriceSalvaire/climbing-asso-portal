@@ -21,10 +21,11 @@
 ####################################################################################################
 
 from django.contrib import messages
-from django.urls import reverse
+from django.db.models import Q
 from django.forms import ModelForm, Form, CharField
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 from django.utils.translation import ugettext as _
 from django.views.generic import ListView
 from django.views.generic.edit import FormMixin
@@ -39,7 +40,7 @@ import reversion
 from reversion.views import RevisionMixin
 
 from ..forms import MemberForm
-from ..models import Member
+from ..models import Member, ClubMember
 
 ####################################################################################################
 
@@ -60,13 +61,24 @@ class MemberFormView(RevisionMixin, FormView):
 
 class MemberSearchForm(Form):
 
-    name = CharField(label=_('Name'), required=False, initial='')
+    query = CharField(
+        label='', # _('Query'),
+        help_text=_('Enter part of a name or a license ID'),
+        required=False,
+        initial='',
+    )
 
     ##############################################
 
     def filter_by(self):
-        # Fixme:
-        return {'user__last_name__icontains': self.cleaned_data['name']}
+
+        query = self.cleaned_data['query']
+
+        try:
+            _ = int(query)
+            return Q(license_id=query)
+        except ValueError:
+            return Q(user__last_name__startswith=query.upper()) # Fixme: due to upper case
 
 ####################################################################################################
 
@@ -91,9 +103,11 @@ class MemberListView(FormMixin, ListView):
         # cf. django/views/generic/edit.py FormMixin
 
         # Called by self.get_form
-        kwargs = {'initial': self.get_initial(),
-                  'prefix': self.get_prefix(),
-                  'data': self.request.GET or None}
+        kwargs = {
+            'initial': self.get_initial(),
+            'prefix': self.get_prefix(),
+            'data': self.request.GET or None,
+        }
         # {'initial': {}, 'data': None, 'prefix': None}
         # {'data': <QueryDict: {'csrfmiddlewaretoken': ['K...u'], 'name': ['apr']}>, 'initial': {}, 'prefix': None}
         return kwargs
@@ -105,11 +119,10 @@ class MemberListView(FormMixin, ListView):
         # cf. django/views/generic/list.py BaseListView
 
         self.object_list = self.get_queryset()
-        print(self.object_list)
 
         form = self.get_form()
         if form.is_valid():
-            self.object_list = self.object_list.filter(**form.filter_by())
+            self.object_list = self.object_list.filter(form.filter_by())
 
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
@@ -120,8 +133,9 @@ class MemberListView(FormMixin, ListView):
 def details(request, member_id):
 
     member = get_object_or_404(Member, pk=member_id)
+    club_member = get_object_or_404(ClubMember, member=member_id)
 
-    return render(request, 'member/details.html', {'member': member})
+    return render(request, 'member/details.html', {'member': member, 'club_member':club_member})
 
 ####################################################################################################
 

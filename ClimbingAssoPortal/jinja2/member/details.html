@@ -1,0 +1,68 @@
+{# -*- mode: jinja2 -*- #}
+{% extends "include/base.html" %}
+{% from "include/widgets.html" import update_delete_button_group, delete_modal %}
+
+{% block title %} - {{ member.name }}{% endblock %}
+
+{% block breadcrumb_li %}
+    <li class="breadcrumb-item"><a href="{{ url('member.index') }}">{{ _('Members') }}</a></li>
+    <li class="breadcrumb-item active">{{ member.last_first_name }}</li>
+{% endblock %}
+
+{% block content %}
+    <h1>{{member.last_first_name}} {{ update_delete_button_group(href=url('member.update', member.pk)) }}</h1>
+
+    {{ delete_modal(title=_('Delete member'),
+	body= _('Are you sure you want to delete this member?'),
+	href=url('member.delete', member.pk),
+    ) }}
+
+    <h2>{{_('Identity')}}</h2>
+    <dl>
+	<dt>{{ _('User Name') }}</dt><dd>{{ member.user.username }}</dd>
+	<dt>{{ _('Last Name') }}</dt><dd>{{ member.last_name }}</dd>
+	<dt>{{ _('First Name') }}</dt><dd>{{ member.first_name }}</dd>
+        <dt>{{ _('Birth Date') }}</dt><dd>{{ member.birth_date }}</dd>
+        <dt>{{ _('Sex') }}</dt><dd>{{ member.get_sex_display() }}</dd>
+    </dl>
+
+    <h2>{{_('License')}}</h2>
+    <dl>
+        <dt>{{ _('License ID') }}</dt><dd>{{ member.license_id }}</dd>
+        <dt>{{ _('License Club') }}</dt><dd>{{ member.license_club }}</dd>
+    </dl>
+
+
+    <h2>{{_('Address')}}</h2>
+    <p>
+    {{ member.address }}<br>
+    {{ member.city }}
+    </p>
+    {#
+    <dl>
+	<dt>{{ _('Address') }}</dt><dd></dd>
+        <dt>{{ _('City') }}</dt><dd></dd>
+    </dl>
+    #}
+
+    <h2>{{_('Contact')}}</h2>
+    <dl>
+	<dt>{{ _('Email') }}</dt><dd>{{ member.user.email }}</dd>
+        <dt>{{ _('Phone Mobile') }}</dt><dd>{{ member.phone_mobile }}</dd>
+        <dt>{{ _('Phone Home') }}</dt><dd>{{ member.phone_home }}</dd>
+        <dt>{{ _('Phone Work') }}</dt><dd>{{ member.phone_work }}</dd>
+    </dl>
+
+    <h2>{{_('Adhesion')}}</h2>
+    <dl>
+        <dt>{{ _('Group') }}</dt><dd>{{ club_member.get_group_display() }}</dd> 
+	<dt>{{ _('Registration year') }}</dt><dd>{{ club_member.registration_year }}</dd> 
+        <dt>{{ _('Social Discount') }}</dt><dd>{{ club_member.social_discount }}</dd> 
+    </dl>
+
+    <h2>{{_('Medical Certificate')}}</h2>
+    <dl>
+	<dt>{{ _('Medical Certificate Year') }}</dt><dd>{{ member.medical_certificate_year }}</dd> 
+    </dl>
+</dl>
+{% endblock %}
