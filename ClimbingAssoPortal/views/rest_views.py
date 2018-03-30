@@ -26,36 +26,12 @@ from django.contrib.auth.models import User
 
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, permissions, generics, mixins
+from rest_framework import viewsets, permissions, generics, mixins, filters
 from rest_framework.response import Response
 import django_filters.rest_framework
 
 from .. import serializers as _serializers
 from .. import models as _models
-
-####################################################################################################
-
-class UserViewSet(viewsets.ModelViewSet):
-
-    permission_classes = (permissions.IsAdminUser,)
-    queryset = User.objects.all()
-    serializer_class = _serializers.UserSerializer
-
-####################################################################################################
-
-class MemberViewSet(viewsets.ModelViewSet):
-
-    permission_classes = (permissions.IsAdminUser,)
-    queryset = _models.Member.objects.all()
-    serializer_class = _serializers.MemberSerializer
-
-####################################################################################################
-
-class RouteViewSet(viewsets.ModelViewSet):
-
-    permission_classes = (permissions.IsAdminUser,)
-    queryset = _models.Route.objects.all()
-    serializer_class = _serializers.RouteSerializer
 
 ####################################################################################################
 
@@ -68,3 +44,55 @@ class FrenchCityViewSet(viewsets.ReadOnlyModelViewSet):
     # to filter using http://localhost:8000/api/french_cities/?zip_code=95870
     filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
     filter_fields = ('zip_code', 'name')
+
+####################################################################################################
+
+class UserViewSet(viewsets.ModelViewSet):
+
+    permission_classes = (permissions.IsAdminUser,)
+    queryset = User.objects.all()
+    serializer_class = _serializers.UserSerializer
+
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
+    filter_fields = ('username', 'last_name')
+
+####################################################################################################
+
+class ClubViewSet(viewsets.ModelViewSet):
+
+    permission_classes = (permissions.IsAdminUser,)
+    queryset = _models.Club.objects.all()
+    serializer_class = _serializers.ClubSerializer
+
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
+    filter_fields = ('name',)
+
+####################################################################################################
+
+class MemberViewSet(viewsets.ModelViewSet):
+
+    permission_classes = (permissions.IsAdminUser,)
+    queryset = _models.Member.objects.all()
+    serializer_class = _serializers.MemberSerializer
+
+    # filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
+    filter_fields = ('license_id', 'user__last_name')
+
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('=license_id', '^user__last_name')
+
+####################################################################################################
+
+class ClubMemberViewSet(viewsets.ModelViewSet):
+
+    permission_classes = (permissions.IsAdminUser,)
+    queryset = _models.ClubMember.objects.all()
+    serializer_class = _serializers.ClubMemberSerializer
+
+####################################################################################################
+
+class RouteViewSet(viewsets.ModelViewSet):
+
+    permission_classes = (permissions.IsAdminUser,)
+    queryset = _models.Route.objects.all()
+    serializer_class = _serializers.RouteSerializer
