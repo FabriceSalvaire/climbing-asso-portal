@@ -56,6 +56,7 @@ class MemberAdmin(VersionAdmin):
         [_('Identity'), {
             'fields': [
                 'name',
+                'home_page',
             ]
         }],
         [_('Address'), {
