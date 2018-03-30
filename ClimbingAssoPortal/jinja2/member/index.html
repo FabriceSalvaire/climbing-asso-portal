@@ -1,20 +1,19 @@
 {# -*- mode: jinja2 -*- #}
 {% extends "include/base.html" %}
-{% from "include/widgets.html" import new_button_group, search_by_name %}
+{% from "include/widgets.html" import new_button_group, search_by %}
 
-{% block title %} - {{ _('User Profiles') }}{% endblock %}
+{% block title %} - {{ _('Members') }}{% endblock %}
 
 {% block breadcrumb_li %}
-    <li class="breadcrumb-item active">{{ _('User Profiles') }}</li>
+    <li class="breadcrumb-item active">{{ _('Members') }}</li>
 {% endblock %}
 
 {% block content %}
-    <h2>{{ _('User Profiles') }}
-	{{ new_button_group(title=_('New user profile'), href=url('member.create')) }}
-    </h2>
+    <h2>{{_('Members')}}</h2>
 
-    {{ search_by_name(form) }}
-    <br>
+    {{ search_by(form) }}
+
+    {# {{ new_button_group(title=_('New member'), href=url('member.create')) }} #}
 
     {% if members %}
 	{% for group in members|groupby('first_letter') %}
