@@ -112,10 +112,6 @@ class FrenchCity(Model):
 
     """
 
-    class Meta:
-        verbose_name = _('French City')
-        verbose_name_plural = _('French Cities')
-
     # id = models.AutoField(primary_key=True)
     # id = CharField(
     #     primary_key=True,
@@ -156,6 +152,18 @@ class FrenchCity(Model):
         null=True,
         verbose_name=_('GPS coordinate'),
     )
+
+    ##############################################
+
+    class Meta:
+        verbose_name = _('French City')
+        verbose_name_plural = _('French Cities')
+        ordering = ['zip_code', 'libelle', 'ligne_5']
+        # permissions = admin
+        indexes = [
+            models.Index(fields=['zip_code'], name='zip_code_idx'),
+            models.Index(fields=['libelle'], name='libelle_idx'),
+        ]
 
     ##############################################
 
