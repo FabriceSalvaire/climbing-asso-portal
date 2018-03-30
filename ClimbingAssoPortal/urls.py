@@ -59,7 +59,7 @@ urlpatterns = [
 
 # Fixme: move supra ?
 
-from .views import rest_views
+from .views import rest as rest_views
 
 router = routers.DefaultRouter()
 router.register('french_cities', rest_views.FrenchCityViewSet)
@@ -79,7 +79,7 @@ urlpatterns += [
 # REST API Doc
 #
 
-from .views.schema_view import schema_view
+from .views.schema import schema_view
 
 urlpatterns += [
     path('api-docs/', schema_view, name='old-swagger'),

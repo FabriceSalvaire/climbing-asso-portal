@@ -31,14 +31,14 @@ from rest_framework.response import Response
 import django_filters.rest_framework
 
 from .. import serializers as _serializers
-from .. import models as _models
+from .. import models as app_models
 
 ####################################################################################################
 
 class FrenchCityViewSet(viewsets.ReadOnlyModelViewSet):
 
     permission_classes = (permissions.IsAdminUser,)
-    queryset = _models.FrenchCity.objects.all()
+    queryset = app_models.FrenchCity.objects.all()
     serializer_class = _serializers.FrenchCitySerializer
 
     # to filter using http://localhost:8000/api/french_cities/?zip_code=95870
@@ -61,7 +61,7 @@ class UserViewSet(viewsets.ModelViewSet):
 class ClubViewSet(viewsets.ModelViewSet):
 
     permission_classes = (permissions.IsAdminUser,)
-    queryset = _models.Club.objects.all()
+    queryset = app_models.Club.objects.all()
     serializer_class = _serializers.ClubSerializer
 
     filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
@@ -72,7 +72,7 @@ class ClubViewSet(viewsets.ModelViewSet):
 class MemberViewSet(viewsets.ModelViewSet):
 
     permission_classes = (permissions.IsAdminUser,)
-    queryset = _models.Member.objects.all()
+    queryset = app_models.Member.objects.all()
     serializer_class = _serializers.MemberSerializer
 
     # filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
@@ -86,7 +86,7 @@ class MemberViewSet(viewsets.ModelViewSet):
 class ClubMemberViewSet(viewsets.ModelViewSet):
 
     permission_classes = (permissions.IsAdminUser,)
-    queryset = _models.ClubMember.objects.all()
+    queryset = app_models.ClubMember.objects.all()
     serializer_class = _serializers.ClubMemberSerializer
 
 ####################################################################################################
@@ -94,5 +94,5 @@ class ClubMemberViewSet(viewsets.ModelViewSet):
 class RouteViewSet(viewsets.ModelViewSet):
 
     permission_classes = (permissions.IsAdminUser,)
-    queryset = _models.Route.objects.all()
+    queryset = app_models.Route.objects.all()
     serializer_class = _serializers.RouteSerializer
