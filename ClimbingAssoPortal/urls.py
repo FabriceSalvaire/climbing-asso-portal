@@ -62,10 +62,12 @@ urlpatterns = [
 from .views import rest_views
 
 router = routers.DefaultRouter()
+router.register('french_cities', rest_views.FrenchCityViewSet)
+router.register('club', rest_views.ClubViewSet)
 router.register('users', rest_views.UserViewSet)
 router.register('members', rest_views.MemberViewSet)
+router.register('club_members', rest_views.ClubMemberViewSet)
 router.register('routes', rest_views.RouteViewSet)
-router.register('french_cities', rest_views.FrenchCityViewSet)
 
 urlpatterns += [
     path('api/', include(router.urls)),
