@@ -165,7 +165,12 @@ def dump_data(args=None):
 
     output_path = BASE_DIR.joinpath('fixtures', args.fixture + '.json')
     print('Dump {} to {}'.format(args.model, output_path))
-    manage('dumpdata', args.model, '-o', output_path)
+    manage(
+        'dumpdata',
+        args.model,
+        # '--indent', 4,
+        '-o', output_path
+    )
 
     if args.indent:
         with open(output_path) as fh:
