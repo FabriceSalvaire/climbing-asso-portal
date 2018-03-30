@@ -52,6 +52,9 @@ from django.urls import include, path
 urlpatterns = [
     # Common part
     path('admin/', admin.site.urls),
+    # Admin install this autocomplete feature where term are searched in search_fields
+    # /admin/APPLICATION/MODEL/autocomplete/?term=XYZ
+
     path('filer/', include('filer.urls')),
     path('account/', include('account.urls')),
     path('select2/', include('django_select2.urls')),

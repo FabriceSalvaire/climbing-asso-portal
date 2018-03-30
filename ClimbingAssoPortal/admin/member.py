@@ -49,7 +49,8 @@ class MemberAdmin(VersionAdmin):
     search_fields = ['name']
     list_display = ['name']
 
-    # endoint is http://localhost:8000/admin/ClimbingAssoPortal/frenchcity/autocomplete/?term=bez
+    # cf. https://docs.djangoproject.com/en/2.0/ref/contrib/admin/#django.contrib.admin.ModelAdmin.autocomplete_fields
+    # endoint is /admin/ClimbingAssoPortal/frenchcity/autocomplete/?term=bez
     autocomplete_fields = ['city']
 
     fieldsets = [

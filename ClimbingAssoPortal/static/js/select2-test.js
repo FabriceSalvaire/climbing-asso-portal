@@ -7,27 +7,45 @@
 $(document).ready(function() {
     $('.js-example-basic-single').select2();
 
-    $('.route-name').select2({
+    $('#city-using-admin-autocomplete').select2({
         ajax: {
-	    // https://api.github.com/search/repositories?term=sel&_type=query&q=sel
-            url: '/api/route/',
-            // dataType: 'json',
-	    processResults: function (data) {
-		var routes = data.results;
-		var results = [];
-		for (var i=0;i<routes.length;i++) {
-		    var route = routes[i];
-		    if (route.name) {
-			results.push({
-			    id: i,
-			    text: route.name
-			})
-		    }
+	    // ?term=sel&_type=query&q=sel
+	    url: '/admin/ClimbingAssoPortal/frenchcity/autocomplete/',
+	}
+    });
+
+    $('#member-using-admin-autocomplete').select2({
+        ajax: {
+	    // ?term=sel&_type=query&q=sel
+	    url: '/admin/ClimbingAssoPortal/member/autocomplete/',
+	}
+    });
+
+    $('#member-using-rest').select2({
+        ajax: {
+            url: '/api/members/',
+            dataType: 'json',
+	    data: function (params) {
+		var query = {
+		    search: params.term,
 		}
-		console.log(results);
-		return {
+		return query;
+	    },
+	    processResults: function (data) {
+	    	var members = data.results;
+		console.log(members);
+	    	var results = [];
+	    	for (var i = 0; i < members.length; i++) {
+	    	    var member = members[i];
+	    	    results.push({
+	    		id: i,
+	    		text: member.address
+	    	    })
+	    	}
+	    	console.log(results);
+	    	return {
                     results: results
-		};
+	    	};
             }
 	}
     });
