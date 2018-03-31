@@ -28,8 +28,8 @@ import logging
 
 from django.conf import settings
 
-from ClimbingGrade import FrenchGrade
-from GoogleApi import get_credentials, Spreadsheet
+from ClimbingAssoPortalTools.ClimbingGrade import FrenchGrade
+from ClimbingAssoPortalTools.GoogleApi import get_credentials, Spreadsheet
 
 from ..models import Route
 

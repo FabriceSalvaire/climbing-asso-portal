@@ -39,9 +39,9 @@ from account.decorators import login_required
 import reversion
 from reversion.views import RevisionMixin
 
-from ClimbingGrade import FrenchGrade
-from ClimbingGrade.Statistics import FrenchGradeHistogram
-from ClimbingGrade.StatisticsPlot import FrenchGradeHistogramPlot
+from ClimbingAssoPortalTools.ClimbingGrade import FrenchGrade
+from ClimbingAssoPortalTools.ClimbingGrade.Statistics import FrenchGradeHistogram
+from ClimbingAssoPortalTools.ClimbingGrade.StatisticsPlot import FrenchGradeHistogramPlot
 
 from ..forms import RouteForm
 from ..models import Route

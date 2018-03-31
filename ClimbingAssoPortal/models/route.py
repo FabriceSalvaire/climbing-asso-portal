@@ -36,7 +36,7 @@ from django.db.models.fields import (
     TextField,
 )
 
-from ClimbingGrade import FrenchGrade
+from ClimbingAssoPortalTools.ClimbingGrade import FrenchGrade
 
 from ..constants import *
 
