@@ -40,7 +40,6 @@ class Select2Form(forms.Form):
     query = forms.ChoiceField(
         widget=select2_forms.ModelSelect2Widget(
             model=app_models.Member,
-            queryset=app_models.Member.objects.all(),
             search_fields=['user__last_name__startswith'],
             # ??? attrs={'width': '200px'},
         ),

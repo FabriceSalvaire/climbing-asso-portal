@@ -76,6 +76,27 @@ class MemberSerializer(serializers.HyperlinkedModelSerializer):
 
 ####################################################################################################
 
+class MemberSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = models.Member
+        # fields = '__all__'
+        exclude = (
+            'avatar',
+            'medical_certificate_scan',
+            'medical_certificate_pdf',
+        )
+
+####################################################################################################
+
+class MemberAutoCompleteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Member
+        fields = ('pk', 'last_first_name')
+
+####################################################################################################
+
 class ClubMemberSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:

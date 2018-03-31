@@ -69,6 +69,20 @@ class ClubViewSet(viewsets.ModelViewSet):
 
 ####################################################################################################
 
+class MemberAutoCompleteViewSet(viewsets.ReadOnlyModelViewSet):
+
+    permission_classes = (permissions.IsAdminUser,)
+    queryset = app_models.Member.objects.order_by('user__last_name' , 'user__first_name')
+    serializer_class = _serializers.MemberAutoCompleteSerializer
+
+    # filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
+    # filter_fields = ('license_id', 'user__last_name')
+
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('=license_id', '^user__last_name')
+
+####################################################################################################
+
 class MemberViewSet(viewsets.ModelViewSet):
 
     permission_classes = (permissions.IsAdminUser,)

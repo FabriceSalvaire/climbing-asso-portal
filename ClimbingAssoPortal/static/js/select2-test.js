@@ -23,7 +23,7 @@ $(document).ready(function() {
 
     $('#member-using-rest').select2({
         ajax: {
-            url: '/api/members/',
+            url: '/api/member_auto_complete/',
             dataType: 'json',
 	    data: function (params) {
 		var query = {
@@ -38,11 +38,10 @@ $(document).ready(function() {
 	    	for (var i = 0; i < members.length; i++) {
 	    	    var member = members[i];
 	    	    results.push({
-	    		id: i,
-	    		text: member.address
+	    		id: member.pk,
+	    		text: member.last_first_name
 	    	    })
 	    	}
-	    	console.log(results);
 	    	return {
                     results: results
 	    	};

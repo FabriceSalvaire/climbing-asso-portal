@@ -2,6 +2,11 @@
 {% extends "include/base.html" %}
 {% from "include/widgets.html" import update_delete_button_group, delete_modal %}
 
+{% block head %}
+    <link rel="stylesheet" href={{ static('css-ext/select2.min.css') }}>
+    {# <link rel="stylesheet" href={{ static('css-ext/select2-bootstrap4.min.css') }}> #}
+{% endblock %}
+
 {% block title %} - {{ member.name }}{% endblock %}
 
 {% block breadcrumb_li %}
@@ -20,6 +25,10 @@
     {# <h2>{{member.last_first_name}} {{ update_delete_button_group(href=url('member.update', member.pk)) }}</h2> #}
     <h2>{{member.last_name}} ~ {{member.first_name}} {{ update_delete_button_group(href=url('member.update', member.pk)) }}</h2>
 
+    <select id="autocomplete-member" style="width: 50%">
+	<option value={{member.pk}} selected="selected">{{ member.last_first_name }}</option>
+    </select>
+
     <div class="container-fluid pt-3">
 
 	<div class="row">
@@ -30,6 +39,7 @@
 		    {# <dt class="col-sm-4">{{ _('Last Name') }}</dt><dd class="col-sm-8">{{ member.last_name }}</dd> #}
 		    {# <dt class="col-sm-4">{{ _('First Name') }}</dt><dd class="col-sm-8">{{ member.first_name }}</dd> #}
 		    <dt class="col-sm-4">{{ _('Birth Date') }}</dt><dd class="col-sm-8">{{ member.birth_date }}</dd>
+		    <dt class="col-sm-4">{{ _('Age') }}</dt><dd class="col-sm-8">{{ member.age }}</dd>
 		    <dt class="col-sm-4">{{ _('Sex') }}</dt><dd class="col-sm-8">{{ member.get_sex_display() }}</dd>
 		</dl>
 	    </div>
@@ -80,4 +90,44 @@
 	</div>
     </div>
 </dl>
+{% endblock %}
+
+{% block script %}
+    {# after JQuery #}
+    <script src={{ static('js-ext/select2.min.js') }}></script>
+    <script type="text/javascript">
+$(document).ready(function() {
+    $('#autocomplete-member').select2({
+        ajax: {
+            url: '/api/member_auto_complete/',
+            dataType: 'json',
+	    data: function (params) {
+		var query = {
+		    search: params.term,
+		}
+		return query;
+	    },
+	    processResults: function (data) {
+	    	var members = data.results;
+		console.log(members);
+	    	var results = [];
+	    	for (var i = 0; i < members.length; i++) {
+	    	    var member = members[i];
+	    	    results.push({
+	    		id: member.pk,
+	    		text: member.last_first_name
+	    	    })
+	    	}
+	    	return {
+                    results: results
+	    	};
+            }
+	}
+    }).on('change', function() {
+        console.log(this.value);
+	{# {{ url('member.details') }} #}
+	window.location.replace("/member/" + this.value);
+    });
+});
+</script>
 {% endblock %}
