@@ -23,12 +23,10 @@
 import math
 
 import numpy as np
-# from scipy import stats
 
-####################################################################################################
+from IntervalArithmetic import Interval
 
 from .Binning import NDMixin, Binning1D, BinningND
-from .Interval import Interval
 
 ####################################################################################################
 
