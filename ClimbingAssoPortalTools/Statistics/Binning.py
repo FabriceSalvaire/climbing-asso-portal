@@ -30,10 +30,12 @@ __all__ = [
 
 import numpy as np
 
+from IntervalArithmetic import Interval, FloatMinusInfinity, FloatPlusInfinity
+
 ####################################################################################################
 
-from .Interval import Interval, FloatMinusInfinity, FloatPlusInfinity
-from .Functions import rint
+def rint(f):
+    return int(round(f))
 
 ####################################################################################################
 
@@ -94,11 +96,11 @@ class Binning1D:
             #  - round sup, inf or both
             #  - extend sup, inf or both
             self._bin_width = float(bin_width)
-            self._number_of_bins = rint(self._interval.length() / self._bin_width)
+            self._number_of_bins = rint(self._interval.length / self._bin_width)
             self._interval.sup = self._interval.inf + self._number_of_bins * self._bin_width
         else:
             self._number_of_bins = int(number_of_bins)
-            self._bin_width = self._interval.length() / self._number_of_bins
+            self._bin_width = self._interval.length / self._number_of_bins
 
         self._last_bin = self._number_of_bins
         self._over_flow_bin = self._number_of_bins +1
@@ -175,15 +177,16 @@ class Binning1D:
 
     def to_json(self):
 
-        return {'inf':self.interval.inf,
-                'sup':self.interval.sup,
-                'bin_width':self.bin_width}
+        return {
+            'inf':self.interval.inf,
+            'sup':self.interval.sup,
+            'bin_width':self.bin_width,
+        }
 
     ##############################################
 
     @staticmethod
     def from_json(data):
-
         return Binning1D(Interval(data['inf'], data['sup']), bin_width=data['bin_width'])
 
     ##############################################
@@ -267,14 +270,14 @@ class Binning1D:
 
     def __str__(self):
 
-        string_format = """
+        template = """
 Binning 1D
-  interval: %s
-  number of bins: %u
-  bin width: %g
+  interval: {}
+  number of bins: {}
+  bin width: {}
 """
 
-        text = string_format % (str(self._interval), self._number_of_bins, self._bin_width)
+        text = string_format.format(self._interval, self._number_of_bins, self._bin_width)
         for i in self.bin_iterator(xflow=True):
             # Fixme: 3u count number of digits
             text += '  %3u ' % i + str(self.bin_interval(i)) + '\n'

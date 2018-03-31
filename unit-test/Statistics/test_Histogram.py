@@ -24,8 +24,8 @@ import unittest
 
 ####################################################################################################
 
-from ClimbingAssoPortalTools.Math.Binning import Binning1D
-from ClimbingAssoPortalTools.Math.Histogram import *
+from ClimbingAssoPortalTools.Statistics.Binning import Binning1D
+from ClimbingAssoPortalTools.Statistics.Histogram import *
 
 ####################################################################################################
 
