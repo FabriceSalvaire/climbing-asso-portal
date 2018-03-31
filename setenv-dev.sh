@@ -8,6 +8,7 @@
 py36
 
 # Add current directory in front of the Python path
+append_to_python_path_if_not $PWD/local_packages/
 append_to_python_path_if_not $PWD
 
 ####################################################################################################
