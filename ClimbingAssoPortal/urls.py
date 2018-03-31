@@ -66,6 +66,7 @@ router.register('french_cities', rest_views.FrenchCityViewSet)
 router.register('club', rest_views.ClubViewSet)
 router.register('users', rest_views.UserViewSet)
 router.register('members', rest_views.MemberViewSet)
+router.register('member_auto_complete', rest_views.MemberAutoCompleteViewSet)
 router.register('club_members', rest_views.ClubMemberViewSet)
 router.register('routes', rest_views.RouteViewSet)
 
@@ -224,8 +225,8 @@ urlpatterns += [
     ),
 
     path('test/django_selet2',
-         # test_views.test_django_selet2,
-         test_views.TemplateFormView.as_view(),
+         test_views.test_django_selet2,
+         # test_views.TemplateFormView.as_view(),
          name='test.django_select2',
     ),
 

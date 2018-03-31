@@ -26,6 +26,8 @@ __all__ = [
 
 ####################################################################################################
 
+from datetime import date
+
 # from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db.models import Model, ForeignKey, OneToOneField
@@ -243,7 +245,7 @@ class Member(AddressMixin):
     def last_first_name(self):
 
         if self.user is not None:
-            return self.user.last_name.title() + ' ' + self.user.first_name.title()
+            return self.user.last_name + ' ' + self.user.first_name # Fixme: upper
         else:
             return None
 
@@ -255,6 +257,15 @@ class Member(AddressMixin):
             if last_name:
                 return last_name[0]
         return ''
+
+    ##############################################
+
+    @property
+    def age(self):
+
+        today = date.today()
+        born = self.birth_date
+        return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
 
     ##############################################
 
