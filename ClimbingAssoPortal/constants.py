@@ -70,3 +70,7 @@ COLOURS = (
 )
 
 COLOUR_CHOICES = [(i, colour) for i, colour in enumerate(COLOURS)]
+
+####################################################################################################
+
+ONE_HOUR = 60 * 60 # s

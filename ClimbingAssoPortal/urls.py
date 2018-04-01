@@ -130,6 +130,23 @@ urlpatterns += [
          name='member_as_csv',
     ),
 
+    path('member/age_histogram.svg',
+         member_views.age_histogram_svg,
+         name='member.age_histogram_svg'),
+
+    path('member/age_histogram_error.svg',
+         member_views.age_histogram_error_svg,
+         name='member.age_histogram_error_svg'),
+
+    path('member/age_histogram.csv',
+         member_views.age_histogram_csv,
+         name='member.age_histogram_csv'),
+
+    path('member/statistics/',
+         member_views.member_statistics,
+         name='member.statistics',
+    ),
+
     path('member/<int:member_id>/',
          member_views.details,
          name='member.details',
@@ -169,12 +186,12 @@ urlpatterns += [
          name='route.index'),
 
     path('route/histogram.svg',
-         route_views.route_historgam,
-         name='route.histogram'),
+         route_views.route_historgam_svg,
+         name='route.histogram_svg'),
 
     path('route/cumulative_histogram.svg',
-         route_views.route_cumulative_histogram,
-         name='route.cumulative_histogram'),
+         route_views.route_cumulative_histogram_svg,
+         name='route.cumulative_histogram_svg'),
 
     path('route/<int:route_id>/',
          route_views.details,

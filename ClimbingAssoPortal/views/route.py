@@ -44,12 +44,11 @@ from ClimbingAssoPortalTools.ClimbingGrade import FrenchGrade
 from ClimbingAssoPortalTools.ClimbingGrade.Statistics import FrenchGradeHistogram
 from ClimbingAssoPortalTools.ClimbingGrade.StatisticsPlot import FrenchGradeHistogramPlot
 
+from ..constants import ONE_HOUR
 from ..forms import RouteForm
 from ..models import Route
 
 ####################################################################################################
-
-ONE_HOUR = 60 * 60 # s
 
 @cache_result
 def generate_route_histogram():
@@ -84,11 +83,13 @@ def _route_historgam(request, plot):
 
 # Fixme: browser cache ???
 @cache_control(max_age=ONE_HOUR)
-def route_historgam(request):
+@login_required
+def route_historgam_svg(request):
     return _route_historgam(request, plot='histogram')
 
 @cache_control(max_age=ONE_HOUR)
-def route_cumulative_histogram(request):
+@login_required
+def route_cumulative_histogram_svg(request):
     return _route_historgam(request, plot='cumulative')
 
 ####################################################################################################

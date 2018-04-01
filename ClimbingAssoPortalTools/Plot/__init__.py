@@ -67,6 +67,7 @@ class MatplolibPlot:
 
     def __init__(self, aspect_ratio=16/9):
 
+        # Rendering is thinner if width is larger
         dpi = 100
         figure_width = 1000 / dpi
         figure_height = figure_width / aspect_ratio
