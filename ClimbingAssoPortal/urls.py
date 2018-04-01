@@ -62,13 +62,14 @@ urlpatterns = [
 from .views import rest as rest_views
 
 router = routers.DefaultRouter()
-router.register('french_cities', rest_views.FrenchCityViewSet)
-router.register('club', rest_views.ClubViewSet)
-router.register('users', rest_views.UserViewSet)
-router.register('members', rest_views.MemberViewSet)
-router.register('member_auto_complete', rest_views.MemberAutoCompleteViewSet)
-router.register('club_members', rest_views.ClubMemberViewSet)
-router.register('routes', rest_views.RouteViewSet)
+# Fixme: check base_name
+router.register('french_cities', rest_views.FrenchCityViewSet) # , base_name='french_cities'
+router.register('clubs', rest_views.ClubViewSet) # , base_name='club'
+router.register('users', rest_views.UserViewSet) # , base_name='user'
+router.register('members', rest_views.MemberViewSet, base_name='member')
+router.register('member_auto_complete', rest_views.MemberAutoCompleteViewSet, base_name='member_auto_complete')
+router.register('club_members', rest_views.ClubMemberViewSet) # , base_name='club_member'
+router.register('routes', rest_views.RouteViewSet) # , base_name='route'
 
 urlpatterns += [
     path('api/', include(router.urls)),
