@@ -4,7 +4,8 @@
 
 {% block head %}
     <link rel="stylesheet" href={{ static('css-ext/ol.css') }}>
-    <script src={{ static('js-ext/ol-debug.js') }}></script>
+    {# <script src={{ static('js-ext/ol-debug.js') }}></script> #}
+    <script src={{ static('js-ext/ol.js') }}></script>
 {% endblock %}
 
 {% block title %} - {{ _('Member Map') }}{% endblock %}
