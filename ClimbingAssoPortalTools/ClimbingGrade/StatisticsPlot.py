@@ -21,45 +21,95 @@
 ####################################################################################################
 
 import hashlib
-from io import StringIO
 
 import numpy as np
 
-import matplotlib
-matplotlib.use('Agg')
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
-
-# WSGI Hang
-# print(bokeh ...)
-# # from bokeh.plotting import figure
-# from bokeh.embed import components
-# from bokeh.charts import Bar
-# from bokeh.charts.attributes import CatAttr
-# print(bokeh done)
+from ..Plot import MatplolibPlot
 
 ####################################################################################################
 
-class BokehPlot:
+class PlotAbc:
+
+    WIDTH = .75
+    FONTSIZE = 17
 
     ##############################################
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, labels, title):
 
-        script, div = components(*args, **kwargs)
-        self.script = script
-        self.div = div
+        self._plot = MatplolibPlot(aspect_ratio=4/3)
+        axes = self._plot.subplot()
+        self._axes = axes
+
+        self._plot.figure.tight_layout(pad=4)
+        self._axes.tick_params(axis='both', which='major', labelsize=self.FONTSIZE)
+
+        axes.set_title(title, fontsize=self.FONTSIZE*1.2)
+
+        self._x = np.arange(len(labels))
+        axes.set_xticks(self._x)
+        axes.xaxis.set_tick_params(width=0)
+        axes.set_xticklabels(labels, rotation=45)
+
+        axes.grid(axis='y')
+
+    ##############################################
+
+    @property
+    def axes(self):
+        return self._axes
+
+    ##############################################
+
+    @property
+    def plot(self):
+        return self._plot.to_svg()
+
+    ##############################################
+
+    def barchart(self, y, color, alpha=1):
+
+        self._axes.bar(self._x, y, width=self.WIDTH, color=color, alpha=alpha, edgecolor='white')
 
 ####################################################################################################
 
-class SvgPlot:
+class GradeBarchart(PlotAbc):
 
     ##############################################
 
-    def __init__(self, svg):
+    def __init__(self, labels, y, title):
 
-        self.script = ''
-        self.div = svg
+        super().__init__(labels, title)
+
+        self.barchart(y, color='dodgerblue')
+
+        major_ticks = np.arange(0, y[y.argmax()] + 1, 5)
+        self.axes.set_yticks(major_ticks)
+
+####################################################################################################
+
+class GradeCumulative(PlotAbc):
+
+    ##############################################
+
+    def __init__(self, labels, **kwargs):
+
+        title = kwargs['cumulative_title']
+        super().__init__(labels, title)
+
+        for graph in ('cumulative', 'inverse_cumulative'):
+            y = kwargs[graph]
+            y *= 100
+            # https://matplotlib.org/examples/color/named_colors.html
+            if graph == 'cumulative':
+                color = 'dodgerblue'
+            else:
+                color = 'chocolate'
+            self.barchart(y, color=color, alpha=.5)
+
+        major_ticks = np.arange(0, 101, 10)
+        self.axes.set_yticks(major_ticks)
+        self.axes.set_ylabel('%', fontsize=self.FONTSIZE)
 
 ####################################################################################################
 
@@ -82,26 +132,17 @@ class FrenchGradeHistogramPlot:
             inverse_cumulative_counts = np.ones(len(counts))
             inverse_cumulative_counts[1:] = (1 - cumulative_counts)[:-1]
 
-            # engine = self._make_bokeh_barchart
-            engine = self._make_svg_barchart
-
-            self._histogram = engine(labels, counts, title)
-            self._cumulative = engine(
+            self._histogram = GradeBarchart(labels, counts, title).plot
+            self._cumulative = GradeCumulative(
                 labels,
-                cumulative_counts,
-                cumulative_title,
-                percent=True,
-            )
-            self._inverse_cumulative = engine(
-                labels,
-                inverse_cumulative_counts,
-                inverse_cumulative_title,
-                percent=True,
-            )
+                cumulative=cumulative_counts,
+                inverse_cumulative=inverse_cumulative_counts,
+                cumulative_title=cumulative_title,
+                inverse_cumulative_title=inverse_cumulative_title,
+            ).plot
         else:
             self._plot = None
             self._cumulative = None
-            self._inverse_cumulative = None
 
     ##############################################
 
@@ -113,10 +154,6 @@ class FrenchGradeHistogramPlot:
     def cumulative(self):
         return self._cumulative
 
-    @property
-    def inverse_cumulative(self):
-        return self._inverse_cumulative
-
     ##############################################
 
     def __getitem__(self, plot):
@@ -125,8 +162,6 @@ class FrenchGradeHistogramPlot:
             return self._histogram
         elif plot == 'cumulative':
             return self._cumulative
-        elif plot == 'inverse_cumulative':
-            return self._inverse_cumulative
         else:
             raise ValueError
 
@@ -136,7 +171,7 @@ class FrenchGradeHistogramPlot:
 
         return hashlib.sha1(str(self._histogram.domain))
 
-    ##############################################
+####################################################################################################
 
     # def _make_bokeh_barchart(self, labels, counts, title):
 
@@ -154,46 +189,3 @@ class FrenchGradeHistogramPlot:
     #               toolbar_location=None,
     #     )
     #     return BokehPlot(bar)
-
-    ##############################################
-
-    def _make_svg_barchart(self, labels, counts, title, percent=False):
-
-        dpi = 100
-        figure_width = 1000 / dpi
-        aspect_ratio = 16 / 9
-        figure_height = figure_width / aspect_ratio
-
-        figure = Figure(figsize=(figure_width, figure_height), dpi=dpi, facecolor='white')
-        axes = figure.add_subplot(1, 1, 1)
-        y = counts
-        if percent:
-            y *= 100
-        x = np.arange(len(y))
-        width = .5
-        bar_chart = axes.bar(x, y, width=width, color='r', edgecolor='white')
-
-        axes.set_title(title, fontsize=20)
-
-        axes.set_xticks(x + width/2)
-        axes.xaxis.set_tick_params(width=0)
-        axes.set_xticklabels(labels, rotation=45, fontsize=15)
-
-        if percent:
-            major_ticks = np.arange(0, 101, 10)
-            axes.set_yticks(major_ticks)
-            # axes.set_yticks(minor_ticks, minor=True)
-        else:
-            major_ticks = np.arange(0, y[y.argmax()] + 1, 5)
-            axes.set_yticks(major_ticks)
-            # axes.set_yticks(minor_ticks, minor=True)
-        axes.set_ylabel('%' if percent else '')
-        axes.grid(axis='y')
-
-        canvas = FigureCanvas(figure)
-        image_data = StringIO()
-        canvas.print_figure(image_data, format='svg')
-        svg = image_data.getvalue()
-        svg = svg[svg.find('<svg'):]
-
-        return SvgPlot(svg)
