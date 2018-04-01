@@ -192,12 +192,17 @@ class FrenchCity(Model):
 
     ##############################################
 
-    def __str__(self):
-
+    @property
+    def as_address(self):
         name =  '{0.zip_code} {0.libelle}'.format(self)
         if self.ligne_5:
             name += ' / ' + self.ligne_5
         return name
+
+    ##############################################
+
+    def __str__(self):
+        return self.as_address
 
 ####################################################################################################
 

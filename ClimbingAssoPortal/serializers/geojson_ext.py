@@ -20,35 +20,20 @@
 
 ####################################################################################################
 
-from django.apps import AppConfig
-from django.core import serializers
-
-# from suit.apps import DjangoSuitConfig
+from django.contrib.gis.serializers.geojson import Serializer as GisSerializer
 
 ####################################################################################################
 
-# print('ClimbingAssoPortal.apps')
+class Serializer(GisSerializer):
 
-####################################################################################################
-
-### class SuitConfig(DjangoSuitConfig):
-###
-###     """Custom Suit v2 Configuration"""
-###
-###     list_per_page = 10
-
-####################################################################################################
-
-class ClimbingAssoPortalConfig(AppConfig):
-
-    name = 'ClimbingAssoPortal' # Fixme: -> climbing_asso_portal ?
-    verbose_name = 'Climbing Asso Portal'
+    """GeoJSON Serializer which handle external fields."""
 
     ##############################################
 
-    def ready(self):
+    def get_dump_object(self, obj):
 
-        # print('ClimbingAssoPortal.ready')
+        for key in self.selected_fields:
+            if key != self.geometry_field and key not in self._current:
+                self._current[key] = getattr(obj, key)
 
-        if 'geojson_ext' not in serializers.BUILTIN_SERIALIZERS:
-            serializers.BUILTIN_SERIALIZERS['geojson_ext'] = 'ClimbingAssoPortal.serializers.geojson_ext'
+        return super().get_dump_object(obj)

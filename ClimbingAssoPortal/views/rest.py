@@ -30,7 +30,7 @@ from rest_framework import viewsets, permissions, generics, mixins, filters
 from rest_framework.response import Response
 import django_filters.rest_framework
 
-from .. import serializers as _serializers
+from ..serializers import rest as _serializers
 from .. import models as app_models
 
 ####################################################################################################
