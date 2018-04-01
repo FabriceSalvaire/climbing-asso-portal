@@ -29,6 +29,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils.translation import ugettext as _
+from django.views.decorators.cache import cache_control
 from django.views.generic import ListView
 from django.views.generic.edit import FormMixin, FormView
 
@@ -38,6 +39,15 @@ from account.decorators import login_required
 import reversion
 from reversion.views import RevisionMixin
 
+import numpy as np
+
+from IntervalArithmetic import Interval
+
+from ClimbingAssoPortalTools.Plot import MatplolibPlot
+from ClimbingAssoPortalTools.Statistics.Binning import Binning1D
+from ClimbingAssoPortalTools.Statistics.Histogram import Histogram
+
+from ..constants import ONE_HOUR
 from ..forms import MemberForm
 from ..models import Member, ClubMember
 from ..models.Tools import field_to_verbose_name
@@ -192,6 +202,156 @@ def member_as_csv(request):
         writer.writerow(fields)
 
     return response
+
+####################################################################################################
+
+# Fixme: @cache_result
+def generate_age_histogram():
+
+    binning = Binning1D(Interval(10, 80), bin_width=2)
+    histograms = {
+        'm': Histogram(binning),
+        'f': Histogram(binning),
+    }
+
+    for member in Member.objects.all():
+        if member.sex in histograms.keys(): # Fixme: s ???
+            histograms[member.sex].fill(member.age)
+
+    return histograms
+
+####################################################################################################
+
+# @cache_result
+def generate_age_histogram_plot(show_error=False):
+
+    histograms = generate_age_histogram()
+
+    plot = MatplolibPlot(aspect_ratio=4/3)
+    plot.figure.tight_layout()
+    axes = plot.subplot()
+
+    FONTSIZE = 17
+    axes.tick_params(axis='both', which='major', labelsize=FONTSIZE)
+
+    axes.set_title(_('Age Histogram'), fontsize=FONTSIZE*1.2)
+
+    interval = histograms['f'].binning.interval
+    axes.set_xticks(np.arange(interval.inf, interval.sup, 5))
+
+    axes.grid()
+
+    WIDTH = 2
+
+    # https://matplotlib.org/_images/named_colors.png
+    sex_color = {
+        'm': 'dodgerblue',
+        'f': 'deeppink',
+    }
+
+    for sex, histogram in histograms.items():
+        x_values, y_values, x_errors, y_errors = histogram.to_graph()
+        if show_error:
+            axes.errorbar(x_values, y_values, xerr=x_errors, yerr=y_errors, fmt='o', color=sex_color[sex], alpha=.5)
+        else:
+            axes.bar(x_values, y_values, width=WIDTH , edgecolor='white', color=sex_color[sex], alpha=.5)
+
+    if show_error:
+        x = .6
+        y = .95
+        y_step = .05
+        for sex, in sorted(histograms.keys()):
+            histogram = histograms[sex]
+            sex_text = _('Female') if sex == 'f' else 'Male'
+            axes.text(
+                x, y,
+                _('Number of {}s {}').format(sex_text, int(histogram.integral)),
+                transform = axes.transAxes,
+            )
+            y -= y_step
+            axes.text(
+                x, y,
+                _('Mean {} {:.1f} +- {:.1f}').format(sex_text, histogram.mean, histogram.standard_deviation),
+                transform = axes.transAxes,
+            )
+            y -= y_step
+            axes.text(
+                x, y,
+                _('Kurtosis {} {:.2f}').format(sex_text, histogram.kurtosis),
+                transform = axes.transAxes,
+            )
+            y -= y_step
+            axes.text(
+                x, y,
+                _('Skewness {} {:.2f}').format(sex_text, histogram.skew),
+                transform = axes.transAxes,
+            )
+            y -= y_step * 2
+
+    return plot.to_svg()
+
+####################################################################################################
+
+def _age_historgam(request, show_error):
+
+    histogram = generate_age_histogram_plot(show_error)
+    svg_data = histogram.div
+    return HttpResponse(svg_data, content_type='image/svg+xml')
+
+
+@cache_control(max_age=ONE_HOUR)
+@login_required
+def age_histogram_svg(request):
+    return _age_historgam(request, show_error=False)
+
+@cache_control(max_age=ONE_HOUR)
+@login_required
+def age_histogram_error_svg(request):
+    return _age_historgam(request, show_error=True)
+
+####################################################################################################
+
+@login_required
+def age_histogram_csv(request):
+
+    histograms = generate_age_histogram()
+
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
+
+    writer = csv.writer(response)
+
+    header = (
+        _('Sex'),
+        _('Age Class Inf'),
+        _('Age Class Sup'),
+        _('Count'),
+        _('Statistical Count Error'),
+    )
+    writer.writerow(header)
+
+    for sex, histogram in histograms.items():
+        binning = histogram.binning
+        for i in binning.bin_iterator(xflow=True):
+            interval = binning.bin_interval(i)
+            fields = (
+                sex,
+                interval.inf,
+                interval.sup,
+                histogram.accumulator[i],
+                histogram.get_bin_error(i),
+            )
+            writer.writerow(fields)
+
+    return response
+
+####################################################################################################
+
+@login_required
+def member_statistics(request):
+
+    return render(request, 'member/statistics.html', {})
 
 ####################################################################################################
 

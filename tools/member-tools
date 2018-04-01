@@ -1,0 +1,85 @@
+#! /usr/bin/env python3
+
+####################################################################################################
+#
+# Climbing Asso Portal - A Portal for Climbing Club (Association)
+# Copyright (C) 2018 Fabrice Salvaire
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+####################################################################################################
+
+####################################################################################################
+
+from ClimbingAssoPortalSite.SettingsTools import setup_django
+setup_django()
+
+from ClimbingAssoPortal.models import Member
+
+from ClimbingAssoPortalTools.Statistics.Binning import Binning1D
+from ClimbingAssoPortalTools.Statistics.Histogram import Histogram
+from IntervalArithmetic import Interval
+
+####################################################################################################
+
+binning = Binning1D(Interval(10, 80), bin_width=2)
+histograms = {
+    'm': Histogram(binning),
+    'f': Histogram(binning),
+}
+
+for member in Member.objects.all():
+    if member.sex in histograms.keys(): # Fixme: s ???
+        histograms[member.sex].fill(member.age)
+
+# print(histogram)
+
+####################################################################################################
+
+# import matplotlib
+# matplotlib.use('Agg')
+# from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+# from matplotlib.figure import Figure
+
+import numpy as np
+
+import matplotlib.pyplot as plt
+
+# dpi = 100
+# figure_width = 1000 / dpi
+# aspect_ratio = 16 / 9
+# figure_height = figure_width / aspect_ratio
+
+# figure = Figure(figsize=(figure_width, figure_height), dpi=dpi, facecolor='white')
+figure = plt.figure(1)
+axes = figure.add_subplot(1, 1, 1)
+
+axes.grid()
+
+width = 2
+
+sex_color = {
+    'm': 'b',
+    'f': 'r',
+}
+
+for sex, histogram in histograms.items():
+    x_values, y_values, x_errors, y_errors = histogram.to_graph()
+    # bar_chart = axes.bar(x_values, y_values, width=width , edgecolor='white', color=sex_color[sex], alpha=.5)
+    axes.errorbar(x_values, y_values, xerr=x_errors, yerr=y_errors, fmt='o', color=sex_color[sex])
+
+interval = binning.interval
+axes.set_xticks(np.arange(interval.inf, interval.sup, 5))
+
+plt.show()

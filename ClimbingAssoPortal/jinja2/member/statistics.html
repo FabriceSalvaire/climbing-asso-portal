@@ -1,0 +1,31 @@
+{# -*- mode: jinja2 -*- #}
+{% extends "include/base.html" %}
+{% from "include/widgets.html" import new_button_group, search_by %}
+
+{% block title %} - {{ _('Member Statistics') }}{% endblock %}
+
+{% block breadcrumb_li %}
+    <li class="breadcrumb-item active">{{ _('Member Statistics') }}</li>
+{% endblock %}
+
+{% block content %}
+    <h2>{{_('Member Statistics')}}</h2>
+
+    <div class="container py-2">
+	<div class="row">
+	    <div class="col-sm-6 px-0">
+		<img class="w-100 p-0" src={{ url('member.age_histogram_svg') }}></img>
+	    </div>
+	    <div class="col-sm-6 px-0">
+		<img class="w-100 p-0" src={{ url('member.age_histogram_error_svg') }}></img>
+	    </div>
+	</div>
+    </div>
+    {# <img class="mx-auto d-block" src={{ url('member.age_histogram_svg') }}></img>  #}
+    {# <img class="mx-auto d-block" src={{ url('member.age_histogram_error_svg') }}></img>  #}
+
+    <p>
+	<a class="btn btn-primary" href={{ url('member.age_histogram_csv') }}><i class="fas fa-download"></i> {{ _('Age Histogram as CSV') }}</a>
+    </p>
+
+{% endblock %}
