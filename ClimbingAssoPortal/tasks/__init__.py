@@ -27,6 +27,6 @@ from celery import shared_task
 @shared_task
 def synchronise_route_from_google_doc():
 
-    from ClimbingAssoPortal.GoogleApi import RouteSpreadsheet
+    from ClimbingAssoPortal.core.GoogleApi import RouteSpreadsheet
     route_spreadsheet = RouteSpreadsheet()
     route_spreadsheet.update(commit=True)

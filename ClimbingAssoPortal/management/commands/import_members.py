@@ -37,7 +37,7 @@ from django.contrib.auth.models import User, Group
 
 from ClimbingAssoPortal.models.city import FrenchCity
 from ClimbingAssoPortal.models.member import Club, Member, ClubMember
-from ClimbingAssoPortal.tools.TextTools import strip_accents
+from ClimbingAssoPortalTools.TextTools import strip_accents
 
 # Else listed as command ...
 from ClimbingAssoPortal.models.MemberFixes import DOMAIN_FIXES, CLUB_FIXES

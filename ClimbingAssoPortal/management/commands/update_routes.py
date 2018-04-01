@@ -24,7 +24,7 @@
 
 from django.core.management.base import BaseCommand, CommandError
 
-from ClimbingAssoPortal.GoogleApi import RouteSpreadsheet
+from ClimbingAssoPortal.core.GoogleApi import RouteSpreadsheet
 
 ####################################################################################################
 
