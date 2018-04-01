@@ -23,7 +23,8 @@
 import csv
 
 from django.contrib import messages
-from django.db.models import Q
+from django.core.serializers import serialize
+from django.db.models import Count, Q
 from django.forms import ModelForm, Form, CharField
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -49,7 +50,7 @@ from ClimbingAssoPortalTools.Statistics.Histogram import Histogram
 
 from ..constants import ONE_HOUR
 from ..forms import MemberForm
-from ..models import Member, ClubMember
+from ..models import ClubMember, FrenchCity, Member
 from ..models.Tools import field_to_verbose_name
 
 ####################################################################################################
@@ -352,6 +353,23 @@ def age_histogram_csv(request):
 def member_statistics(request):
 
     return render(request, 'member/statistics.html', {})
+
+####################################################################################################
+
+@login_required
+def member_city_geojson(request):
+
+    query = FrenchCity.objects.annotate(member_count=Count('member')).filter(member_count__gt=0).order_by('zip_code')
+
+    json_data = serialize(
+        'geojson_ext',
+        query,
+        # fields=('name', 'zip_code', 'libelle', 'ligne_5', 'member_count',),
+        fields=('as_address', 'member_count',),
+        geometry_field='coordinate',
+    )
+
+    return HttpResponse(json_data, content_type='application/json')
 
 ####################################################################################################
 

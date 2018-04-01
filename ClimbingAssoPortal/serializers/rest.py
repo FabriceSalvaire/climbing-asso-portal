@@ -34,7 +34,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
 
-from . import models
+from .. import models
 
 ####################################################################################################
 

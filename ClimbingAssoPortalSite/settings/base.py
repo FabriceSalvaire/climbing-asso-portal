@@ -99,7 +99,7 @@ INSTALLED_APPS = [
     'django_celery_results', # http://django-celery-results.readthedocs.io/en/latest/
     'django_celery_beat', # http://django-celery-beat.readthedocs.io/en/latest/
 
-    'ClimbingAssoPortal',
+    'ClimbingAssoPortal.apps.ClimbingAssoPortalConfig',
 
     # https://github.com/applecat/django-simple-poll
     # https://github.com/byteweaver/django-polls

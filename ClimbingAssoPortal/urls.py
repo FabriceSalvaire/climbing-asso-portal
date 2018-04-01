@@ -148,6 +148,15 @@ urlpatterns += [
          name='member.statistics',
     ),
 
+    path('member/member_city.json',
+         member_views.member_city_geojson,
+         name='member.city_geojson'),
+
+    path('member/map/',
+         TemplateView.as_view(template_name='member/map.html'),
+         name='member.map',
+    ),
+
     path('member/<int:member_id>/',
          member_views.details,
          name='member.details',
