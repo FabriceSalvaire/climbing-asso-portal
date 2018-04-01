@@ -248,150 +248,65 @@ map_source_input.on('change', function() {
 
 /***************************************************************************************************
  *
+ * Cluster
  *
  */
-
-// var styles = {
-//   // GeometryCollection
-//   'foo': [new ol.style.Style({
-//     image: new ol.style.Circle({
-//       radius: 10,
-//       fill: new ol.style.Fill({
-// 	color: 'rgba(0, 0, 255, .5)'
-//       }),
-//       stroke: new ol.style.Stroke({
-//         color: 'blue',
-// 	width: 2
-//       })
-//     })
-//   })],
-// };
-
-// var style_function = function(feature, resolution) {
-//   // console.log("style_function: resolution =", resolution);
-//   var object_type = feature.get('object');
-//   if (object_type == '...') {
-//     if (feature.get('...') == XXXX_name)
-// 	return styles['...'];
-//   } else
-//       return null;
-// };
 
 var feature_options = {
     'dataProjection': proj_4326,
     'featureProjection': proj_3857
 };
-// feature loader http://openlayersbook.github.io/ch05-using-vector-layers/example-03.html
-// readProjection(geojson_object),
 
 var member_source = new ol.source.Vector({
-    // features: new ol.format.GeoJSON()).readFeatures(member_json_data, feature_options)
     format: new ol.format.GeoJSON(),
     loader: function(extent, resolution, projection) {
 	jQuery.getJSON("/member/member_city.json", function(data) {
 	    var features = member_source.getFormat().readFeatures(data, feature_options);
 	    for (var i = 0; i < features.length; i++) {
 		var feature = features[i];
+		// Clone N times the feature ...
 		for (var j = 0; j < feature.get('member_count'); j++)
 		    member_source.addFeature(feature.clone());
 	    }
 	})
     }
 });
-// var member_geojson_layer = new ol.layer.Vector({
-//     source: member_source,
-//     // style: style_function
-// });
-// map.addLayer(member_geojson_layer);
 
 var cluster_source = new ol.source.Cluster({
     distance: 20,
     source: member_source
 });
 
-/////var style_cache = {};
-/////
-/////function has_current_XXXX(features, member_name) {
-/////    for (var i = 0; i < features.length; i++) {
-/////	feature = features[i];
-/////	if (feature.get('name') == XXXX_name)
-/////	    return true;
-/////    }
-/////    return false;
-/////}
-/////
-/////function make_cluster_style(size, colour) {
-/////    return [new ol.style.Style({
-/////	image: new ol.style.Circle({
-/////	    radius: 10,
-/////	    stroke: new ol.style.Stroke({
-/////		color: '#fff'
-/////	    }),
-/////	    fill: new ol.style.Fill({
-/////		color: colour
-/////	    })
-/////	}),
-/////	text: new ol.style.Text({
-/////	    text: size.toString(),
-/////	    fill: new ol.style.Fill({
-/////		color: '#fff'
-/////	    })
-/////	})
-/////    })];
-/////}
-/////
-/////var cluster_style_function = function(feature, resolution) {
-/////    // console.log("clusters style_function: resolution =", resolution);
-/////    var features = feature.get('features');
-/////    if (resolution > resolutions[14]) {
-/////	var size = features.length;
-/////	if (has_current_XXXX(features, XXXX_name)) {
-/////	    return make_cluster_style(size, 'red');
-/////	} else {
-/////	    var style = style_cache[size];
-/////	    if (!style) {
-/////		style = make_cluster_style(size, '#3399CC');
-/////		style_cache[size] = style;
-/////	    }
-/////	    return style;
-/////	}
-/////    } else {
-/////	features = feature.get('features');
-/////	feature = features[0];
-/////	return style_function(feature, resolution);
-/////    }
-/////};
+var style_cache = {};
 
-var styleCache = {};
+function feature_style(feature) {
+    var size = feature.get('features').length;
+    var style = style_cache[size];
+    if (!style) {
+        style = new ol.style.Style({
+	    image: new ol.style.Circle({
+                radius: 10,
+                stroke: new ol.style.Stroke({
+		    color: '#fff'
+                }),
+                fill: new ol.style.Fill({
+		    color: '#3399CC'
+                })
+	    }),
+	    text: new ol.style.Text({
+                text: size.toString(),
+                fill: new ol.style.Fill({
+		    color: '#fff'
+                })
+	    })
+        });
+        style_cache[size] = style;
+    }
+    return style;
+}
 
 var clusters = new ol.layer.Vector({
     source: cluster_source,
-    // style: cluster_style_function
-
-    style: function(feature) {
-        var size = feature.get('features').length;
-        var style = styleCache[size];
-        if (!style) {
-            style = new ol.style.Style({
-		image: new ol.style.Circle({
-                    radius: 10,
-                    stroke: new ol.style.Stroke({
-			color: '#fff'
-                    }),
-                    fill: new ol.style.Fill({
-			color: '#3399CC'
-                    })
-		}),
-		text: new ol.style.Text({
-                    text: size.toString(),
-                    fill: new ol.style.Fill({
-			color: '#fff'
-                    })
-		})
-            });
-            styleCache[size] = style;
-        }
-        return style;
-    }
+    style: feature_style
 });
 map.addLayer(clusters);
