@@ -66,9 +66,9 @@ def generate_route_histogram():
 
     histogram_plot = FrenchGradeHistogramPlot(
         histogram,
-        title=_('Route Grade'),
-        cumulative_title=_('Cumulative histogram of the route grades'),
-        inverse_cumulative_title=_('Inverse cumulative histogram of the route grades'),
+        title=_('Route Grades'),
+        cumulative_title=_('Cumulative Histogram of the Route Grades'),
+        inverse_cumulative_title=_('Inverse Cumulative Histogram of the Route Grades'),
     )
 
     return histogram_plot
@@ -90,10 +90,6 @@ def route_historgam(request):
 @cache_control(max_age=ONE_HOUR)
 def route_cumulative_histogram(request):
     return _route_historgam(request, plot='cumulative')
-
-@cache_control(max_age=ONE_HOUR)
-def route_inverse_cumulative_histogram(request):
-    return _route_historgam(request, plot='inverse_cumulative')
 
 ####################################################################################################
 

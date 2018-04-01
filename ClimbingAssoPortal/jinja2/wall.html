@@ -12,9 +12,19 @@
     <h2>{{ _('Wall') }}</h2> {# Alice Milliat #}
 
     <img class="mx-auto d-block" src={{ static('image/alice-milliat-wall.png') }}></img>
-    <img class="mx-auto d-block" src={{ url('route.histogram') }}></img>
-    <img class="mx-auto d-block" src={{ url('route.cumulative_histogram') }}></img>
-    <img class="mx-auto d-block" src={{ url('route.inverse_cumulative_histogram') }}></img>
+
+    <div class="container py-2">
+	<div class="row">
+	    <div class="col-sm-6 px-0">
+		<img class="w-100 p-0" src={{ url('route.histogram') }}></img>
+	    </div>
+	    <div class="col-sm-6 px-0">
+		<img class="w-100 p-0" src={{ url('route.cumulative_histogram') }}></img>
+	    </div>
+	</div>
+    </div>
+    {# <img class="mx-auto d-block" src={{ url('route.histogram') }}></img>  #}
+    {# <img class="mx-auto d-block" src={{ url('route.cumulative_histogram') }}></img>  #}
 
     <p>
 	<a class="btn btn-primary btn-lg m-b-1" href="{{ url('route.index') }}" role="button">

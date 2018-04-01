@@ -1,6 +1,7 @@
 # Markdown==2.6.11
 # Pillow==5.0.0
 Django==2.0.3
+IntervalArithmetic
 Jinja2==2.10
 celery==4.1.0
 coreapi==2.3.3

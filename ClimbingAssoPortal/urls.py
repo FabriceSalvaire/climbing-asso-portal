@@ -176,10 +176,6 @@ urlpatterns += [
          route_views.route_cumulative_histogram,
          name='route.cumulative_histogram'),
 
-    path('route/inverse_cumulative_histogram.svg',
-         route_views.route_inverse_cumulative_histogram,
-         name='route.inverse_cumulative_histogram'),
-
     path('route/<int:route_id>/',
          route_views.details,
          name='route.details',
