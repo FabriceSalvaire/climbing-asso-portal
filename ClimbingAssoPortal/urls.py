@@ -126,9 +126,9 @@ urlpatterns += [
          name='member.index',
     ),
 
-    path('member_as_csv/',
+    path('member/members.csv',
          member_views.member_as_csv,
-         name='member_as_csv',
+         name='member.member_csv',
     ),
 
     path('member/age_histogram.svg',
