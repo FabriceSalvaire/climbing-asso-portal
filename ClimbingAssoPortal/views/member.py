@@ -351,7 +351,6 @@ def age_histogram_csv(request):
 
 @login_required
 def member_statistics(request):
-
     return render(request, 'member/statistics.html', {})
 
 ####################################################################################################
@@ -359,7 +358,8 @@ def member_statistics(request):
 @login_required
 def member_city_geojson(request):
 
-    query = FrenchCity.objects.annotate(member_count=Count('member')).filter(member_count__gt=0).order_by('zip_code')
+    query = FrenchCity.objects.annotate(member_count=Count('member'))
+    query = query.filter(member_count__gt=0).order_by('zip_code')
 
     json_data = serialize(
         'geojson_ext',
