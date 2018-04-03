@@ -33,7 +33,9 @@
 
     <form method="POST" action=".">
         {% csrf_token %}
-        {{ form|bootstrap }}
+	{{ user_form|bootstrap }}
+        {{ member_form|bootstrap }}
+	{{ club_member_form|bootstrap }}
         <button class="btn btn-primary" type="submit">{{ _('Save') }}</button>
     </form>
 {% endblock %}

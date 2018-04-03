@@ -28,7 +28,6 @@ __all__ = [
 
 from datetime import date
 
-# from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db.models import Model, ForeignKey, OneToOneField
 # from django.db.models.signals import post_save
@@ -48,7 +47,9 @@ from django.db.models.fields import (
     URLField,
 )
 
+# from django.contrib.auth.models import User
 from account.conf import settings
+User = settings.AUTH_USER_MODEL
 
 from ..constants import *
 
@@ -127,7 +128,7 @@ class Member(AddressMixin):
     # Fixme: implement history ?
 
     user = OneToOneField(
-        settings.AUTH_USER_MODEL,
+        User,
         related_name='member',
         verbose_name=_('user'),
         null=True,

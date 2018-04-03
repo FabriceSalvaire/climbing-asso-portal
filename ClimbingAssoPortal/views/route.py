@@ -45,7 +45,7 @@ from ClimbingAssoPortalTools.ClimbingGrade.Statistics import FrenchGradeHistogra
 from ClimbingAssoPortalTools.ClimbingGrade.StatisticsPlot import FrenchGradeHistogramPlot
 
 from ..constants import ONE_HOUR
-from ..forms import RouteForm
+from ..forms.route import RouteForm
 from ..models import Route
 
 ####################################################################################################

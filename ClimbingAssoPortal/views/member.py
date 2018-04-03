@@ -49,24 +49,14 @@ from ClimbingAssoPortalTools.Statistics.Binning import Binning1D
 from ClimbingAssoPortalTools.Statistics.Histogram import Histogram
 
 from ..constants import ONE_HOUR
-from ..forms import MemberForm
+# from ..forms import member as member_forms
+from ..forms.member import (
+    UserStandardForm,
+    MemberForm,
+    ClubMemberForm,
+)
 from ..models import ClubMember, FrenchCity, Member
 from ..models.Tools import field_to_verbose_name
-
-####################################################################################################
-
-class MemberFormView(RevisionMixin, FormView):
-
-    template_name = 'member_edit.html'
-    form_class = MemberForm
-    success_url = '/.../'
-
-    ##############################################
-
-    def form_valid(self, form):
-        # This method is called when valid form data has been POSTed.
-        # It should return an HttpResponse.
-        return super().form_valid(form)
 
 ####################################################################################################
 
@@ -405,17 +395,39 @@ def create(request):
 @reversion.views.create_revision(manage_manually=False, using=None, atomic=True)
 def update(request, member_id):
 
+    print('update', request, member_id)
+
     member = get_object_or_404(Member, pk=member_id)
 
     if request.method == 'POST':
-        form = MemberForm(request.POST, instance=member)
-        if form.is_valid():
-            member = form.save()
+        print('POST', dict(request.POST))
+        member_form = MemberForm(request.POST, instance=member)
+        user_form = UserStandardForm(request.POST, instance=member.user)
+        club_member_form = ClubMemberForm(request.POST, instance=member.club_member)
+        valid = True
+        for form in (member_form, user_form, club_member_form):
+            if not form.is_valid():
+                valid = False
+                break
+        if valid:
+            member = member_form.save()
+            user_form.save()
+            club_member_form.save()
             return HttpResponseRedirect(reverse('member.details', args=[member.pk]))
     else:
-        form = MemberForm(instance=member)
+        member_form = MemberForm(instance=member)
+        user_form = UserStandardForm(instance=member.user)
+        club_member_form = ClubMemberForm(instance=member.club_member)
 
-    return render(request, 'member/create.html', {'form': form, 'update': True, 'member': member})
+    context = dict(
+        member_form=member_form,
+        user_form=user_form,
+        club_member_form=club_member_form,
+        update=True,
+        member=member,
+    )
+
+    return render(request, 'member/create.html', context)
 
 ####################################################################################################
 
