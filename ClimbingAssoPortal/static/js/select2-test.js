@@ -48,4 +48,39 @@ $(document).ready(function() {
             }
 	}
     });
+
+    $('#ban').select2({
+        ajax: {
+            url: 'http://api-adresse.data.gouv.fr/search/',
+            dataType: 'json',
+	    data: function (params) {
+		var query = {
+		    q: params.term,
+		    limit: 10,
+		    type: 'housenumber',
+		    // type: 'street',
+		    postcode: 95870
+		    // type: 'municipality'
+		}
+		return query;
+	    },
+	    processResults: function (data) {
+		console.log('data', data);
+	    	var features = data.features;
+		console.log('features', features);
+	    	var results = [];
+	    	for (var i = 0; i < features.length; i++) {
+	    	    var feature = features[i];
+		    console.log('feature', feature);
+	    	    results.push({
+	    		id: i,
+	    		text: feature.properties.label
+	    	    })
+	    	}
+	    	return {
+                    results: results
+	    	};
+            }
+	}
+    });
 });
