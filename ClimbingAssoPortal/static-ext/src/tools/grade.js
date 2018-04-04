@@ -32,24 +32,24 @@
 
 const GRADE_PLUS = 5;
 
-// Can be hosted in class ???
-export
-function* grade_iter(grade_min=1, grade_max=9, grade_plus=GRADE_PLUS) {
-    for (var major = grade_min; major <= grade_max; major++)
-	for (var minor of ['a', 'b', 'c']) {
-	    var grade = major.toString() + minor;
-	    yield grade; // Fixme: FrenchGrade ???
-	    if (major >= GRADE_PLUS)
-                yield grade + '+';
-	}
-}
-
 export
 class FrenchGrade {
+    static * grade_iter(grade_min=1, grade_max=9, grade_plus=GRADE_PLUS) {
+	for (var major = grade_min; major <= grade_max; major++)
+	    for (var minor of ['a', 'b', 'c']) {
+		var grade = major.toString() + minor;
+		yield grade; // Fixme: FrenchGrade ???
+		if (major >= GRADE_PLUS)
+                    yield grade + '+';
+	    }
+    }
+
     constructor(grade) {
 	var grade = grade.toLowerCase();
 	var grade_re = /([1-9])([a-c])?(\+|\-)?/;
 	var match = grade_re.exec(grade);
+	if (match === null)
+	    console.log('Invalid grade', grade);
 	var [number, letter, sign] = match.slice(1,4);
 	if (number) {
 	    this._number = parseInt(number);

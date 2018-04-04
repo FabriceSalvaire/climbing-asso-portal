@@ -262,4 +262,9 @@ urlpatterns += [
          TemplateView.as_view(template_name='test/index-angularjs.html'),
          name='test.route-angularjs',
     ),
+
+    path('test/route-reactjs',
+         TemplateView.as_view(template_name='test/index-reactjs.html'),
+         name='test.route-reactjs',
+    ),
 ]

@@ -1,7 +1,7 @@
 {
     "env": {
 	"browser": {
-	    "presets": ["es2015"],
+	    "presets": ["es2015", "react", "stage-2"],
 	    "plugins": [
 		["angularjs-annotate", { "explicitOnly" : true}]
 	    ]
@@ -13,8 +13,10 @@
 			"browsers": ["last 2 versions"]
 		    },
 		    "debug": true
-		}]
-	    ],
+		}],
+ 		"react",
+		"stage-2"
+  	    ],
 	    "plugins": [
 		["angularjs-annotate", { "explicitOnly" : true}]
 	    ]
@@ -25,7 +27,9 @@
 		    "targets": {
 			"node": "8.10"
 		    }
-		}]
+		}],
+ 		"react",
+ 		"stage-2"
 	    ]
 	}
     }

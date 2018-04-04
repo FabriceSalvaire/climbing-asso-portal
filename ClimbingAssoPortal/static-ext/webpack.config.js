@@ -12,13 +12,22 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 // https://webpack.js.org/plugins/compression-webpack-plugin
 
 module.exports = {
-    // mode: 'development',
-    mode: 'production',
+    mode: 'development',
+    // mode: 'production',
 
+    externals: {
+	jquery: 'jQuery',
+	react: 'React',
+	'react-dom': 'ReactDOM' // ,
+	// 'react-bootstrap-slider': 'ReactBootstrapSlider'
+    },
+
+    // entry: ['babel-polyfill', './app/js']
     entry: {
 	main: './src/main.js',
-	test: './src/test.js',
 	route_page: './src/pages/wall/route-page.js',
+	test: './src/test.js',
+	route_page_react: './src/pages/wall/route-page.jsx'
     },
 
     output: {
@@ -28,7 +37,11 @@ module.exports = {
 
     module: {
 	rules: [
-	    { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
+	    {
+		test: /\.(js|jsx)$/,
+		exclude: /node_modules/,
+		loader: "babel-loader"
+	    },
             {
 		// Match .css and .scss
                 test:/\.(s*)css$/,

@@ -1,0 +1,1 @@
+../../static-ext/node_modules/react/cjs/react.development.js

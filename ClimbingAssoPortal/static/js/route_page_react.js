@@ -1,0 +1,1 @@
+../../static-ext/dist/route_page_react.js

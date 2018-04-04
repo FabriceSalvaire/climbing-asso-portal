@@ -1,2 +1,6 @@
 #! /usr/bin/bash
+
+BABEL_ENV=node
+export BABEL_ENV
+
 npx webpack ./src/test.js && node dist/test.js
