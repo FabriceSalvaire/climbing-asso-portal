@@ -4,40 +4,7 @@
 
 {% block head %}
     <link rel="stylesheet" href={{ static('css-ext/bootstrap-slider.min.css') }}>
-    <style>
-	#grade-slider {
-	width: 100%;
-	-moz-user-select: none; /* Firefox */
-	}
-	.slider-min-max {
-	display: inline-flex;
-	width: 100%;
-	-moz-user-select: none; /* Firefox */
-	}
-	.unselectable {
-	-webkit-user-select: none; /* Safari */
-	-moz-user-select: none; /* Firefox */
-	-ms-user-select: none; /* IE10+/Edge */
-	user-select: none; /* Standard */
-	}
-	.slider-value-min {
-	text-align: left;
-	width: 50%;
-	}
-	.slider-value-max {
-	text-align: right;
-	width: 50%;
-	}
-	#filters {
-	width: 50em;
-	}
-
-	.route-table-wrapper {
-	height: 500px !important;
-	overflow-y: scroll;
-	font-size: 80%;
-	}​
-    </style>
+    <link rel="stylesheet" href={{ static('css/main.css') }}>
 {% endblock %}
 
 {% block script %}
@@ -74,7 +41,7 @@
 {% block content %}
     {# <h2>{{ _('Routes') }} </h2> #}
     <img class="mx-auto d-block" src={{ static('image/alice-milliat-wall.png') }}></img>
-    <div id="filters" class="mx-auto"></div>
+    <div id="filters" class="mx-auto slider-wrapper"></div>
     <div class="route-table-wrapper">
 	<table class="table">
 	    <thead>

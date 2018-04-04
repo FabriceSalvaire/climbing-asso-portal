@@ -137,7 +137,6 @@ class Filters extends React.Component {
 	return (
 	    <React.Fragment>
 		<ReactBootstrapSlider
-		    id='grade-slider'
 		    value={current_value}
 		    change={this.on_value_change}
 		    slideStop={this.on_value_change}
