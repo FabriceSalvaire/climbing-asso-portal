@@ -7,22 +7,36 @@
     <style>
 	#grade-slider {
 	width: 100%;
+	-moz-user-select: none; /* Firefox */
 	}
 	.slider-min-max {
 	display: inline-flex;
 	width: 100%;
+	-moz-user-select: none; /* Firefox */
+	}
+	.unselectable {
+	-webkit-user-select: none; /* Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
 	}
 	.slider-value-min {
 	text-align: left;
-	width: 50%
+	width: 50%;
 	}
 	.slider-value-max {
 	text-align: right;
-	width: 50%
+	width: 50%;
 	}
 	#filters {
 	width: 50em;
 	}
+
+	.route-table-wrapper {
+	height: 500px !important;
+	overflow-y: scroll;
+	font-size: 80%;
+	}​
     </style>
 {% endblock %}
 
@@ -54,25 +68,27 @@
     <li class="breadcrumb-item active">{{ _('Routes') }}</li>
 {% endblock %}
 
+{% block breadcrumb %}
+{% endblock %}
+
 {% block content %}
-    <h2>{{ _('Routes') }} </h2>
-
+    {# <h2>{{ _('Routes') }} </h2> #}
     <img class="mx-auto d-block" src={{ static('image/alice-milliat-wall.png') }}></img>
-
     <div id="filters" class="mx-auto"></div>
-
-    <table class="table">
-	<thead>
-	    <tr>
-		<th scope="col">{{ _('Line Number') }}</th>
-		<th scope="col">{{ _('Grade') }}</th>
-		<th scope="col">{{ _('Colour') }}</th>
-		<th scope="col">{{ _('Name') }}</th>
-		<th scope="col">{{ _('Comment') }}</th>
-		<th scope="col">{{ _('Opener') }}</th>
-		<th scope="col">{{ _('Opening date') }}</th>
-	    </tr>
-	</thead>
-	<tbody id="route-table"></tbody>
-    </table>
+    <div class="route-table-wrapper">
+	<table class="table">
+	    <thead>
+		<tr>
+		    <th scope="col">{{ _('Line Number') }}</th>
+		    <th scope="col">{{ _('Grade') }}</th>
+		    <th scope="col">{{ _('Colour') }}</th>
+		    <th scope="col">{{ _('Name') }}</th>
+		    <th scope="col">{{ _('Comment') }}</th>
+		    <th scope="col">{{ _('Opener') }}</th>
+		    <th scope="col">{{ _('Opening date') }}</th>
+		</tr>
+	    </thead>
+	    <tbody id="route-table"></tbody>
+	</table>
+    </div>
 {% endblock %}
