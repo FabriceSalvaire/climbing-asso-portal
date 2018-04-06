@@ -36,16 +36,15 @@
 		    crossorigin="anonymous">
 	    </script>
 
-	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-		  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-		  crossorigin="anonymous">
+	    {# <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" #}
+	    {# 	  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" #}
+	    {# 	  crossorigin="anonymous"> #}
 	{% else %}
 	    <script defer src={{ static('js-ext/fontawesome-all.min.js') }}></script>
 	    <script defer src={{ static('js-ext/fa-v4-shims.min.js') }}></script>
-            <link rel="stylesheet" href={{ static('css-ext/bootstrap.min.css') }}>
+            {# <link rel="stylesheet" href={{ static('css-ext/bootstrap.min.css') }}> #}
+	    <link rel="stylesheet" href="{{ static('css/common.css') }}">
 	{% endif %}
-
-	<link rel="stylesheet" href="{{ static('css/climbing-asso-portal.css') }}">
 
 	{# <link rel="stylesheet" href="{{ static(filer/css/admin_filer.css) }}"> #}
 	{# <link rel="stylesheet" type="text/css" href="/static/filer/css/admin_filer.css"> #}
@@ -185,13 +184,14 @@
 			integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
 			crossorigin="anonymous">
 		</script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-			integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-			crossorigin="anonymous">
-		</script>
+		{# <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" #}
+		{# 	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" #}
+		{# 	crossorigin="anonymous"> #}
+		{# </script> #}
 	    {% else %}
 		<script type="text/javascript" src={{ static('js-ext/popper.min.js') }}></script>
-		<script type="text/javascript" src={{ static('js-ext/bootstrap.min.js') }}></script>
+		{# <script type="text/javascript" src={{ static('js-ext/bootstrap.min.js') }}></script> #}
+		<script type="text/javascript" src={{ static('js-ext/common.js') }}></script>
 	    {% endif %}
 
 	    {# Custom script #}
