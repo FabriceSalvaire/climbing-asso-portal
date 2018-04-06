@@ -1,0 +1,156 @@
+/*
+ * Copyright (C) 2018 Fabrice Salvaire
+ *
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#left-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    margin-top: $top-navbar-height;
+    width: $left-sidebar-width;
+
+    background-color: $sidebar-bg;
+
+    border-right: $sidebar-border;
+}
+
+.left-sidebar-wrapper {
+    margin-top: $nav-link-padding-y;
+    // display: table;
+    width: 100%
+}
+
+.sidebar-elements {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+    a {
+	text-decoration: none;
+	outline: 0;
+
+	display: block; // for caret
+
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+    }
+
+    ul {
+	list-style: none;
+    }
+
+    // for icon
+    svg {
+	margin-right: 1rem;
+    }
+
+    .divider {
+	padding: $sidebar-padding 0 0 $sidebar-padding;
+	color: $sidebar-divider-color;
+	text-transform: uppercase;
+    }
+
+    > li {
+	> a { // Level 0 Menu
+	    padding: 0 $sidebar-padding;
+	    color: $sidebar-menu-color;
+	    line-height: $sidebar-menu-line-height;
+
+	    &:hover {
+		background-color: $sidebar-menu-hovered;
+	    }
+	}
+
+	// Sub-menus
+	ul {
+	    display: none; // sub-menus are closed per default
+	    background-color: $sidebar-submenu-bg;
+	    padding: $sidebar-submenu-y-padding 0;
+
+	    li {
+		> a {
+		    padding: 0 $sidebar-padding/2 0 $sidebar-padding;
+	    	    color: $sidebar-submenu-color;
+		    line-height: $sidebar-submenu-line-height;
+
+	    	    &:hover {
+	    	    background-color: $sidebar-submenu-hovered;
+	    	    }
+		}
+
+		ul {
+	    	    padding-bottom: 0; // don't accumulate padding at the bottom of the level > 1 sub-menu
+		}
+	    }
+	}
+
+	// add border to level 1 sub-menu
+	> ul {
+	    border-top: $sidebar-border;
+	    border-bottom: $sidebar-border;
+	}
+
+	// sub-menu indentation
+	> ul > li {
+	    > a {
+		padding-left: nth($sidebar-level-padding, 1);
+	    }
+	    > ul > li {
+		> a {
+		    padding-left: nth($sidebar-level-padding, 2);
+		}
+		> ul > li {
+		    > a {
+			padding-left: nth($sidebar-level-padding, 3);
+		    }
+		    > ul > li {
+			> a {
+			    padding-left: nth($sidebar-level-padding, 4);
+			}
+			> ul > li {
+			    > a {
+				padding-left: nth($sidebar-level-padding, 5);
+			    }
+			}
+		    }
+		}
+	    }
+	}
+    }
+
+    // opened sub-menus
+    li.open > ul {
+	display: block;
+    }
+
+    // Style caret for
+    li.parent {
+	> a:before {
+	    float: right;
+	    content: $fa-var-caret-down;
+	    font-family: "Font Awesome\ 5 Free";
+	    font-style: normal;
+	    font-weight: 900;
+	    color: $sidebar-color;
+	}
+
+	&.open > a:before {
+	    content: $fa-var-caret-up;
+	}
+    }
+}

@@ -1,0 +1,35 @@
+{# -*- mode: jinja2 -*- #}
+<!DOCTYPE html>
+{# <html lang="en"> #}
+<html lang="fr" {% block ng_app %}{% endblock %}>
+    <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="Fabrice Salvaire">
+	<meta name="generator" content="Django">
+
+        <title>{{ SITE_NAME }}{% block title %}{% endblock %}</title>
+
+	{# Favicons #}
+        <link rel="shortcut icon" href="{{ static('image/favicon.png') }}">
+
+	{% block head_scripts %}{% endblock %}
+	{% block head %}{% endblock %}
+    </head>
+
+    {# Body #}
+    {% block body %}
+	<body>
+	    <div class="body-wrapper">
+		{% block top_navbar %}{% endblock %}
+		{% block left_sidebar %}{% endblock %}
+		{% block body_container %}{% endblock %}
+	    </div>
+
+	    {% block lazy_scripts %}{% endblock %}
+	    {# Custom script #}
+	    {% block script %}{% endblock %}
+	</body>
+    {% endblock %}
+</html>

@@ -1,0 +1,63 @@
+/*
+ * Copyright (C) 2018 Fabrice Salvaire
+ *
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+$top-navbar-height: ($navbar-padding-y)*2 + $nav-link-height;
+
+/***************************************************************************************************
+ *
+ * Fontawesome Woff
+ *
+ */
+
+$fa-var-caret-down: '\f0d7';
+$fa-var-caret-up: '\f0d8';
+
+/***************************************************************************************************
+ *
+ * Sidebar
+ *
+ */
+
+$left-sidebar-width: 250px;
+
+$sidebar-color-interval: $theme-color-interval / 2; // 8% -> 4%
+$sidebar-bg: darken($body-bg, $sidebar-color-interval);
+$sidebar-color: $body-color;
+$sidebar-border: 1px solid darken($sidebar-bg, $sidebar-color-interval*2);
+
+$sidebar-divider-color: lighten($sidebar-color, $sidebar-color-interval);
+
+$sidebar-menu-hovered: darken($sidebar-bg, $sidebar-color-interval);
+$sidebar-menu-color: $sidebar-color;
+
+$sidebar-submenu-bg: darken($sidebar-bg, $sidebar-color-interval);
+$sidebar-submenu-hovered: lighten($sidebar-submenu-bg, $sidebar-color-interval);
+$sidebar-submenu-color: $sidebar-color;
+
+$sidebar-padding: 1.5rem;
+$sidebar-submenu-y-padding: .5rem;
+
+$sidebar-menu-line-height: 2rem;
+$sidebar-submenu-line-height: 1.5rem;
+
+$sidebar-level-padding-step: 1rem;
+$sidebar-level1-padding: 3rem;
+
+$sidebar-level-padding: ($sidebar-level1-padding);
+@for $i from 1 through 4 {
+  $sidebar-level-padding: append($sidebar-level-padding, nth($sidebar-level-padding, $i) + $sidebar-level-padding-step);
+}

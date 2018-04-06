@@ -1,0 +1,46 @@
+/*
+ * Copyright (C) 2018 Fabrice Salvaire
+ *
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+div.slider-wrapper {
+    @extend %unselectable;
+    width: 25em;
+
+    .slider {
+	width: 100%;
+    }
+
+    .slider-min-max {
+	display: inline-flex;
+	width: 100%;
+
+	.slider-value-min {
+	    text-align: left;
+	    width: 50%;
+	}
+
+	.slider-value-max {
+	    text-align: right;
+	    width: 50%;
+	}
+    }
+}
+
+div.route-table-wrapper {
+    height: 500px !important;
+    overflow-y: scroll;
+    font-size: 80%;
+}
