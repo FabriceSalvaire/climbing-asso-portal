@@ -4,4 +4,5 @@
 BABEL_ENV=latest-browser
 export BABEL_ENV
 
-npx webpack -w
+# see --help
+npx webpack --watch --debug

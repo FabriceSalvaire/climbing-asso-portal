@@ -1,1 +1,1 @@
-../../static-ext/node_modules/jquery/dist/jquery.slim.js
+../../static-src/node_modules/jquery/dist/jquery.slim.js

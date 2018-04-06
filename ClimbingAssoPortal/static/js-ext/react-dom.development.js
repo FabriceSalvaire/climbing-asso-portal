@@ -1,1 +1,1 @@
-../../static-ext/node_modules/react-dom/cjs/react-dom.development.js
+../../static-src/node_modules/react-dom/cjs/react-dom.development.js

@@ -1,1 +1,1 @@
-../../static-ext/node_modules/openlayers/dist/ol.js
+../../static-src/node_modules/openlayers/dist/ol.js

@@ -1,1 +1,1 @@
-../../static-ext/node_modules/react-bootstrap-slider/dist/react-bootstrap-slider.js
+../../static-src/node_modules/react-bootstrap-slider/dist/react-bootstrap-slider.js

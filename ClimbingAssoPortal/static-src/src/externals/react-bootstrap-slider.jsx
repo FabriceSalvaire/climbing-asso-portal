@@ -1,0 +1,1 @@
+../../node_modules/react-bootstrap-slider/src/js/react-bootstrap-slider.jsx

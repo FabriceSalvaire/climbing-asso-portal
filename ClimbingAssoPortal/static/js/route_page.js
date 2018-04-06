@@ -1,1 +1,0 @@
-../../static-ext/dist/route_page.js
