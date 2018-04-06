@@ -11,6 +11,7 @@ ClimbingAssoPortal/static-ext/dist/
 ClimbingAssoPortal/static-src/node_modules
 ClimbingAssoPortal/static-src/node_modules/
 ClimbingAssoPortal/static-src/package-lock.json
+ClimbingAssoPortal/static-src/packages/
 ClimbingAssoPortal/static-src/yarn-error.log
 ClimbingAssoPortal/static-src/yarn.lock
 ClimbingAssoPortal/static/css/
@@ -20,7 +21,8 @@ FrenchZipCode/laposte_hexasmal.csv
 db.sqlite3
 media/
 node_modules/
-packages/
+local_packages/
+root/
 static/
 !ClimbingAssoPortal/static/
 
