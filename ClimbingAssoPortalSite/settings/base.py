@@ -99,6 +99,8 @@ INSTALLED_APPS = [
     'django_celery_results', # http://django-celery-results.readthedocs.io/en/latest/
     'django_celery_beat', # http://django-celery-beat.readthedocs.io/en/latest/
 
+    'graphene_django', # http://docs.graphene-python.org/projects/django/en/latest
+
     'ClimbingAssoPortal.apps.ClimbingAssoPortalConfig',
 
     # https://github.com/applecat/django-simple-poll
@@ -312,3 +314,15 @@ ACCOUNT_DELETION_MARK_CALLBACK = None # Fixme:
 
 # FILER_UPLOADER_CONNECTIONS = 3
 # Number of simultaneous AJAX uploads. Defaults to 3.
+
+####################################################################################################
+#
+# Graphene
+#
+
+GRAPHENE = {
+    'SCHEMA': 'ClimbingAssoPortal.schema.schema',
+    'MIDDLEWARE': [
+        'graphene_django.debug.DjangoDebugMiddleware',
+    ]
+}

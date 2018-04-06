@@ -118,6 +118,17 @@ urlpatterns += [
 # Member
 #
 
+from graphene_django.views import GraphQLView
+
+urlpatterns += [
+    path('graphql', GraphQLView.as_view(graphiql=True)), # , schema=schema
+]
+
+####################################################################################################
+#
+# Member
+#
+
 from .views import member as member_views
 
 urlpatterns += [
