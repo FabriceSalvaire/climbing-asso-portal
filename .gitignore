@@ -6,13 +6,15 @@ du.log
 trash/
 
 .google-api-credentials/
-ClimbingAssoPortal/static-ext/dist/
 ClimbingAssoPortal/serializers-removed.py
-ClimbingAssoPortal/static-ext/node_modules
-ClimbingAssoPortal/static-ext/node_modules/
-ClimbingAssoPortal/static-ext/package-lock.json
-ClimbingAssoPortal/static-ext/yarn-error.log
-ClimbingAssoPortal/static-ext/yarn.lock
+ClimbingAssoPortal/static-ext/dist/
+ClimbingAssoPortal/static-src/node_modules
+ClimbingAssoPortal/static-src/node_modules/
+ClimbingAssoPortal/static-src/package-lock.json
+ClimbingAssoPortal/static-src/yarn-error.log
+ClimbingAssoPortal/static-src/yarn.lock
+ClimbingAssoPortal/static/css/
+ClimbingAssoPortal/static/js/
 FrenchZipCode/laposte_commnouv.csv
 FrenchZipCode/laposte_hexasmal.csv
 db.sqlite3
@@ -34,8 +36,7 @@ ClimbingAssoPortal/jinja2/include/tmp.html
 ClimbingAssoPortal/jinja2/rename.sh
 ClimbingAssoPortal/jinja2/trash/
 ClimbingAssoPortal/management/commands/member-isssues.txt
-ClimbingAssoPortal/static-ext/src/test.js
-ClimbingAssoPortal/static-ext/webpack-demo/
+ClimbingAssoPortal/static-src/src/test.js
 ClimbingAssoPortal/static/js-ext/angular-resource.min.js.map
 ClimbingAssoPortal/static/js-ext/angular.min.js.map
 ClimbingAssoPortal/templates/disabled/
