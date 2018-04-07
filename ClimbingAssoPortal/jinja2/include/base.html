@@ -42,12 +42,15 @@
 	{# Bootstrap #}
         {# <link rel="stylesheet" href={{ static('css-ext/bootstrap.min.css') }}> #}
 	<link rel="stylesheet" href="{{ static('css/common.css') }}">
+
+	<link rel="stylesheet" href="{{ static('css-ext/perfect-scrollbar.css') }}">
     {% endif %}
 {% endblock %}
 
 {##################################################################################################}
 
 {% block lazy_scripts %}
+    {# JQuery (Bootstrap works with slim build) #}
     {% if use_cdn %}
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
 		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -56,6 +59,8 @@
     {% else %}
 	<script type="text/javascript" src={{ static('js-ext/jquery.min.js') }}></script>
     {% endif %}
+
+    {# Popper #}
     {% if use_cdn %}
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
 		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -74,6 +79,8 @@
 	{# <script type="text/javascript" src={{ static('js-ext/bootstrap.min.js') }}></script> #}
 	<script type="text/javascript" src={{ static('js/common.js') }}></script>
     {% endif %}
+
+    {# <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script> #}
 {% endblock %}
 
 {##################################################################################################}
@@ -140,55 +147,119 @@
 {##################################################################################################}
 
 {% block left_sidebar %}
-    <nav id="left-sidebar">
+    <nav id="left-sidebar" class="active">
 	<div class="left-sidebar-wrapper">
-	    <ul class="sidebar-elements">
-                <li class="divider">Menu</li>
-                <li class="active"><a href="index.html"><i class="fas fa-home"></i><span>Dashboard</span></a>
-                </li>
-                <li class="parent"><a href="#"><i class="fas fa-home"></i><span>UI Elements</span></a>
-                    <ul class="sub-menu">
-			<li><a href="ui-alerts.html">Alerts</a>
+	    <div class="left-sidebar-header">
+		<button id="close-sidebar" type="button" class="btn btn-sm"><i class="fas fa-caret-left"></i></button>
+	    </div>
+	    <div class="left-sidebar-spacer">
+		<div id="left-sidebar-scroll">
+		    <ul class="sidebar-elements">
+			<li class="divider">Menu</li>
+			<li class="active"><a href="index.html"><i class="fas fa-home"></i><span>Dashboard</span></a>
 			</li>
-			<li><a href="ui-buttons.html">Buttons</a>
-			</li>
-			<li><a href="ui-panels.html">Panels</a>
-			</li>
-                    </ul>
-                </li>
-                <li class="parent"><a href="#"><i class="fas fa-folder"></i><span>Menu Levels</span></a>
-                    <ul class="sub-menu">
-			<li class="parent"><a href="#"></i><span>Level 1</span></a>
-                            <ul class="sub-menu">
-				<li><a href="#"></i><span>Level 2</span></a>
+			<li class="parent"><a href="#"><i class="fas fa-home"></i><span>UI Elements</span></a>
+			    <ul class="sub-menu">
+				<li><a href="ui-alerts.html">Alerts</a>
 				</li>
-				<li class="parent"><a href="#"></i><span>Level 2</span></a>
+				<li><a href="ui-buttons.html">Buttons</a>
+				</li>
+				<li><a href="ui-panels.html">Panels</a>
+				</li>
+				<li><a href="ui-alerts.html">Alerts</a>
+				</li>
+				<li><a href="ui-buttons.html">Buttons</a>
+				</li>
+				<li><a href="ui-panels.html">Panels</a>
+				</li>
+				<li><a href="ui-alerts.html">Alerts</a>
+				</li>
+				<li><a href="ui-buttons.html">Buttons</a>
+				</li>
+				<li><a href="ui-panels.html">Panels</a>
+				</li>
+				<li><a href="ui-alerts.html">Alerts</a>
+				</li>
+				<li><a href="ui-buttons.html">Buttons</a>
+				</li>
+				<li><a href="ui-panels.html">Panels</a>
+				</li>
+				<li><a href="ui-alerts.html">Alerts</a>
+				</li>
+				<li><a href="ui-buttons.html">Buttons</a>
+				</li>
+				<li><a href="ui-panels.html">Panels</a>
+				</li>
+				<li><a href="ui-alerts.html">Alerts</a>
+				</li>
+				<li><a href="ui-buttons.html">Buttons</a>
+				</li>
+				<li><a href="ui-panels.html">Panels</a>
+				</li>
+				<li><a href="ui-alerts.html">Alerts</a>
+				</li>
+				<li><a href="ui-buttons.html">Buttons</a>
+				</li>
+				<li><a href="ui-panels.html">Panels</a>
+				</li>
+				<li><a href="ui-alerts.html">Alerts</a>
+				</li>
+				<li><a href="ui-buttons.html">Buttons</a>
+				</li>
+				<li><a href="ui-panels.html">Panels</a>
+				</li>
+				<li><a href="ui-alerts.html">Alerts</a>
+				</li>
+				<li><a href="ui-buttons.html">Buttons</a>
+				</li>
+				<li><a href="ui-panels.html">Panels</a>
+				</li>
+				<li><a href="ui-alerts.html">Alerts</a>
+				</li>
+				<li><a href="ui-buttons.html">Buttons</a>
+				</li>
+				<li><a href="ui-panels.html">Panels</a>
+				</li>
+			    </ul>
+			</li>
+			<li class="parent"><a href="#"><i class="fas fa-folder"></i><span>Menu Levels</span></a>
+			    <ul class="sub-menu">
+				<li class="parent"><a href="#"><span>Level 1</span></a>
 				    <ul class="sub-menu">
-					<li><a href="#"></i><span>Level 3</span></a>
+					<li><a href="#"><span>Level 2</span></a>
 					</li>
-					<li><a href="#"></i><span>Level 3</span></a>
+					<li class="parent"><a href="#"><span>Level 2</span></a>
+					    <ul class="sub-menu">
+						<li><a href="#"><span>Level 3</span></a>
+						</li>
+						<li><a href="#"><span>Level 3</span></a>
+						</li>
+					    </ul>
 					</li>
 				    </ul>
 				</li>
-                            </ul>
-			</li>
-			<li class="parent"><a href="#"></i><span>Level 1</span></a>
-                            <ul class="sub-menu">
-				<li><a href="#"></i><span>Level 2</span></a>
-				</li>
-				<li class="parent"><a href="#"></i><span>Level 2</span></a>
+				<li class="parent"><a href="#"><span>Level 1</span></a>
 				    <ul class="sub-menu">
-					<li><a href="#"></i><span>Level 3</span></a>
+					<li><a href="#"><span>Level 2</span></a>
 					</li>
-					<li><a href="#"></i><span>Level 3</span></a>
+					<li class="parent"><a href="#"><span>Level 2</span></a>
+					    <ul class="sub-menu">
+						<li><a href="#"><span>Level 3</span></a>
+						</li>
+						<li><a href="#"><span>Level 3</span></a>
+						</li>
+					    </ul>
 					</li>
 				    </ul>
 				</li>
-                            </ul>
+			    </ul>
 			</li>
-                    </ul>
-                </li>
-            </ul>
+		    </ul>
+		</div>
+	    </div>
+	    <div class="left-sidebar-footer">
+	    	<span>Footer</span>
+	    </div>
 	</div>
     </nav>
 {% endblock %}
@@ -212,6 +283,11 @@
 			    </ol>
 			</nav>
 		    {% endblock %}
+
+
+		    <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
+                        <span>Open Sidebar</span>
+                    </button>
 
 		    {# Page content #}
 		    <main class="" role="main">

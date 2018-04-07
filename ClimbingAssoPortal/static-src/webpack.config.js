@@ -17,10 +17,10 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 /**************************************************************************************************/
 
-// https://github.com/schmod/babel-plugin-angularjs-annotate
-
 // https://webpack.js.org/plugins/commons-chunk-plugin
 // https://webpack.js.org/plugins/compression-webpack-plugin
+// https://github.com/waysact/webpack-subresource-integrity
+// https://github.com/mikechau/sri-stats-webpack-plugin
 
 /**************************************************************************************************/
 
@@ -31,6 +31,7 @@ const babel_config = {
 	browser: {
 	    presets: ['es2015', 'react', 'stage-2'],
 	    plugins: [
+		// https://github.com/schmod/babel-plugin-angularjs-annotate
 		['angularjs-annotate', { 'explicitOnly' : true}]
 	    ]
 	},

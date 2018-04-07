@@ -17,29 +17,67 @@
 
 #left-sidebar {
     position: fixed;
-    left: 0;
     top: 0;
     bottom: 0;
     margin-top: $top-navbar-height;
+
+    left: - $left-sidebar-width;
+    transition: left 300ms;
     width: $left-sidebar-width;
 
     background-color: $sidebar-bg;
-
     border-right: $sidebar-border;
 }
 
+#left-sidebar.active {
+    left: 0;
+}
+
 .left-sidebar-wrapper {
-    margin-top: $nav-link-padding-y;
-    // display: table;
-    width: 100%
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.left-sidebar-header {
+    padding: $sidebar-y-padding;
+}
+
+.left-sidebar-spacer {
+    flex: 1;
+    width: 100%;
+    min-height: 0px; // for perfect scrollbar
+    // overflow-y: auto; // use browser scrollbar
+
+    #left-sidebar-scroll {
+	width: 100%;
+	// for perfect scrollbar
+	position: relative;
+	height: 100%;
+	overflow-y: auto;
+    }
+}
+
+.left-sidebar-footer {
+    padding: $sidebar-y-padding;
+}
+
+#close-sidebar {
+    float: right;
+    width: 32px;
+    // height: 32px;
+    background-color: darken($sidebar-bg, $sidebar-color-interval*3);
 }
 
 .sidebar-elements {
+    // Reset ul
     margin: 0;
     padding: 0;
-    width: 100%;
+    list-style: none;
 
     a {
+	// reset
 	text-decoration: none;
 	outline: 0;
 
@@ -50,24 +88,20 @@
 	white-space: nowrap;
     }
 
-    ul {
-	list-style: none;
-    }
-
     // for icon
     svg {
 	margin-right: 1rem;
     }
 
     .divider {
-	padding: $sidebar-padding 0 0 $sidebar-padding;
+	padding: $sidebar-y-padding 0 0 $sidebar-x-padding;
 	color: $sidebar-divider-color;
 	text-transform: uppercase;
     }
 
     > li {
 	> a { // Level 0 Menu
-	    padding: 0 $sidebar-padding;
+	    padding: 0 $sidebar-x-padding;
 	    color: $sidebar-menu-color;
 	    line-height: $sidebar-menu-line-height;
 
@@ -79,12 +113,13 @@
 	// Sub-menus
 	ul {
 	    display: none; // sub-menus are closed per default
+	    overflow: hidden; // for height transition
 	    background-color: $sidebar-submenu-bg;
 	    padding: $sidebar-submenu-y-padding 0;
 
 	    li {
 		> a {
-		    padding: 0 $sidebar-padding/2 0 $sidebar-padding;
+		    padding: 0 $sidebar-x-padding/2 0 $sidebar-y-padding;
 	    	    color: $sidebar-submenu-color;
 		    line-height: $sidebar-submenu-line-height;
 
@@ -135,7 +170,7 @@
 
     // opened sub-menus
     li.open > ul {
-	display: block;
+	// display: block;
     }
 
     // Style caret for

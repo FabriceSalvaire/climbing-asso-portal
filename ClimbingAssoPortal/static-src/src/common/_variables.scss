@@ -48,7 +48,8 @@ $sidebar-submenu-bg: darken($sidebar-bg, $sidebar-color-interval);
 $sidebar-submenu-hovered: lighten($sidebar-submenu-bg, $sidebar-color-interval);
 $sidebar-submenu-color: $sidebar-color;
 
-$sidebar-padding: 1.5rem;
+$sidebar-x-padding: 1.5rem;
+$sidebar-y-padding: .75rem;
 $sidebar-submenu-y-padding: .5rem;
 
 $sidebar-menu-line-height: 2rem;
