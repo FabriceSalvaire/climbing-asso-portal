@@ -26,41 +26,52 @@ import es6BindAll from 'es6bindall';
 import ReactBootstrapSlider from 'react-bootstrap-slider';
 // import ReactBootstrapSlider from '../../externals/react-bootstrap-slider.jsx';
 
-import { RouteRow } from './route-table-tpl.jsx';
+import { FrenchGrade } from '../../tools/grade.js';
+import { SliderWithValues } from './route-table-tpl.jsx';
 
 /**************************************************************************************************/
 
 export
-class RouteTable extends React.Component {
+class RouteTableFilters extends React.Component {
     constructor(props) {
 	super(props);
+	es6BindAll(this, ['on_value_change']);
 
-	this._model = props.model;
-	this._model.set_view(this);
+	this.route_model = props.route_model;
 
-	this.state = {};
+	this.grade_names = Array.from(FrenchGrade.grade_iter(4, 8));
+	this.grades = this.grade_names.map(name => new FrenchGrade(name));
+	this.max = this.grades.length -1;
+
+	this.state = {
+	    current_value: [0, this.max]
+	};
+
+	// this.on_value_change = this.on_value_change.bind(this);
     }
 
-    // Slot
-    update() {
-	// console.log('RouteTable udpate');
-	this.forceUpdate();
+    on_value_change(event) {
+	var min_max = event.target.value;
+	this.setState({ current_value: min_max });
+
+	// Signal: slider -> table
+	var grade_min_max = min_max.map(value => this.grades[value]);
+	this.route_model.filter_on_grade(...grade_min_max);
     }
 
     render() {
-	const routes = this._model.routes;
-	const error = this._model.error;
-	// console.log('RouteTable render', error, routes);
-
-	if (error)
-	    return <div>Error: {error.message}</div>;
-	else if (routes === null)
-	    return <div>Loading...</div>;
-	else
-	    return (
-		<React.Fragment>
-		    {routes.map(route => (<RouteRow key={route.id} route={route} />))}
-		</React.Fragment>
-	    );
+	const { current_value } = this.state;
+	var [ min_grade, max_grade ] = current_value.map(i => this.grade_names[i]);
+	var slider = (
+	    <ReactBootstrapSlider
+		value={current_value}
+		change={this.on_value_change}
+		slideStop={this.on_value_change}
+		min={0}
+		max={this.max}
+		step={1}
+		/>
+	);
+	return <SliderWithValues slider={slider} min={min_grade} max={max_grade} />;
     }
 }

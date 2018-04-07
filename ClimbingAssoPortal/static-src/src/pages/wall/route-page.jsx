@@ -1,6 +1,6 @@
 /***************************************************************************************************
  *
- * Climbing Grade
+ * Climbing Asso Portal
  * Copyright (C) 2018 Fabrice Salvaire
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { RouteModel, RouteTable, RouteTableFilters } from './route-table.jsx';
+import { RouteModel } from './route-model.js';
+import { RouteTableFilters } from './route-filters.jsx';
+import { RouteTable } from './route-table.jsx';
 
 /**************************************************************************************************/
 
@@ -35,7 +37,6 @@ var route_table = ReactDOM.render(
     <RouteTable model={route_model} />,
     document.getElementById('route-table')
 );
-// route_table.set_model(route_model);
 
 ReactDOM.render(
     <RouteTableFilters route_model={route_model} />,
