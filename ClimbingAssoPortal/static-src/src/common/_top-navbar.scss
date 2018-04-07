@@ -17,10 +17,20 @@
 
 #top-navbar {
     // place top navbar on top of the page
-    z-index: 10000;
+    z-index: $top-navbar-index;
+
     // and anchor
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
+}
+
+.navbar-brand-icon {
+    // hack to have a larger icon ...
+    position: fixed;
+    top: $navbar-padding-y;
+    left: $navbar-padding-y;
+    height: $nav-link-height;
+    // margin-right: $navbar-padding-x;
 }

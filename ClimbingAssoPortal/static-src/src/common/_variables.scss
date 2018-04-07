@@ -15,8 +15,6 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$top-navbar-height: ($navbar-padding-y)*2 + $nav-link-height;
-
 /***************************************************************************************************
  *
  * Fontawesome Woff
@@ -25,6 +23,18 @@ $top-navbar-height: ($navbar-padding-y)*2 + $nav-link-height;
 
 $fa-var-caret-down: '\f0d7';
 $fa-var-caret-up: '\f0d8';
+
+/***************************************************************************************************
+ *
+ * Z Indexs
+ *
+ */
+
+$top-navbar-index: 1000;
+
+/**************************************************************************************************/
+
+$top-navbar-height: ($navbar-padding-y)*2 + $nav-link-height;
 
 /***************************************************************************************************
  *
@@ -48,17 +58,17 @@ $sidebar-submenu-bg: darken($sidebar-bg, $sidebar-color-interval);
 $sidebar-submenu-hovered: lighten($sidebar-submenu-bg, $sidebar-color-interval);
 $sidebar-submenu-color: $sidebar-color;
 
-$sidebar-x-padding: 1.5rem;
-$sidebar-y-padding: .75rem;
-$sidebar-submenu-y-padding: .5rem;
+$sidebar-padding-x: 1.5rem;
+$sidebar-padding-y: .75rem;
+$sidebar-submenu-padding-y: .5rem;
 
 $sidebar-menu-line-height: 2rem;
 $sidebar-submenu-line-height: 1.5rem;
 
 $sidebar-level-padding-step: 1rem;
-$sidebar-level1-padding: 3rem;
+$sidebar-level-padding-1: 3rem;
 
-$sidebar-level-padding: ($sidebar-level1-padding);
+$sidebar-level-padding: ($sidebar-level-padding-1);
 @for $i from 1 through 4 {
   $sidebar-level-padding: append($sidebar-level-padding, nth($sidebar-level-padding, $i) + $sidebar-level-padding-step);
 }

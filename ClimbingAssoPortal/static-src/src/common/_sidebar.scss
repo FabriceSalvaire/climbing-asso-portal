@@ -41,7 +41,7 @@
 }
 
 .left-sidebar-header {
-    padding: $sidebar-y-padding;
+    padding: $sidebar-padding-y;
 }
 
 .left-sidebar-spacer {
@@ -60,13 +60,25 @@
 }
 
 .left-sidebar-footer {
-    padding: $sidebar-y-padding;
+    padding: $sidebar-padding-y;
 }
 
-#close-sidebar {
+#close-left-sidebar {
     float: right;
     width: 32px;
     // height: 32px;
+    background-color: darken($sidebar-bg, $sidebar-color-interval*3);
+}
+
+#open-left-sidebar {
+    display: none;
+
+    position: fixed;
+    top: $top-navbar-height;
+    left: 0;
+    margin: 3px;
+
+    width: 32px;
     background-color: darken($sidebar-bg, $sidebar-color-interval*3);
 }
 
@@ -94,14 +106,14 @@
     }
 
     .divider {
-	padding: $sidebar-y-padding 0 0 $sidebar-x-padding;
+	padding: $sidebar-padding-y 0 0 $sidebar-padding-x;
 	color: $sidebar-divider-color;
 	text-transform: uppercase;
     }
 
     > li {
 	> a { // Level 0 Menu
-	    padding: 0 $sidebar-x-padding;
+	    padding: 0 $sidebar-padding-x;
 	    color: $sidebar-menu-color;
 	    line-height: $sidebar-menu-line-height;
 
@@ -115,11 +127,11 @@
 	    display: none; // sub-menus are closed per default
 	    overflow: hidden; // for height transition
 	    background-color: $sidebar-submenu-bg;
-	    padding: $sidebar-submenu-y-padding 0;
+	    padding: $sidebar-submenu-padding-y 0;
 
 	    li {
 		> a {
-		    padding: 0 $sidebar-x-padding/2 0 $sidebar-y-padding;
+		    padding: 0 $sidebar-padding-x/2 0 $sidebar-padding-y;
 	    	    color: $sidebar-submenu-color;
 		    line-height: $sidebar-submenu-line-height;
 

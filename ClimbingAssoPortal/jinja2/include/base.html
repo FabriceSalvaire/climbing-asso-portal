@@ -79,8 +79,6 @@
 	{# <script type="text/javascript" src={{ static('js-ext/bootstrap.min.js') }}></script> #}
 	<script type="text/javascript" src={{ static('js/common.js') }}></script>
     {% endif %}
-
-    {# <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script> #}
 {% endblock %}
 
 {##################################################################################################}
@@ -94,7 +92,7 @@
 
     {# nav / fixed-top navbar-expand-lg #}
     <header id="top-navbar" class="navbar navbar-expand navbar-dark bg-dark flex-column flex-md-row">
-	<a class="navbar-brand ml-md-5" href="/">Climbing Asso Portal</a>
+	<a class="navbar-brand ml-md-5" href="/"><img class="navbar-brand-icon" src="{{ static('image/favicon.png') }}">Climbing Asso Portal</a>
 	<button class="navbar-toggler" type="button"
 		data-toggle="collapse" data-target="#navbarSupportedContent"
 		aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -150,7 +148,8 @@
     <nav id="left-sidebar" class="active">
 	<div class="left-sidebar-wrapper">
 	    <div class="left-sidebar-header">
-		<button id="close-sidebar" type="button" class="btn btn-sm"><i class="fas fa-caret-left"></i></button>
+		<button id="open-left-sidebar" type="button" class="btn btn-sm"><i class="fas fa-caret-right"></i></button>
+		<button id="close-left-sidebar" type="button" class="btn btn-sm"><i class="fas fa-caret-left"></i></button>
 	    </div>
 	    <div class="left-sidebar-spacer">
 		<div id="left-sidebar-scroll">
@@ -271,8 +270,8 @@
     <div class="content">
 	<div class="container-fluid">
 	    {# flex-xl-nowrap #}
-	    <div class="row justify-content-center py-md-3">
-		<div class="col-12 col-xl-8">
+	    <div class="row justify-content-center px-3 py-3">
+		<div class="col-xl-12">
 		    {# Breadcrumb #}
 		    {% block breadcrumb %}
 			<nav aria-label="breadcrumb">
@@ -283,11 +282,6 @@
 			    </ol>
 			</nav>
 		    {% endblock %}
-
-
-		    <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
-                        <span>Open Sidebar</span>
-                    </button>
 
 		    {# Page content #}
 		    <main class="" role="main">
