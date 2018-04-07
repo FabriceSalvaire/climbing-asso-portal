@@ -39,22 +39,20 @@ class RouteModel {
 	es6BindAll(this, ['_on_xhr_success', '_on_xhr_error']);
 
 	this._endpoint = endpoint;
-	this._loaded = false;
-	this._error = null;
-	this._routes = [];
-	this._filtered_routes = [];
 
+	this._error = null;
+	this._routes = null;
+	this._filtered_routes = null;
 	this._view = null;
 
 	this._load();
     }
 
-    get loaded() {
-	return this._loaded;
-    }
-
     get routes() {
-	return this._routes;
+	if (this._filtered_routes !== null)
+	    return this._filtered_routes;
+	else
+	    return this._routes;
     }
 
     get error() {
@@ -81,7 +79,7 @@ class RouteModel {
     }
 
     _load() {
-	console.log('RouteModel GET', this._endpoint);
+	// console.log('RouteModel GET', this._endpoint);
 
 	// https://developer.mozilla.org/fr/docs/Web/API/WindowOrWorkerGlobalScope/fetch
 	const fetch_init = {
@@ -95,28 +93,23 @@ class RouteModel {
     }
 
     _on_xhr_success(result) {
-	console.log('RouteModel xhr success');
+	// console.log('RouteModel xhr success');
 	this._routes = this._prepare_routes(result.results);
-	this._loaded = true;
-	console.log('RouteModel fetched', this._routes.length, this._view);
-	this._view.reset_routes(this._routes);
+	// console.log('RouteModel fetched', this._routes.length, this._view);
+	this._view.update();
     }
 
     _on_xhr_error(error) {
-	// Note: it's important to handle errors here instead of a
-	// catch() block so that we don't swallow exceptions from
-	// actual bugs in components.
-
-	console.log('RouteModel xhr error');
-	this._loaded = true;
+	// console.log('RouteModel xhr error');
+	this._routes = [];
 	this._error = error;
-	this._view.reset_routes([]);
+	this._view.update();
     }
 
     // Slot
     filter_on_grade(min, max) {
-	console.log('RouteModel filter_on_grade', min , max);
-	if (this.routes !== null) {
+	// console.log('RouteModel filter_on_grade', min , max);
+	if (this._routes !== null) {
 	    const min_float = min.float;
 	    const max_float = max.float;
 	    this._filtered_routes = this._routes.filter(
@@ -124,7 +117,7 @@ class RouteModel {
 		    min_float <= route.grade_float &&
 		    route.grade_float <= max_float
 	    );
-	    this._view.reset_routes(this._filtered_routes);
+	    this._view.update();
 	}
     }
 }
@@ -143,20 +136,19 @@ class RouteTable extends React.Component {
     }
 
     // Slot
-    reset_routes(routes) {
-	console.log('RouteTable reset_routes', routes);
+    update() {
+	// console.log('RouteTable udpate');
 	this.forceUpdate();
     }
 
     render() {
-	const loaded = this._model.loaded;
-	const error = this._model.error;
 	const routes = this._model.routes;
-	console.log('RouteTable render', loaded, error, routes);
+	const error = this._model.error;
+	// console.log('RouteTable render', error, routes);
 
 	if (error)
 	    return <div>Error: {error.message}</div>;
-	else if (! loaded)
+	else if (routes === null)
 	    return <div>Loading...</div>;
 	else
 	    return (
