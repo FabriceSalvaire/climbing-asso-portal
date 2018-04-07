@@ -29,25 +29,43 @@ import ReactBootstrapSlider from 'react-bootstrap-slider';
 // import ReactBootstrapSlider from '../../externals/react-bootstrap-slider.jsx';
 
 import { FrenchGrade } from '../../tools/grade.js';
-import { RouteRow, SliderWithValues } from './route-table-presentation.jsx';
+import { RouteRow, SliderWithValues } from './route-table-tpl.jsx';
 
 /**************************************************************************************************/
 
 export
-class RouteTable extends React.Component {
-    constructor(props) {
-	super(props);
+class RouteModel {
+    constructor(endpoint) {
+	es6BindAll(this, ['_on_xhr_success', '_on_xhr_error']);
 
-	this.state = {
-	    error: null,
-	    is_loaded: false,
-	    routes: [],
-	    grade_filter: [0, new FrenchGrade('9c+').float]
-	};
+	this._endpoint = endpoint;
+	this._loaded = false;
+	this._error = null;
+	this._routes = [];
+	this._filtered_routes = [];
+
+	this._view = null;
+
+	this._load();
     }
 
-    prepare_routes(routes) {
-	// console.log('Fetch', routes);
+    get loaded() {
+	return this._loaded;
+    }
+
+    get routes() {
+	return this._routes;
+    }
+
+    get error() {
+	return this._error;
+    }
+
+    set_view(view) {
+	this._view = view;
+    }
+
+    _prepare_routes(routes) {
 	var i = 0;
 	for (let route of routes) {
 	    route.id = (i++).toString();
@@ -58,59 +76,94 @@ class RouteTable extends React.Component {
 		route.grade_float = new FrenchGrade('4a').float;
 	    }
 	}
+
 	return routes;
     }
 
-    componentDidMount() {
-	const endpoint = '/api/routes/?limit=1000';
+    _load() {
+	console.log('RouteModel GET', this._endpoint);
 
 	// https://developer.mozilla.org/fr/docs/Web/API/WindowOrWorkerGlobalScope/fetch
-	var fetch_init = {
+	const fetch_init = {
 	    method: 'GET',
 	    credentials: 'include'
 	};
 
-	fetch(endpoint, fetch_init)
+	fetch(this._endpoint, fetch_init)
 	    .then(result => result.json())
-	    .then(
-		result => {
-		    this.setState({
-			is_loaded: true,
-			routes: this.prepare_routes(result.results)
-		    });
-		},
-		// Note: it's important to handle errors here instead
-		// of a catch() block so that we don't swallow
-		// exceptions from actual bugs in components.
-		error => {
-		    this.setState({
-			is_loaded: true,
-			error
-		    });
-		}
-	    )
+	    .then(this._on_xhr_success, this._on_xhr_error);
+    }
+
+    _on_xhr_success(result) {
+	console.log('RouteModel xhr success');
+	this._routes = this._prepare_routes(result.results);
+	this._loaded = true;
+	console.log('RouteModel fetched', this._routes.length, this._view);
+	this._view.reset_routes(this._routes);
+    }
+
+    _on_xhr_error(error) {
+	// Note: it's important to handle errors here instead of a
+	// catch() block so that we don't swallow exceptions from
+	// actual bugs in components.
+
+	console.log('RouteModel xhr error');
+	this._loaded = true;
+	this._error = error;
+	this._view.reset_routes([]);
     }
 
     // Slot
     filter_on_grade(min, max) {
-	this.setState({ grade_filter: [min.float, max.float] });
+	console.log('RouteModel filter_on_grade', min , max);
+	if (this.routes !== null) {
+	    const min_float = min.float;
+	    const max_float = max.float;
+	    this._filtered_routes = this._routes.filter(
+		route =>
+		    min_float <= route.grade_float &&
+		    route.grade_float <= max_float
+	    );
+	    this._view.reset_routes(this._filtered_routes);
+	}
+    }
+}
+
+/**************************************************************************************************/
+
+export
+class RouteTable extends React.Component {
+    constructor(props) {
+	super(props);
+
+	this._model = props.model;
+	this._model.set_view(this);
+
+	this.state = {};
+    }
+
+    // Slot
+    reset_routes(routes) {
+	console.log('RouteTable reset_routes', routes);
+	this.forceUpdate();
     }
 
     render() {
-	const { error, is_loaded, routes, grade_filter } = this.state;
-	// Fixme:
-	if (error) {
+	const loaded = this._model.loaded;
+	const error = this._model.error;
+	const routes = this._model.routes;
+	console.log('RouteTable render', loaded, error, routes);
+
+	if (error)
 	    return <div>Error: {error.message}</div>;
-	} else if (!is_loaded) {
+	else if (! loaded)
 	    return <div>Loading...</div>;
-	} else {
-	    var filtered_routes = routes.filter(route => grade_filter[0] <= route.grade_float && route.grade_float <= grade_filter[1]);
+	else
 	    return (
 		<React.Fragment>
-		    {filtered_routes.map(route => (<RouteRow key={route.id} route={route} />))}
+		    {routes.map(route => (<RouteRow key={route.id} route={route} />))}
 		</React.Fragment>
 	    );
-	}
     }
 }
 
@@ -122,7 +175,7 @@ class RouteTableFilters extends React.Component {
 	super(props);
 	es6BindAll(this, ['on_value_change']);
 
-	this.route_table = props.route_table;
+	this.route_model = props.route_model;
 
 	this.grade_names = Array.from(FrenchGrade.grade_iter(4, 8));
 	this.grades = this.grade_names.map(name => new FrenchGrade(name));
@@ -141,7 +194,7 @@ class RouteTableFilters extends React.Component {
 
 	// Signal: slider -> table
 	var grade_min_max = min_max.map(value => this.grades[value]);
-	this.route_table.filter_on_grade(...grade_min_max);
+	this.route_model.filter_on_grade(...grade_min_max);
     }
 
     render() {

@@ -25,16 +25,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { RouteTable, RouteTableFilters } from './route-table-components.jsx';
+import { RouteModel, RouteTable, RouteTableFilters } from './route-table.jsx';
 
 /**************************************************************************************************/
 
+var route_model = new RouteModel('/api/routes/?limit=1000');
+
 var route_table = ReactDOM.render(
-    <RouteTable/>,
+    <RouteTable model={route_model} />,
     document.getElementById('route-table')
 );
+// route_table.set_model(route_model);
 
 ReactDOM.render(
-    <RouteTableFilters route_table={route_table} />,
+    <RouteTableFilters route_model={route_model} />,
     document.getElementById('filters')
 );
