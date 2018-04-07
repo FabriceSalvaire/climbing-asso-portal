@@ -61,6 +61,13 @@
 
 .left-sidebar-footer {
     padding: $sidebar-padding-y;
+    // border-top: $sidebar-border;
+
+    p {
+	line-height: $font-size-sm;
+	font-size: $font-size-sm;
+	text-align: right;
+    }
 }
 
 #close-left-sidebar {

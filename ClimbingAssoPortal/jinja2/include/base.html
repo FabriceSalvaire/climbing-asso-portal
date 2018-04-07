@@ -154,114 +154,138 @@
 	    <div class="left-sidebar-spacer">
 		<div id="left-sidebar-scroll">
 		    <ul class="sidebar-elements">
-			<li class="divider">Menu</li>
-			<li class="active"><a href="index.html"><i class="fas fa-home"></i><span>Dashboard</span></a>
-			</li>
-			<li class="parent"><a href="#"><i class="fas fa-home"></i><span>UI Elements</span></a>
-			    <ul class="sub-menu">
-				<li><a href="ui-alerts.html">Alerts</a>
-				</li>
-				<li><a href="ui-buttons.html">Buttons</a>
-				</li>
-				<li><a href="ui-panels.html">Panels</a>
-				</li>
-				<li><a href="ui-alerts.html">Alerts</a>
-				</li>
-				<li><a href="ui-buttons.html">Buttons</a>
-				</li>
-				<li><a href="ui-panels.html">Panels</a>
-				</li>
-				<li><a href="ui-alerts.html">Alerts</a>
-				</li>
-				<li><a href="ui-buttons.html">Buttons</a>
-				</li>
-				<li><a href="ui-panels.html">Panels</a>
-				</li>
-				<li><a href="ui-alerts.html">Alerts</a>
-				</li>
-				<li><a href="ui-buttons.html">Buttons</a>
-				</li>
-				<li><a href="ui-panels.html">Panels</a>
-				</li>
-				<li><a href="ui-alerts.html">Alerts</a>
-				</li>
-				<li><a href="ui-buttons.html">Buttons</a>
-				</li>
-				<li><a href="ui-panels.html">Panels</a>
-				</li>
-				<li><a href="ui-alerts.html">Alerts</a>
-				</li>
-				<li><a href="ui-buttons.html">Buttons</a>
-				</li>
-				<li><a href="ui-panels.html">Panels</a>
-				</li>
-				<li><a href="ui-alerts.html">Alerts</a>
-				</li>
-				<li><a href="ui-buttons.html">Buttons</a>
-				</li>
-				<li><a href="ui-panels.html">Panels</a>
-				</li>
-				<li><a href="ui-alerts.html">Alerts</a>
-				</li>
-				<li><a href="ui-buttons.html">Buttons</a>
-				</li>
-				<li><a href="ui-panels.html">Panels</a>
-				</li>
-				<li><a href="ui-alerts.html">Alerts</a>
-				</li>
-				<li><a href="ui-buttons.html">Buttons</a>
-				</li>
-				<li><a href="ui-panels.html">Panels</a>
-				</li>
-				<li><a href="ui-alerts.html">Alerts</a>
-				</li>
-				<li><a href="ui-buttons.html">Buttons</a>
-				</li>
-				<li><a href="ui-panels.html">Panels</a>
+			{% block left_sidebar_menu %}
+			    <li class="divider">Menu</li> 
+			<li class="active"><a href="index.html"><i class="fas fa-home"></i><span>Dashboard</span></a> 
+			</li> 
+			<li class="parent"><a href="#"><i class="fas fa-home"></i><span>UI Elements</span></a> 
+			    <ul class="sub-menu"> 
+				<li><a href="ui-alerts.html">Alerts</a> 
+				</li> 
+				<li><a href="ui-buttons.html">Buttons</a> 
+				</li> 
+				<li><a href="ui-panels.html">Panels</a> 
 				</li>
 			    </ul>
 			</li>
-			<li class="parent"><a href="#"><i class="fas fa-folder"></i><span>Menu Levels</span></a>
-			    <ul class="sub-menu">
-				<li class="parent"><a href="#"><span>Level 1</span></a>
-				    <ul class="sub-menu">
-					<li><a href="#"><span>Level 2</span></a>
-					</li>
-					<li class="parent"><a href="#"><span>Level 2</span></a>
-					    <ul class="sub-menu">
-						<li><a href="#"><span>Level 3</span></a>
-						</li>
-						<li><a href="#"><span>Level 3</span></a>
-						</li>
-					    </ul>
-					</li>
-				    </ul>
-				</li>
-				<li class="parent"><a href="#"><span>Level 1</span></a>
-				    <ul class="sub-menu">
-					<li><a href="#"><span>Level 2</span></a>
-					</li>
-					<li class="parent"><a href="#"><span>Level 2</span></a>
-					    <ul class="sub-menu">
-						<li><a href="#"><span>Level 3</span></a>
-						</li>
-						<li><a href="#"><span>Level 3</span></a>
-						</li>
-					    </ul>
-					</li>
-				    </ul>
-				</li>
-			    </ul>
-			</li>
+		    {% endblock %}
 		    </ul>
 		</div>
 	    </div>
 	    <div class="left-sidebar-footer">
-	    	<span>Footer</span>
+		<p>
+		    <i class="fa fa-copyright"></i>
+		    <a href="https://github.com/FabriceSalvaire/climbing-asso-portal">Climbing Asso Portal 2018</a>
+		</p>
+		<p><a href="{{ url('mentions-legales') }}">Mentions légales</a></p>
 	    </div>
 	</div>
     </nav>
 {% endblock %}
+
+{##################################################################################################}
+
+{# {% block left_sidebar_menu %} #}
+{# <li class="divider">Menu</li> #}
+{# <li class="active"><a href="index.html"><i class="fas fa-home"></i><span>Dashboard</span></a> #}
+{# </li> #}
+{# <li class="parent"><a href="#"><i class="fas fa-home"></i><span>UI Elements</span></a> #}
+{#     <ul class="sub-menu"> #}
+{# 	<li><a href="ui-alerts.html">Alerts</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-buttons.html">Buttons</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-panels.html">Panels</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-alerts.html">Alerts</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-buttons.html">Buttons</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-panels.html">Panels</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-alerts.html">Alerts</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-buttons.html">Buttons</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-panels.html">Panels</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-alerts.html">Alerts</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-buttons.html">Buttons</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-panels.html">Panels</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-alerts.html">Alerts</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-buttons.html">Buttons</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-panels.html">Panels</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-alerts.html">Alerts</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-buttons.html">Buttons</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-panels.html">Panels</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-alerts.html">Alerts</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-buttons.html">Buttons</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-panels.html">Panels</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-alerts.html">Alerts</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-buttons.html">Buttons</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-panels.html">Panels</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-alerts.html">Alerts</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-buttons.html">Buttons</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-panels.html">Panels</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-alerts.html">Alerts</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-buttons.html">Buttons</a> #}
+{# 	</li> #}
+{# 	<li><a href="ui-panels.html">Panels</a> #}
+{# 	</li> #}
+{#     </ul> #}
+{# </li> #}
+{# <li class="parent"><a href="#"><i class="fas fa-folder"></i><span>Menu Levels</span></a> #}
+{#     <ul class="sub-menu"> #}
+{# 	<li class="parent"><a href="#"><span>Level 1</span></a> #}
+{# 	    <ul class="sub-menu"> #}
+{# 		<li><a href="#"><span>Level 2</span></a> #}
+{# 		</li> #}
+{# 		<li class="parent"><a href="#"><span>Level 2</span></a> #}
+{# 		    <ul class="sub-menu"> #}
+{# 			<li><a href="#"><span>Level 3</span></a> #}
+{# 			</li> #}
+{# 			<li><a href="#"><span>Level 3</span></a> #}
+{# 			</li> #}
+{# 		    </ul> #}
+{# 		</li> #}
+{# 	    </ul> #}
+{# 	</li> #}
+{# 	<li class="parent"><a href="#"><span>Level 1</span></a> #}
+{# 	    <ul class="sub-menu"> #}
+{# 		<li><a href="#"><span>Level 2</span></a> #}
+{# 		</li> #}
+{# 		<li class="parent"><a href="#"><span>Level 2</span></a> #}
+{# 		    <ul class="sub-menu"> #}
+{# 			<li><a href="#"><span>Level 3</span></a> #}
+{# 			</li> #}
+{# 			<li><a href="#"><span>Level 3</span></a> #}
+{# 			</li> #}
+{# 		    </ul> #}
+{# 		</li> #}
+{# 	    </ul> #}
+{# 	</li> #}
+{#     </ul> #}
+{# </li> #}
+{# {% endblock %} #}
 
 {##################################################################################################}
 
@@ -290,19 +314,25 @@
 		    </main>
 
 		    {# Footer #}
-		    {% block footer %}
-			<hr />
-			<footer role="contentinfo" >
-			    <p>
-				<i class="fa fa-copyright"></i>
-				<a href="https://github.com/FabriceSalvaire/climbing-asso-portal">
-				    Climbing Asso Portal 2018</a>
-				    / <a href="{{ url('mentions-legales') }}">Mentions légales</a>
-			    </p>
-			</footer>
-		    {% endblock %}
+		    {% block footer %}{% endblock %}
 		</div>
 	    </div>
 	</div>
     </div>
 {% endblock %}
+
+{##################################################################################################}
+
+{#
+{% block footer %}
+    <hr />
+    <footer role="contentinfo" >
+	<p>
+	    <i class="fa fa-copyright"></i>
+	    <a href="https://github.com/FabriceSalvaire/climbing-asso-portal">
+		Climbing Asso Portal 2018</a>
+		/ <a href="{{ url('mentions-legales') }}">Mentions légales</a>
+	</p>
+    </footer>
+{% endblock %}
+#}
