@@ -18,34 +18,21 @@
  *
  **************************************************************************************************/
 
-export var hold_colour_map = {
-    black: 'Black',
-    white: 'White',
-
-    blue: 'Blue',
-    green: 'Green',
-    red: 'Red',
-
-    violet: 'Fuchsia', // fuchsia
-    yellow: 'Yellow',
-
-    orange: 'DarkOrange',
-    pink: '#ff99cc',
-    salmon: 'DarkSalmon',
-};
-
+// sync with constants.py
 export var hold_colours = [
-    'Black', // black
-    'White', // white
+    'black',
+    'white',
 
-    'Blue', // blue
-    'Green', // green
-    'Red', // red
+    'blue',
+    'green',
+    'red',
 
-    'Fuchsia', // fuchsia
-    'Yellow', // yellow
+    'violet', // magenta fuchsia
+    'yellow',
 
-    'DarkOrange', // orange
-    '#ff99cc', // pink
-    'DarkSalmon', // salmon
+    'orange',
+    'pink',
+    'salmon',
+
+    'red & white',
 ];

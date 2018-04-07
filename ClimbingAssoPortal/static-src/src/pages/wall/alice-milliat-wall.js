@@ -18,8 +18,10 @@
  *
  **************************************************************************************************/
 
+/**************************************************************************************************/
+
 export
-var alice_milliat_wall_line_position = {
+const alice_milliat_wall_line_position = {
     image_width  : 328,
     image_height : 1000,
     font_size : 16, // taille du n° en pixel
@@ -72,34 +74,82 @@ var alice_milliat_wall_line_position = {
 	973,
 	991
     ]
+};
+
+/**************************************************************************************************/
+
+function complete_wall(wall) {
+    var new_wall = [];
+    var previous_line = null;
+    wall.map(line => {
+	var line_number = new_wall.length + 1;
+	if (line.line_number > line_number)
+	    for (; line_number < line.line_number; line_number++)
+		new_wall.push({ ...previous_line, line_number });
+	new_wall.push(line);
+	previous_line = line;
+    });
+
+    return new_wall;
 }
+
+/**************************************************************************************************/
+
 
 // Fixme: missing lines ???
 export
-var alice_milliat_wall_line_profiles = [
+var alice_milliat_wall_line_profiles = complete_wall([
     { line_number: 1, sector:'Grande Dalle'    , profil:'Arète'   , inclination:'Dalle Douce' },
     { line_number: 2, sector:'Grande Dalle'    , profil:'Plan'    , inclination:'Dalle Douce' },
     { line_number: 3, sector:'Grande Dalle'    , profil:'Arète'   , inclination:'Dalle Douce' },
+
     { line_number: 4, sector:'Petit Mur'       , profil:'Dièdre'  , inclination:'Vertical' },
-    { line_number: 6, sector:'Petit Mur'       , profil:'Plan'    , inclination:'Vertical' },
+    { line_number: 5, sector:'Petit Mur'       , profil:'Plan'    , inclination:'Vertical' },
+    // { line_number: 6, sector:'Petit Mur'       , profil:'Plan'    , inclination:'Vertical' },
     { line_number: 7, sector:'Petit Mur'       , profil:'Dièdre'  , inclination:'Vertical' },
+
     { line_number: 8, sector:'Dalle Brisée'    , profil:'Arète'   , inclination:'Dalle Forte' },
     { line_number: 9, sector:'Dalle Brisée'    , profil:'Plan'    , inclination:'Dalle Forte' },
     { line_number:10, sector:'Dalle Brisée'    , profil:'Arète'   , inclination:'Dalle Forte' },
+
     { line_number:11, sector:'Creux'           , profil:'Dièdre'  , inclination:'Verticale Corniche' },
     { line_number:12, sector:'Creux'           , profil:'Plan'    , inclination:'Verticale Corniche' },
     { line_number:13, sector:'Creux'           , profil:'Dièdre'  , inclination:'Devers Doux' },
-    { line_number:15, sector:'Relief'          , profil:'Plan'    , inclination:'Devers' },
+
+    { line_number:14, sector:'Relief'          , profil:'Plan'    , inclination:'Devers' },
+    // { line_number:15, sector:'Relief'          , profil:'Plan'    , inclination:'Devers' },
     { line_number:16, sector:'Relief'          , profil:'Arète'   , inclination:'Devers' },
     { line_number:17, sector:'Relief'          , profil:'Plan'    , inclination:'Devers' },
     { line_number:18, sector:'Relief'          , profil:'Arète'   , inclination:'Devers' },
+
     { line_number:19, sector:'Devers Concave'  , profil:'Dièdre'  , inclination:'Devers Doux' },
-    { line_number:23, sector:'Devers Concave'  , profil:'Plan'    , inclination:'Devers Doux' },
+    { line_number:20, sector:'Devers Concave'  , profil:'Plan'    , inclination:'Devers Doux' },
+    // { line_number:21, sector:'Devers Concave'  , profil:'Plan'    , inclination:'Devers Doux' },
+    // { line_number:22, sector:'Devers Concave'  , profil:'Plan'    , inclination:'Devers Doux' },
+    // { line_number:23, sector:'Devers Concave'  , profil:'Plan'    , inclination:'Devers Doux' },
     { line_number:24, sector:'Devers Concave'  , profil:'Arète'   , inclination:'Devers Doux' },
-    { line_number:30, sector:'Devers Concave'  , profil:'Plan'    , inclination:'Devers Doux' },
+    { line_number:25, sector:'Devers Concave'  , profil:'Plan'   , inclination:'Devers Doux' },
+    // { line_number:26, sector:'Devers Concave'  , profil:'Plan'   , inclination:'Devers Doux' },
+    // { line_number:27, sector:'Devers Concave'  , profil:'Plan'   , inclination:'Devers Doux' },
+    // { line_number:28, sector:'Devers Concave'  , profil:'Plan'   , inclination:'Devers Doux' },
+    // { line_number:29, sector:'Devers Concave'  , profil:'Plan'   , inclination:'Devers Doux' },
+    // { line_number:30, sector:'Devers Concave'  , profil:'Plan'    , inclination:'Devers Doux' },
     { line_number:31, sector:'Devers Concave'  , profil:'Dièdre'  , inclination:'Devers Doux' },
-    { line_number:34, sector:'Coin'            , profil:'Plan'    , inclination:'Vertical Long' },
+
+    { line_number:33, sector:'Coin'            , profil:'Plan'    , inclination:'Vertical Long' },
+    // { line_number:32, sector:'Coin'            , profil:'Plan'    , inclination:'Vertical Long' },
+    // { line_number:34, sector:'Coin'            , profil:'Plan'    , inclination:'Vertical Long' },
     { line_number:35, sector:'Coin'            , profil:'Dièdre'  , inclination:'Devers Doux' },
-    { line_number:41, sector:'Grand Devers'    , profil:'Plan'    , inclination:'Devers' },
+
+    { line_number:36, sector:'Grand Devers'    , profil:'Plan'    , inclination:'Devers' },
+    // { line_number:37, sector:'Grand Devers'    , profil:'Plan'    , inclination:'Devers' },
+    // { line_number:38, sector:'Grand Devers'    , profil:'Plan'    , inclination:'Devers' },
+    // { line_number:39, sector:'Grand Devers'    , profil:'Plan'    , inclination:'Devers' },
+    // { line_number:40, sector:'Grand Devers'    , profil:'Plan'    , inclination:'Devers' },
+    // { line_number:41, sector:'Grand Devers'    , profil:'Plan'    , inclination:'Devers' },
+    { line_number:42, sector:'Grand Devers'    , profil:'Plan'    , inclination:'Devers Maxi' },
+    // { line_number:43, sector:'Grand Devers'    , profil:'Plan'    , inclination:'Devers Maxi' },
     { line_number:44, sector:'Grand Devers'    , profil:'Plan'    , inclination:'Devers Maxi'}
-]
+]);
+
+// alice_milliat_wall_line_profiles.map(line => console.log(line));

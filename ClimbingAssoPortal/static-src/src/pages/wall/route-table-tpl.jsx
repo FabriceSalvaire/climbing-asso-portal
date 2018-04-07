@@ -22,6 +22,8 @@
 
 import React from 'react';
 
+import { hold_colour_map, hold_colours } from './hold-colour.js';
+
 /**************************************************************************************************/
 
 const SliderValue = ({ id, value }) => (
@@ -44,14 +46,17 @@ const SliderWithValues = ({ slider, min, max }) => (
 );
 
 export
-const RouteRow = ({ route }) => (
-    <tr >
-	<th scope="row"><a href="">{route.line_number}</a></th>
-	<td>{route.grade}</td>
-	<td>{route.colour}</td>
-	<td>{route.name}</td>
-	<td>{route.comment}</td>
-	<td>{route.opener}</td>
-	<td>{route.opening_date}</td>
-    </tr>
-);
+function RouteRow({ route }) {
+    var class_name = 'hold-colour hold-colour-' + hold_colours[route.colour];
+    return (
+	<tr >
+	    <th scope="row"><a href="">{route.line_number}</a></th>
+	    <td>{route.grade}</td>
+	    <td><div className={class_name}></div></td>
+	    <td>{route.name}</td>
+	    <td>{route.comment}</td>
+	    <td>{route.opener}</td>
+	    <td>{route.opening_date}</td>
+	</tr>
+    );
+}

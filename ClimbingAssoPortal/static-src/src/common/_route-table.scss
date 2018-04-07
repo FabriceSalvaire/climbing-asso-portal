@@ -47,3 +47,51 @@ div.route-table-wrapper {
     overflow-y: scroll;
     font-size: 80%;
 }
+
+.hold-colour {
+    width: 40px;
+    height: 20px;
+    border-radius: 10%;
+
+    &.hold-colour-black {
+	background-color: $body-color;
+    }
+
+    &.hold-colour-white {
+	background-color: white;
+	border: 1px solid $body-color;
+    }
+
+    &.hold-colour-red {
+	background-color: lighten(desaturate(red, 20), 10);
+    }
+
+    &.hold-colour-green {
+	background-color: lighten(desaturate(green, 20), 10);
+    }
+
+    &.hold-colour-blue {
+	background-color: lighten(desaturate(blue, 20), 10);
+    }
+
+    &.hold-colour-violet {
+	background-color: lighten(desaturate(fuchsia, 30), 10);
+    }
+
+    &.hold-colour-yellow {
+	background-color: lighten(desaturate(yellow, 10), 10);
+	border: 1px solid $gray-500;
+    }
+
+    &.hold-colour-orange {
+	background-color: lighten(desaturate(orange, 20), 10);
+    }
+
+    &.hold-colour-pink {
+	background-color: #ff99cc;
+    }
+
+    &.hold-colour-salmon {
+	background-color: DarkSalmon;
+    }
+}

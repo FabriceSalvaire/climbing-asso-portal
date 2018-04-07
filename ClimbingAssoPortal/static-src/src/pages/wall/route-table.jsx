@@ -42,7 +42,7 @@ class RouteTable extends React.Component {
     }
 
     // Slot
-    update() {
+    model_update() {
 	// console.log('RouteTable udpate');
 	this.forceUpdate();
     }

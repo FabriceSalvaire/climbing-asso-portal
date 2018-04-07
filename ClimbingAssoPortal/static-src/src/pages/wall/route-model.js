@@ -26,6 +26,11 @@ import es6BindAll from 'es6bindall';
 
 import { FrenchGrade } from '../../tools/grade.js';
 
+import {
+    // alice_milliat_wall_line_position,
+    alice_milliat_wall_line_profiles
+} from './alice-milliat-wall.js';
+
 /**************************************************************************************************/
 
 export
@@ -91,14 +96,14 @@ class RouteModel {
 	// console.log('RouteModel xhr success');
 	this._routes = this._prepare_routes(result.results);
 	// console.log('RouteModel fetched', this._routes.length, this._view);
-	this._view.update();
+	this._view.model_update();
     }
 
     _on_xhr_error(error) {
 	// console.log('RouteModel xhr error');
 	this._routes = [];
 	this._error = error;
-	this._view.update();
+	this._view.model_update();
     }
 
     // Slot
@@ -112,7 +117,7 @@ class RouteModel {
 		    min_float <= route.grade_float &&
 		    route.grade_float <= max_float
 	    );
-	    this._view.update();
+	    this._view.model_update();
 	}
     }
 }
