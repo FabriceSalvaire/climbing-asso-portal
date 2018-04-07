@@ -22,7 +22,7 @@
 
 import React from 'react';
 
-import { hold_colour_map, hold_colours } from './hold-colour.js';
+import { hold_colours } from './hold-colour.js';
 
 /**************************************************************************************************/
 

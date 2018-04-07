@@ -32,7 +32,7 @@ import { SliderWithValues } from './route-table-tpl.jsx';
 /**************************************************************************************************/
 
 export
-class RouteTableFilters extends React.Component {
+class GradeFilter extends React.Component {
     constructor(props) {
 	super(props);
 	es6BindAll(this, ['on_value_change']);
@@ -56,7 +56,7 @@ class RouteTableFilters extends React.Component {
 
 	// Signal: slider -> table
 	var grade_min_max = min_max.map(value => this.grades[value]);
-	this.route_model.filter_on_grade(...grade_min_max);
+	this.route_model.filter_on_grade(grade_min_max);
     }
 
     render() {
@@ -75,3 +75,23 @@ class RouteTableFilters extends React.Component {
 	return <SliderWithValues slider={slider} min={min_grade} max={max_grade} />;
     }
 }
+
+/**************************************************************************************************/
+
+export
+class ProfileFilter extends React.Component {
+    constructor(props) {
+	super(props);
+	// es6BindAll(this, ['']);
+
+	this.route_model = props.route_model;
+
+	this.state = {
+	};
+    }
+
+    render() {
+	return <div></div>;
+    }
+}
+

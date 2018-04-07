@@ -36,13 +36,24 @@ import {
 export
 class RouteModel {
     constructor(endpoint) {
-	es6BindAll(this, ['_on_xhr_success', '_on_xhr_error']);
+	es6BindAll(this, ['_on_xhr_success', '_on_xhr_error', '_to_line']);
 
 	this._endpoint = endpoint;
+	this._wall_profile = alice_milliat_wall_line_profiles;
+	this._profiles = new Set();
+	this._inclinations = new Set();
+	this._wall_profile.map(line => {
+	    this._profiles.add(line.profile);
+	    this._inclinations.add(line.inclination);
+	});
 
 	this._error = null;
 	this._routes = null;
 	this._filtered_routes = null;
+	this._grade_filter = null;
+	this._profile_filter = null;
+	this._inclination_filter = null;
+
 	this._view = null;
 
 	this._load();
@@ -53,6 +64,14 @@ class RouteModel {
 	    return this._filtered_routes;
 	else
 	    return this._routes;
+    }
+
+    get profiles() {
+	return this._profiles;
+    }
+
+    get inclination() {
+	return this._inclinations;
     }
 
     get error() {
@@ -107,16 +126,63 @@ class RouteModel {
     }
 
     // Slot
-    filter_on_grade(min, max) {
+    filter_on_grade(grade_range) {
+	this._grade_filter = grade_range;
+	this._filter();
+    }
+
+    filter_on_profile(profiles) {
+	this._profile_filter = profiles !== null ? new Set(profiles) : null;
+	this._filter();
+    }
+
+    filter_on_inclination(inclination) {
+	this._inclination_filter = inclination !== null ? new Set(inclinations) : null;
+	this._filter();
+    }
+
+    _to_line(route) {
+	var i = route.line_number -1;
+	if (i < this._wall_profile.length)
+	    return this._wall_profile[i];
+	else
+	    return null;
+    }
+
+    _to_profile(route) {
+	var line = this._to_line(route);
+	return line !== null ? line.profile : '';
+    }
+
+    _to_inclination(route) {
+	var line = this._to_line(route);
+	return line !== null ? line.inclination : '';
+    }
+
+    _to_sector(route) {
+	var line = this._to_line(route);
+	return line !== null ? line.sector : '';
+    }
+
+    _filter() {
 	// console.log('RouteModel filter_on_grade', min , max);
 	if (this._routes !== null) {
-	    const min_float = min.float;
-	    const max_float = max.float;
-	    this._filtered_routes = this._routes.filter(
-		route =>
-		    min_float <= route.grade_float &&
-		    route.grade_float <= max_float
-	    );
+	    var routes = [];
+
+	    if (this._grade_filter !== null) {
+		const [min_float, max_float] = this._grade_filter.map(grade => grade.float);
+		routes = this._routes.filter(
+		    route => min_float <= route.grade_float && route.grade_float <= max_float
+		);
+	    }
+
+	    if (this._profile_filter !== null)
+	    	routes = routes.filter(route => this._profile_filter.has(this._to_profile(route)));
+
+	    if (this._inclination_filter !== null)
+		routes = routes.filter(route => this._inclination_filter.has(this._to_inclination(route)));
+
+	    this._filtered_routes = routes;
 	    this._view.model_update();
 	}
     }

@@ -26,7 +26,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { RouteModel } from './route-model.js';
-import { RouteTableFilters } from './route-filters.jsx';
+import { GradeFilter, ProfileFilter } from './route-filters.jsx';
 import { RouteTable } from './route-table.jsx';
 
 /**************************************************************************************************/
@@ -39,6 +39,16 @@ var route_table = ReactDOM.render(
 );
 
 ReactDOM.render(
-    <RouteTableFilters route_model={route_model} />,
-    document.getElementById('filters')
+    <GradeFilter route_model={route_model} />,
+    document.getElementById('grade-filter')
 );
+
+ReactDOM.render(
+    <ProfileFilter route_model={route_model} />,
+    document.getElementById('profile-filter')
+);
+
+// ReactDOM.render(
+//     <GradeFilter route_model={route_model} />,
+//     document.getElementById('grade-filter')
+// );
