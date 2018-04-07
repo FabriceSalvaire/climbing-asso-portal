@@ -23,8 +23,9 @@
 	<body>
 	    <div class="body-wrapper">
 		{% block top_navbar %}{% endblock %}
-		{% block left_sidebar %}{% endblock %}
 		{% block body_container %}{% endblock %}
+		{# sidebar comes after for z-index #}
+		{% block left_sidebar %}{% endblock %}
 	    </div>
 
 	    {% block lazy_scripts %}{% endblock %}

@@ -29,16 +29,23 @@ import PerfectScrollbar from 'perfect-scrollbar';
 
 /**************************************************************************************************/
 
+// Initialise Perfect Scrollbar on the left sidebar
+const ps = new PerfectScrollbar('#left-sidebar-scroll');
+
 $(document).ready(function () {
     // Open/Close left sidebar
     $('#close-left-sidebar').on('click', function () {
 	$('#left-sidebar').removeClass('active');
-	$('#open-left-sidebar').toggle();
+	$('#body-content').addClass('body-content-expanded');
+	setTimeout(function() {
+	    $('#open-left-sidebar').parent().fadeIn(500);
+	}, 280);
 
         // $('a[aria-expanded=true]').attr('aria-expanded', 'false');
     });
     $('#open-left-sidebar').on('click', function () {
-	$('#open-left-sidebar').toggle();
+	$('#open-left-sidebar').parent().toggle();
+	$('#body-content').removeClass('body-content-expanded');
 	$('#left-sidebar').addClass('active');
     });
 
@@ -50,7 +57,4 @@ $(document).ready(function () {
 	ul.slideToggle(100); // ms  animate height
 	li.toggleClass('open');
     });
-
-    // Initialise Perfect Scrollbar on the left sidebar
-    const ps = new PerfectScrollbar('#left-sidebar-scroll');
 });

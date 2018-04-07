@@ -31,6 +31,7 @@ $fa-var-caret-up: '\f0d8';
  */
 
 $top-navbar-index: 1000;
+$open-left-sidebar: 1000;
 
 /**************************************************************************************************/
 
@@ -57,6 +58,13 @@ $sidebar-menu-color: $sidebar-color;
 $sidebar-submenu-bg: darken($sidebar-bg, $sidebar-color-interval);
 $sidebar-submenu-hovered: lighten($sidebar-submenu-bg, $sidebar-color-interval);
 $sidebar-submenu-color: $sidebar-color;
+
+$sidebar-open-padding-t: 5px;
+$sidebar-open-padding-b: $sidebar-open-padding-t*2;
+$sidebar-open-button-size: 32px;
+$sidebar-open-size: $sidebar-open-button-size + $sidebar-open-padding-t + $sidebar-open-padding-b + 5px;
+$sidebar-open-wrapper-size: $sidebar-open-size + $sidebar-open-padding-t*3;
+$sidebar-close-bg: darken($sidebar-bg, $sidebar-color-interval*3);
 
 $sidebar-padding-x: 1.5rem;
 $sidebar-padding-y: .75rem;

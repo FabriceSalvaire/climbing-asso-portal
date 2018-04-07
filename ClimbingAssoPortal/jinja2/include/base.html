@@ -22,10 +22,10 @@
 		integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l"
 		crossorigin="anonymous">
 	</script>
-	<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js"
-		integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c"
-		crossorigin="anonymous">
-	</script>
+	{# <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" #}
+	{# 	integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" #}
+	{# 	crossorigin="anonymous"> #}
+	{# </script> #}
 
 	{# Bootstrap #}
 	{# <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" #}
@@ -33,10 +33,9 @@
 	{# 	  crossorigin="anonymous"> #}
 
     {% else %}
-
 	{# Fontawesome #}
-	<script defer src={{ static('js-ext/fontawesome-all.min.js') }}></script>
-	<script defer src={{ static('js-ext/fa-v4-shims.min.js') }}></script>
+	<script defer src={{ static('js-ext/fontawesome-all.min.js') }}></script> 
+	<script defer src={{ static('js-ext/fa-v4-shims.min.js') }}></script> 
 	<link rel="stylesheet" href="{{ static('css-ext/fa-solid.min.css') }}">
 
 	{# Bootstrap #}
@@ -147,8 +146,10 @@
 {% block left_sidebar %}
     <nav id="left-sidebar" class="active">
 	<div class="left-sidebar-wrapper">
-	    <div class="left-sidebar-header">
+	    <div id="left-sidebar-open-wrapper">
 		<button id="open-left-sidebar" type="button" class="btn btn-sm"><i class="fas fa-caret-right"></i></button>
+	    </div>
+	    <div class="left-sidebar-header">
 		<button id="close-left-sidebar" type="button" class="btn btn-sm"><i class="fas fa-caret-left"></i></button>
 	    </div>
 	    <div class="left-sidebar-spacer">
@@ -291,7 +292,7 @@
 
 {# Standard page layout #}
 {% block body_container %}
-    <div class="content">
+    <div id="body-content">
 	<div class="container-fluid">
 	    {# flex-xl-nowrap #}
 	    <div class="row justify-content-center px-3 py-3">

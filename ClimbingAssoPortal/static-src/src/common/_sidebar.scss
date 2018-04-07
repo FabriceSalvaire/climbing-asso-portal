@@ -72,21 +72,56 @@
 
 #close-left-sidebar {
     float: right;
-    width: 32px;
-    // height: 32px;
-    background-color: darken($sidebar-bg, $sidebar-color-interval*3);
+    width: $sidebar-open-button-size;
+    background-color: $sidebar-close-bg;
+
+    &:hover {
+	background-color: darken($sidebar-close-bg, $sidebar-color-interval);
+    }
+}
+
+#left-sidebar-open-wrapper {
+    // sidebar is shown by default
+    display: none;
+
+    // place
+    z-index: $open-left-sidebar;
+    position: relative;
+    left: $left-sidebar-width;
+
+    // size a larger background
+    height: $sidebar-open-wrapper-size;
+    width: $sidebar-open-wrapper-size;
+
+    padding-top: $sidebar-open-padding-t;
+    padding-left: $sidebar-open-padding-t;
+
+    border-top-left-radius: 0%;
+    border-top-right-radius: 100%;
+    border-bottom-right-radius: 100%;
+    border-bottom-left-radius: 100%;
+
+    background-color: rgba(#ffffff, .5);
 }
 
 #open-left-sidebar {
-    display: none;
+    // size a smaller button
+    height: $sidebar-open-size;
+    width: $sidebar-open-size;
 
-    position: fixed;
-    top: $top-navbar-height;
-    left: 0;
-    margin: 3px;
+    border-top-left-radius: 0%;
+    border-top-right-radius: 100%;
+    border-bottom-right-radius: 100%;
+    border-bottom-left-radius: 100%;
 
-    width: 32px;
-    background-color: darken($sidebar-bg, $sidebar-color-interval*3);
+    background-color: $gray-800;
+    color: $body-bg;
+
+    font-size: $font-size-lg;
+
+    &:hover {
+    	background-color: $gray-400;
+    }
 }
 
 .sidebar-elements {

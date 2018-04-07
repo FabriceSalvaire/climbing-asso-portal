@@ -15,6 +15,11 @@
  * License along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-div.content {
+#body-content {
     margin-left: $left-sidebar-width;
+    transition: margin-left 300ms;
+
+    &.body-content-expanded {
+	margin-left: 0;
+    }
 }
