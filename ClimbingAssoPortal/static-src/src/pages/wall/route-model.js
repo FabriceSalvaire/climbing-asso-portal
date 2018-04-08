@@ -40,12 +40,14 @@ class RouteModel {
 
 	this._endpoint = endpoint;
 	this._wall_profile = alice_milliat_wall_line_profiles;
-	this._profiles = new Set();
-	this._inclinations = new Set();
+	var profiles = new Set();
+	var inclinations = new Set();
 	this._wall_profile.map(line => {
-	    this._profiles.add(line.profile);
-	    this._inclinations.add(line.inclination);
+	    profiles.add(line.profile);
+	    inclinations.add(line.inclination);
 	});
+	this._profiles = Array.from(profiles);
+	this._inclinations = Array.from(inclinations);
 
 	this._error = null;
 	this._routes = null;
@@ -70,7 +72,7 @@ class RouteModel {
 	return this._profiles;
     }
 
-    get inclination() {
+    get inclinations() {
 	return this._inclinations;
     }
 
@@ -80,6 +82,15 @@ class RouteModel {
 
     set_view(view) {
 	this._view = view;
+    }
+
+    _to_line(route) {
+	var i = route.line_number -1;
+	if (i < this._wall_profile.length)
+	    return this._wall_profile[i];
+	else
+	    // return dummy line
+	    return { line_number: route.line_number, sector:'', profile: '', inclination: '' };
     }
 
     _prepare_routes(routes) {
@@ -92,6 +103,7 @@ class RouteModel {
 		// console.log('Null grade', route);
 		route.grade_float = new FrenchGrade('4a').float;
 	    }
+	    route.line = this._to_line(route);
 	}
 
 	return routes;
@@ -128,59 +140,39 @@ class RouteModel {
     // Slot
     filter_on_grade(grade_range) {
 	this._grade_filter = grade_range;
+	// this.filter_on_profile(['Dièdre', 'Plan'])
 	this._filter();
     }
 
     filter_on_profile(profiles) {
+	console.log('filter_on_profiles', profiles);
 	this._profile_filter = profiles !== null ? new Set(profiles) : null;
 	this._filter();
     }
 
-    filter_on_inclination(inclination) {
-	this._inclination_filter = inclination !== null ? new Set(inclinations) : null;
+    filter_on_inclination(inclinations) {
+	console.log('filter_on_inclination', inclinations);
+	this._inclination_filter = inclinations !== null ? new Set(inclinations) : null;
 	this._filter();
-    }
-
-    _to_line(route) {
-	var i = route.line_number -1;
-	if (i < this._wall_profile.length)
-	    return this._wall_profile[i];
-	else
-	    return null;
-    }
-
-    _to_profile(route) {
-	var line = this._to_line(route);
-	return line !== null ? line.profile : '';
-    }
-
-    _to_inclination(route) {
-	var line = this._to_line(route);
-	return line !== null ? line.inclination : '';
-    }
-
-    _to_sector(route) {
-	var line = this._to_line(route);
-	return line !== null ? line.sector : '';
     }
 
     _filter() {
 	// console.log('RouteModel filter_on_grade', min , max);
 	if (this._routes !== null) {
-	    var routes = [];
+	    var routes = Array.from(this._routes);
 
 	    if (this._grade_filter !== null) {
 		const [min_float, max_float] = this._grade_filter.map(grade => grade.float);
-		routes = this._routes.filter(
+		routes = routes.filter(
 		    route => min_float <= route.grade_float && route.grade_float <= max_float
 		);
-	    }
+	    } else
 
 	    if (this._profile_filter !== null)
-	    	routes = routes.filter(route => this._profile_filter.has(this._to_profile(route)));
+	    	routes = routes.filter(route => this._profile_filter.has(route.line.profile));
 
 	    if (this._inclination_filter !== null)
-		routes = routes.filter(route => this._inclination_filter.has(this._to_inclination(route)));
+		routes = routes.filter(route => this._inclination_filter.has(route.line.inclination));
 
 	    this._filtered_routes = routes;
 	    this._view.model_update();

@@ -26,6 +26,7 @@ import es6BindAll from 'es6bindall';
 import ReactBootstrapSlider from 'react-bootstrap-slider';
 // import ReactBootstrapSlider from '../../externals/react-bootstrap-slider.jsx';
 
+// import '../../tools/set.js';
 import { FrenchGrade } from '../../tools/grade.js';
 import { SliderWithValues } from './route-table-tpl.jsx';
 
@@ -37,14 +38,14 @@ class GradeFilter extends React.Component {
 	super(props);
 	es6BindAll(this, ['on_value_change']);
 
-	this.route_model = props.route_model;
+	this._route_model = props.route_model;
 
-	this.grade_names = Array.from(FrenchGrade.grade_iter(4, 8));
-	this.grades = this.grade_names.map(name => new FrenchGrade(name));
-	this.max = this.grades.length -1;
+	this._grade_names = Array.from(FrenchGrade.grade_iter(4, 8));
+	this._grades = this._grade_names.map(name => new FrenchGrade(name));
+	this._max = this._grades.length -1;
 
 	this.state = {
-	    current_value: [0, this.max]
+	    current_value: [0, this._max]
 	};
 
 	// this.on_value_change = this.on_value_change.bind(this);
@@ -55,20 +56,20 @@ class GradeFilter extends React.Component {
 	this.setState({ current_value: min_max });
 
 	// Signal: slider -> table
-	var grade_min_max = min_max.map(value => this.grades[value]);
-	this.route_model.filter_on_grade(grade_min_max);
+	var grade_min_max = min_max.map(value => this._grades[value]);
+	this._route_model.filter_on_grade(grade_min_max);
     }
 
     render() {
 	const { current_value } = this.state;
-	var [ min_grade, max_grade ] = current_value.map(i => this.grade_names[i]);
+	var [ min_grade, max_grade ] = current_value.map(i => this._grade_names[i]);
 	var slider = (
 	    <ReactBootstrapSlider
 		value={current_value}
 		change={this.on_value_change}
 		slideStop={this.on_value_change}
 		min={0}
-		max={this.max}
+		max={this._max}
 		step={1}
 		/>
 	);
@@ -79,19 +80,70 @@ class GradeFilter extends React.Component {
 /**************************************************************************************************/
 
 export
-class ProfileFilter extends React.Component {
+class PropertyFilter extends React.Component {
     constructor(props) {
 	super(props);
-	// es6BindAll(this, ['']);
+	es6BindAll(this, ['_on_click', '_on_click_all', '_on_click_inverse', '_on_click_clear']);
 
-	this.route_model = props.route_model;
+	this._model = props.model;
+	this._properties = this._model[props.properties];
+	this._slot = props.slot;
 
 	this.state = {
+	    toggled: new Set(this._properties)
 	};
     }
 
+    _call_slot(toggled) {
+	this._model[this._slot](toggled);
+    }
+
+    _on_click(property) {
+	var toggled = new Set(this.state.toggled);
+	if (toggled.has(property))
+	    toggled.delete(property);
+	else
+	    toggled.add(property);
+	this.setState({ toggled });
+
+	toggled = Array.from(toggled);
+	this._call_slot(toggled);
+    }
+
+    _on_click_all() {
+	this.setState({ toggled: new Set(this._properties) });
+	this._call_slot(null);
+    }
+
+    _on_click_inverse() {
+	var toggled = this.state.toggled;
+	toggled = new Set(this._properties.filter(x => !toggled.has(x)));
+	this.setState({ toggled });
+
+	toggled = Array.from(toggled);
+	this._call_slot(toggled);
+    }
+
+    _on_click_clear() {
+	this.setState({ toggled: new Set() });
+	this._call_slot([]);
+    }
+
     render() {
-	return <div></div>;
+	const { toggled } = this.state;
+	const buttons = this._properties.map(property => {
+	    var class_name = 'btn btn-sm btn-' + (toggled.has(property) ? 'success' : 'danger');
+	    return (
+		<button Type="button" className={class_name} onClick={() => this._on_click(property)}>{property}</button>
+	    );
+	});
+	return (
+	    <div className="btn-group" Role="group" Aria-Label="">
+		<button Type="button" className="btn btn-secondary btn-sm" onClick={this._on_click_all}><i className="fas fa-check"></i></button>
+		<button Type="button" className="btn btn-secondary btn-sm" onClick={this._on_click_inverse}><i className="fas fa-retweet"></i></button>
+		<button Type="button" className="btn btn-secondary btn-sm" onClick={this._on_click_clear}><i className="fas fa-trash-alt"></i></button>
+		{buttons}
+	    </div>
+	);
     }
 }
-

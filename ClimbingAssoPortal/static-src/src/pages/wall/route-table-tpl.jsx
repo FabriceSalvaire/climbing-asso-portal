@@ -51,6 +51,9 @@ function RouteRow({ route }) {
     return (
 	<tr >
 	    <th scope="row"><a href="">{route.line_number}</a></th>
+	    <td>{route.line.sector}</td>
+	    <td>{route.line.profile}</td>
+	    <td>{route.line.inclination}</td>
 	    <td>{route.grade}</td>
 	    <td><div className={class_name}></div></td>
 	    <td>{route.name}</td>

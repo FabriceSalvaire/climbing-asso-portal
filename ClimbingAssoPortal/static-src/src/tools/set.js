@@ -18,37 +18,45 @@
  *
  **************************************************************************************************/
 
+// https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Set
+
+Set.prototype.isSuperset = function(subset) {
+  for (var elem of subset) {
+    if (!this.has(elem)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+Set.prototype.union = function(set_b) {
+  var union = new Set(this);
+  for (var elem of set_b) {
+    union.add(elem);
+  }
+  return union;
+}
+
+Set.prototype.intersection = function(set_b) {
+  var intersection = new Set();
+  for (var elem of set_b) {
+    if (this.has(elem)) {
+      intersection.add(elem);
+    }
+  }
+  return intersection;
+}
+
+Set.prototype.difference = function(set_b) {
+  var difference = new Set(this);
+  for (var elem of set_b) {
+    difference.delete(elem);
+  }
+  return difference;
+}
+
 /**************************************************************************************************/
 
-// import 'babel-polyfill';
-
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-import { RouteModel } from './route-model.js';
-import { GradeFilter, PropertyFilter } from './route-filters.jsx';
-import { RouteTable } from './route-table.jsx';
-
-/**************************************************************************************************/
-
-var route_model = new RouteModel('/api/routes/?limit=1000');
-
-var route_table = ReactDOM.render(
-    <RouteTable model={route_model} />,
-    document.getElementById('route-table')
-);
-
-ReactDOM.render(
-    <GradeFilter route_model={route_model} />,
-    document.getElementById('grade-filter')
-);
-
-ReactDOM.render(
-    <PropertyFilter model={route_model} properties='profiles' slot='filter_on_profile' />,
-    document.getElementById('profile-filter')
-);
-
-ReactDOM.render(
-    <PropertyFilter model={route_model} properties='inclinations' slot='filter_on_inclination' />,
-    document.getElementById('inclination-filter')
-);
+// let union = new Set([...a, ...b]);
+// let intersection = new Set([...a].filter(x => b.has(x)));
+// let difference = new Set([...a].filter(x => !b.has(x)));

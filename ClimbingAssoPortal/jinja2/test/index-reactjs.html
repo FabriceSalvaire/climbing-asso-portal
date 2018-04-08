@@ -42,13 +42,16 @@
     {# <h2>{{ _('Routes') }} </h2> #}
     <img class="mx-auto d-block" src={{ static('image/alice-milliat-wall.png') }}></img>
     <div id="grade-filter" class="mx-auto slider-wrapper"></div>
-    <div id="inclination-filter" class="mx-auto slider-wrapper"></div>
-    <div id="profile-filter" class="mx-auto slider-wrapper"></div>
+    <div id="inclination-filter" class=""></div>
+    <div id="profile-filter" class=""></div>
     <div class="route-table-wrapper">
 	<table class="table">
 	    <thead>
 		<tr>
 		    <th scope="col">{{ _('Line Number') }}</th>
+		    <th scope="col">{{ _('Sector') }}</th>
+		    <th scope="col">{{ _('Profile') }}</th>
+		    <th scope="col">{{ _('Inclination') }}</th>
 		    <th scope="col">{{ _('Grade') }}</th>
 		    <th scope="col">{{ _('Colour') }}</th>
 		    <th scope="col">{{ _('Name') }}</th>
