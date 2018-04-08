@@ -5,4 +5,5 @@ BABEL_ENV=latest-browser
 export BABEL_ENV
 
 # see --help
-npx webpack --watch --debug
+# npx webpack --watch --debug
+npx webpack-dashboard webpack --watch

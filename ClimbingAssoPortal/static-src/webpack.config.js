@@ -1,3 +1,23 @@
+/***************************************************************************************************
+ *
+ * Climbing Asso Portal
+ * Copyright (C) 2018 Fabrice Salvaire
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **************************************************************************************************/
+
 /**************************************************************************************************/
 
 // const NODE_ENV = process.env.NODE_ENV || 'production';
@@ -6,9 +26,18 @@ const NODE_ENV = 'development';
 
 const is_development = NODE_ENV === 'development';
 
+// set default Babel preset
+if (!process.env.BABEL_ENV)
+    process.env.BABEL_ENV = 'latest-browser';
+console.log('Babel will use', process.env.BABEL_ENV);
+
 /**************************************************************************************************/
 
 var path = require('path');
+
+// https://github.com/FormidableLabs/webpack-dashboard
+// run using : npx webpack-dashboard webpack ...
+const DashboardPlugin = require('webpack-dashboard/plugin');
 
 // https://webpack.js.org/plugins/extract-text-webpack-plugin
 //   https://www.npmjs.com/package/extract-text-webpack-plugin
@@ -30,10 +59,7 @@ const babel_config = {
     env: {
 	browser: {
 	    presets: ['es2015', 'react', 'stage-2'],
-	    plugins: [
-		// https://github.com/schmod/babel-plugin-angularjs-annotate
-		['angularjs-annotate', { 'explicitOnly' : true}]
-	    ]
+	    plugins: []
 	},
 
 	'latest-browser': {
@@ -47,9 +73,7 @@ const babel_config = {
  		'react',
 		'stage-2',
   	    ],
-	    plugins: [
-		['angularjs-annotate', { explicitOnly : true}]
-	    ]
+	    plugins: []
 	},
 
 	node: {
@@ -111,7 +135,7 @@ const postcss_options = {
 
 /**************************************************************************************************/
 
-module.exports = {
+let config = {
     mode: NODE_ENV,
 
     // entry: ['babel-polyfill', './app/js']
@@ -120,7 +144,6 @@ module.exports = {
 	admin: './src/admin/index.js',
 	member_map: './src/pages/member_map/index.js',
 	rest_framework: './src/rest_framework/index.js',
-	route_page: './src/pages/wall/route-page.js',
 	route_page_react: './src/pages/wall/route-page.jsx',
 	select2_test: './src/pages/select2_test.js',
 	test: './src/test.js',
@@ -149,6 +172,7 @@ module.exports = {
                 use: ExtractTextPlugin.extract({
 		    use: [
 			// scss files > sass-loader > postcss-loader > css-loader > ExtractTextPlugin
+			// { loader: "style-loader" },
 			{
 			    loader: 'css-loader',
 			    options: css_loader_options
@@ -171,6 +195,7 @@ module.exports = {
 			    }
 			},
 		    ],
+		    // https://github.com/webpack-contrib/style-loader
                     // use style-loader in development
                     // fallback: 'style-loader'
                 })
@@ -194,6 +219,7 @@ module.exports = {
     },
 
     plugins: [
+	new DashboardPlugin(),
         new ExtractTextPlugin({
 	    filename: 'css/[name].css'
 	}),
@@ -296,3 +322,7 @@ module.exports = {
     // 	warningsFilter: 'filter' | /filter/ | ['filter', /filter/] | (warning) => ... return true|false
     // }
 };
+
+/**************************************************************************************************/
+
+module.exports = config;

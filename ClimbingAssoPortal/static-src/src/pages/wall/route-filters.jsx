@@ -22,8 +22,9 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import es6BindAll from 'es6bindall';
 import ReactBootstrapSlider from 'react-bootstrap-slider';
+import es6BindAll from 'es6bindall';
+
 // import ReactBootstrapSlider from '../../externals/react-bootstrap-slider.jsx';
 
 // import '../../tools/set.js';
