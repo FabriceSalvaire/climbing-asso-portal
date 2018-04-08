@@ -19,7 +19,7 @@
 ####################################################################################################
 
 __all__ = [
-    'celery_ application',
+    'celery_application',
 ]
 
 ####################################################################################################
@@ -31,7 +31,7 @@ print('Load', __name__)
 try:
     # This will make sure the app is always imported when Django starts
     # so that shared_task will use this app.
-    from .celery import application as celery_application
+    from .CelerySetup import application as celery_application
 except ImportError:
     # Handle
     #   ImportError: cannot import name 'Celery'
