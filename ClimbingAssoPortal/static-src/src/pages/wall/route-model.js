@@ -166,7 +166,7 @@ class RouteModel {
 		routes = routes.filter(
 		    route => min_float <= route.grade_float && route.grade_float <= max_float
 		);
-	    } else
+	    }
 
 	    if (this._profile_filter !== null)
 	    	routes = routes.filter(route => this._profile_filter.has(route.line.profile));
