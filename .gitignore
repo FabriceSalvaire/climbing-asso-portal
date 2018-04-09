@@ -7,6 +7,9 @@ trash/
 
 .google-api-credentials/
 ClimbingAssoPortal/serializers-removed.py
+ClimbingAssoPortal/locale/django.json
+ClimbingAssoPortal/locale/django.pot
+ClimbingAssoPortal/locale/*/LC_MESSAGES/django.mo
 ClimbingAssoPortal/static-ext/dist/
 ClimbingAssoPortal/static-src/node_modules
 ClimbingAssoPortal/static-src/node_modules/
