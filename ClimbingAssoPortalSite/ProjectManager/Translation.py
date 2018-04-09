@@ -30,6 +30,9 @@
 #  pot (Portable Object Template) : all the translation strings left empty
 #  mo  (Message Object)
 #
+# https://github.com/python-babel/django-babel
+#
+#
 ####################################################################################################
 
 __all__ = [
@@ -53,12 +56,13 @@ class MakeMessage:
 
     ##############################################
 
-    def __init__(self, domain):
+    def __init__(self, application, domain='django'):
 
+        self._application = application
         self._domain = domain
 
         self._source_path = Path(__file__).parents[2].resolve()
-        self._locale_dir = self._source_path.joinpath(self._domain, 'locale')
+        self._locale_dir = self._source_path.joinpath(self._application, 'locale')
         self._babel_cfg_path = self._locale_dir.joinpath('babel.cfg')
         self._message_pot_path = self._locale_dir.joinpath(self._domain + '.pot')
 
@@ -191,6 +195,6 @@ class MakeMessage:
                 messages = self._extract_js_for_language(po_file)
                 json_data[language] = messages
 
-        json_path = self._locale_dir.joinpath('messages.json')
+        json_path = self._locale_dir.joinpath(self._domain + '.json')
         with open(json_path, 'w') as fh:
             json.dump(json_data, fh)

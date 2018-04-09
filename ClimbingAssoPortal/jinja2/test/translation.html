@@ -1,0 +1,34 @@
+{# -*- mode: jinja2 -*- #}
+{% extends "include/base.html" %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+    <h2>Language Information</h2>
+
+    {# <p>get_current_language : {% get_current_language as lang %} {{ lang }}</p> #}
+    {# <p>get_available_languages : {% get_available_languages as languages %} {{ languages }}</p> #}
+
+    <h3>Current Language</h3>
+    {% with language = get_language_info(get_current_language()) %}
+	<ul>
+	    <li>Language code: {{ language.code }}</li>
+	    <li>Name of language: {{ language.name_local }}</li>
+	    <li>Name in English: {{ language.name }}</li>
+	    <li>Bi-directional: {{ language.bidi }}</li>
+	    <li>Name in the active language: {{ language.name_translated }}</li>
+	</ul>
+    {% endwith %}
+
+    <h2>Translation Test</h2>
+    <p>A translated message : {{ _('medical certificate year') }}</p>
+
+    <h3>Available Languages</h3>
+    <ul>
+	{% for language in get_available_languages() %}
+	    <li>{{ language }}</li>
+	{% endfor %}
+    </ul>
+{% endblock %}
+
