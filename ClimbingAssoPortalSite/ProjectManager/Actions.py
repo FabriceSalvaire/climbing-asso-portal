@@ -70,7 +70,6 @@ class Shell(cmd.Cmd):
             response = default
         return response == 'y'
 
-
     ##############################################
 
     def _manage(self, *args):
@@ -109,7 +108,7 @@ class Shell(cmd.Cmd):
         'Drop all migrations'
 
         self._print_banner('Drop migrations')
-        pattern = str(BASE_DIR.joinpath(APPLICATION, 'migrations', '0*.py'))
+        pattern = str(BASE_DIR.joinpath(Defaults.APPLICATION, 'migrations', '0*.py'))
         migrations = glob.glob(pattern)
         migrations.sort()
         for path in migrations:
@@ -154,8 +153,8 @@ class Shell(cmd.Cmd):
         if args is None:
             # superuser = create_superuser_parser.get_default('superuser')
             # superuser_email = create_superuser_parser.get_default('superuser_email')
-            superuser = SUPERUSER
-            superuser_email = SUPERUSER_EMAIL
+            superuser = Defaults.SUPERUSER
+            superuser_email = Defaults.SUPERUSER_EMAIL
         else:
             superuser = args.superuser
             superuser_email = args.superuser_email
@@ -174,7 +173,7 @@ class Shell(cmd.Cmd):
         'Load data'
 
         self._print_banner('Load Data')
-        # pattern = str(BASE_DIR.joinpath(APPLICATION, 'fixtures', '*.json'))
+        # pattern = str(BASE_DIR.joinpath(Defaults.APPLICATION, 'fixtures', '*.json'))
         pattern = str(BASE_DIR.joinpath('fixtures', '*.json'))
         fixtures = glob.glob(pattern)
         fixtures.sort()
@@ -200,7 +199,7 @@ class Shell(cmd.Cmd):
         self._print_banner('Create initial revisions')
         self._manage(
             'createinitialrevisions',
-            APPLICATION + '.UserProfile',
+            Defaults.APPLICATION + '.UserProfile',
             '--comment', 'Initial revision.'
         )
 
@@ -235,9 +234,9 @@ class Shell(cmd.Cmd):
 
         'Run all'
 
-        self.check()
-        self.migrate()
-        self.collect_static()
-        self.create_superuser()
-        self.load_data()
-        self.create_initial_revisions()
+        self.do_check()
+        self.do_migrate()
+        self.do_collect_static()
+        self.do_create_superuser()
+        self.do_load_data()
+        self.do_create_initial_revisions()
