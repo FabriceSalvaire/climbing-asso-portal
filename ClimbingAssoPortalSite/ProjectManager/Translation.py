@@ -50,6 +50,8 @@ from babel.messages import pofile
 
 import colors # ansicolors
 
+from . import LogPrinting
+
 ####################################################################################################
 
 class MakeMessage:
@@ -64,30 +66,58 @@ class MakeMessage:
         self._source_path = Path(__file__).parents[2].resolve()
         self._locale_dir = self._source_path.joinpath(self._application, 'locale')
         self._babel_cfg_path = self._locale_dir.joinpath('babel.cfg')
-        self._message_pot_path = self._locale_dir.joinpath(self._domain + '.pot')
+        self._pot_path = self._locale_dir.joinpath(self._domain + '.pot')
+
+    ##############################################
+
+    def _print_banner(self, title, width=50):
+
+        print(
+            colors.green(
+                LogPrinting.format_message_header(
+                    title,
+                    width=width,
+                    centered=True,
+                    margin=True,
+                    border=True,
+                    bottom_rule=True,
+                    newline=False,
+                )
+            )
+        )
 
     ##############################################
 
     def extract(self):
 
+        self._print_banner('Extract Messages ...')
+
         # Extract localizable messages from a collection of source files
         subprocess.call(('pybabel', 'extract',
                          '-F', self._babel_cfg_path,   # path to the extraction mapping file
                          '-k', 'lazy_gettext',   # keywords to look for in addition to the defaults
-                         '-o', self._message_pot_path, # path to the output POT file
+                         '-o', self._pot_path, # path to the output POT file
                          self._source_path))
+
+    ##############################################
+
+    def po_file(self, language):
+
+        return self._locale_dir.joinpath(language, 'LC_MESSAGES', self._domain + '.po')
 
     ##############################################
 
     def init(self):
 
+        self._print_banner('Init languages ...')
+
         for language in ('en', 'fr'):
-            if not self._locale_dir.joinpath(language, 'LC_MESSAGES', 'portal.po').exists:
+            if not self.po_file(language).exists():
                 # Create a new translations catalog based on a PO template file
                 subprocess.call((
                     'pybabel', 'init',
                     '-D', self._domain,           # domain of PO file (default 'messages')
-                    '-i', self._message_pot_path, # name of the input file
+                    '-i', self._pot_path, # name of the input file
                     '-d', self._locale_dir,       # path to output directory
                     '-l', language,               # locale for the new localized catalog
                 ))
@@ -96,17 +126,21 @@ class MakeMessage:
 
     def update(self):
 
+        self._print_banner('Update messages ...')
+
         # Update an existing new translations catalog based on a PO template file
         subprocess.call((
             'pybabel', 'update',
             '-D', self._domain,
-            '-i', self._message_pot_path,
+            '-i', self._pot_path,
             '-d', self._locale_dir,
         ))
 
     ##############################################
 
     def compile(self):
+
+        self._print_banner('Compile messages ...')
 
         subprocess.call((
             'pybabel', 'compile',
@@ -116,9 +150,18 @@ class MakeMessage:
 
     ##############################################
 
+    def edit_po(self, language, program='poedit'):
+
+        subprocess.call((
+            'poedit',
+            self.po_file(language),
+        ))
+
+    ##############################################
+
     def check(self, language):
 
-        with open(self._locale_dir.joinpath(language, 'LC_MESSAGES', self._domain + '.po')) as fh:
+        with open(self.po_file(language)) as fh:
             catalog = pofile.read_po(fh)
 
             for error in catalog.check():
@@ -144,9 +187,7 @@ class MakeMessage:
 
     def merge_js_messages(self, json_path_root):
 
-        pot_file = self._locale_dir.joinpath(self._domain + '.pot')
-
-        with open(pot_file) as fh:
+        with open(self._pot_path) as fh:
             catalog = pofile.read_po(fh)
 
         for root, _, files in os.walk(Path(json_path_root).resolve()):
@@ -156,7 +197,7 @@ class MakeMessage:
                     absolute_filename = root.joinpath(filename)
                     self._merge_json(absolute_filename, catalog)
 
-        with open(pot_file, 'wb') as fh:
+        with open(self._pot_path, 'wb') as fh:
             pofile.write_po(fh, catalog)
 
     ##############################################
@@ -190,7 +231,7 @@ class MakeMessage:
         json_data = {}
         for language_directory in self._iter_on_language_directories():
             language = language_directory.name
-            po_file = language_directory.joinpath('LC_MESSAGES', self._domain + '.po')
+            po_file = self.po_file(language)
             if po_file.exists():
                 messages = self._extract_js_for_language(po_file)
                 json_data[language] = messages

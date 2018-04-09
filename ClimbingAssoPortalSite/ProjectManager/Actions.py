@@ -277,9 +277,13 @@ class Shell(cmd.Cmd):
             make_message.merge_js_messages(Defaults.JSON_MESSAGE_PATH)
             if args.init:
                 make_message.init()
-            make_message.update()
+            # make_message.update()
+
+        if args.edit:
+            make_message.edit_po(args.edit)
         if args.check:
             make_message.check(args.check)
+
         if args.compile:
             make_message.compile()
             make_message.extract_js_messages()
