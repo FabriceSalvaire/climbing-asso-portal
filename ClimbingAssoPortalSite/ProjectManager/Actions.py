@@ -31,10 +31,34 @@ import colors # ansicolors @PyPI
 
 from . import Defaults
 from . import LogPrinting
+from . import Translation
 
 ####################################################################################################
 
 BASE_DIR = Path(__file__).parents[2].resolve()
+
+####################################################################################################
+
+class FakeArgument:
+
+    ##############################################
+
+    def __init__(self, args, defaults=None):
+
+        self._args = dict(defaults) if defaults else {}
+        for arg in args.split():
+            if arg:
+                if '=' in arg:
+                    key, value = arg.split('=')
+                    self._args[key] = value
+                else:
+                    self._args[arg] = True
+
+    ##############################################
+
+    def __getattr__(self, key):
+
+        return self._args.get(key, None)
 
 ####################################################################################################
 
@@ -82,6 +106,15 @@ class Shell(cmd.Cmd):
             print(exception)
             print(rule)
             print(colors.red('Failed'))
+
+    ##############################################
+
+    def _check_args(self, args):
+
+        if isinstance(args, str):
+            return FakeArgument(args)
+        else:
+            return args
 
     ##############################################
 
@@ -145,7 +178,7 @@ class Shell(cmd.Cmd):
 
         'Create superuser'
 
-        # use args
+        args = self._check_args(args)
 
         self._print_banner('Create superuser / admin')
 
@@ -209,7 +242,7 @@ class Shell(cmd.Cmd):
 
         'Dump data'
 
-        # use args
+        args = self._check_args(args)
 
         self._print_banner('Dump Data')
 
@@ -227,6 +260,27 @@ class Shell(cmd.Cmd):
                 json_data = json.load(fh)
             with open(output_path, 'w') as fh:
                 json.dump(json_data, fh, indent=4, sort_keys=True)
+
+    ##############################################
+
+    def do_make_message(self, args=None):
+
+        'Make Message'
+
+        args = self._check_args(args)
+
+        make_message = Translation.MakeMessage(Defaults.APPLICATION)
+
+        if args.update:
+            make_message.extract()
+            if args.init:
+                make_message.init()
+            make_message.update()
+        if args.compile:
+            make_message.compile()
+
+        # poedit
+        # linguist-qt5
 
     ##############################################
 

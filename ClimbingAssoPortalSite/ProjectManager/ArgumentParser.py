@@ -163,6 +163,19 @@ class ArgumentParser:
 
         dump_data_parser.set_defaults(func=shell.do_dump_data)
 
+        ################################
+
+        make_message_parser = subparsers.add_parser(
+            'make_message',
+            help='Make Message',
+        )
+
+        make_message_parser.add_argument('--init', action='store_true')
+        make_message_parser.add_argument('--update', action='store_true')
+        make_message_parser.add_argument('--compile', action='store_true')
+
+        make_message_parser.set_defaults(func=shell.do_make_message)
+
     ##############################################
 
     def parse(self):
