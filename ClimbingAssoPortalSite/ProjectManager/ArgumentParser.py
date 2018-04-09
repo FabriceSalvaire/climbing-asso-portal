@@ -172,6 +172,7 @@ class ArgumentParser:
 
         make_message_parser.add_argument('--init', action='store_true')
         make_message_parser.add_argument('--update', action='store_true')
+        make_message_parser.add_argument('--check', action='store_true')
         make_message_parser.add_argument('--compile', action='store_true')
 
         make_message_parser.set_defaults(func=shell.do_make_message)

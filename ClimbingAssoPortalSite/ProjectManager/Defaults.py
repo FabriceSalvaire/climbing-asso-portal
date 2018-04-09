@@ -18,7 +18,15 @@
 #
 ####################################################################################################
 
+####################################################################################################
+
+from pathlib import Path
+
+####################################################################################################
+
 APPLICATION = 'ClimbingAssoPortal'
 
 SUPERUSER = 'admin'
 SUPERUSER_EMAIL = 'admin@climbing-asso-portal.fr'
+
+JSON_MESSAGE_PATH = Path(APPLICATION).joinpath('static-src', 'build', 'messages')

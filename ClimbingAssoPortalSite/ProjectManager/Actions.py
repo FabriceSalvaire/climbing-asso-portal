@@ -36,6 +36,7 @@ from . import Translation
 ####################################################################################################
 
 BASE_DIR = Path(__file__).parents[2].resolve()
+JSON_MESSAGE_PATH = BASE_DIR.joinpath(Defaults.JSON_MESSAGE_PATH)
 
 ####################################################################################################
 
@@ -273,11 +274,15 @@ class Shell(cmd.Cmd):
 
         if args.update:
             make_message.extract()
+            make_message.merge_js_messages(Defaults.JSON_MESSAGE_PATH)
             if args.init:
                 make_message.init()
             make_message.update()
+        if args.check:
+            make_message.check(args.check)
         if args.compile:
             make_message.compile()
+            make_message.extract_js_messages()
 
         # poedit
         # linguist-qt5
