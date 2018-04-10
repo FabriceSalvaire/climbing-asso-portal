@@ -340,12 +340,6 @@ def age_histogram_csv(request):
 ####################################################################################################
 
 @login_required
-def member_statistics(request):
-    return render(request, 'member/statistics.html', {})
-
-####################################################################################################
-
-@login_required
 def member_city_geojson(request):
 
     query = FrenchCity.objects.annotate(member_count=Count('member'))

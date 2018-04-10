@@ -137,7 +137,12 @@ urlpatterns += [
 
     path('member/members.csv',
          member_views.member_as_csv,
-         name='member.member_csv',
+         name='member.member_list_csv',
+    ),
+
+    path('member/data/',
+         login_required(TemplateView.as_view(template_name='member/data.html')),
+         name='member.data',
     ),
 
     path('member/age_histogram.svg',
@@ -153,7 +158,7 @@ urlpatterns += [
          name='member.age_histogram_csv'),
 
     path('member/statistics/',
-         member_views.member_statistics,
+         login_required(TemplateView.as_view(template_name='member/statistics.html')),
          name='member.statistics',
     ),
 
@@ -162,7 +167,7 @@ urlpatterns += [
          name='member.city_geojson'),
 
     path('member/map/',
-         TemplateView.as_view(template_name='member/map.html'),
+         login_required(TemplateView.as_view(template_name='member/map.html')),
          name='member.map',
     ),
 
@@ -255,6 +260,8 @@ urlpatterns += [
          login_required(TemplateView.as_view(template_name='devel/test/index.html')),
          name='devel.test.index',
     ),
+
+    # /!\ Not in Production /!\
 
     path('devel/test/rest-ajax',
          TemplateView.as_view(template_name='devel/test/rest-ajax.html'),

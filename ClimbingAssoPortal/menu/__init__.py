@@ -61,6 +61,11 @@ member_menu = Menu(
             icon='fa-chart-bar',
             url='member.statistics',
         ),
+        Menu(
+            title=_('Member Data'),
+            icon='fa-database',
+            url='member.data',
+        ),
     ],
 )
 
