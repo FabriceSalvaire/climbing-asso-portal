@@ -135,14 +135,14 @@ class PropertyFilter extends React.Component {
 	const buttons = this._properties.map(property => {
 	    var class_name = 'btn btn-sm btn-' + (toggled.has(property) ? 'success' : 'danger');
 	    return (
-		<button Type="button" className={class_name} onClick={() => this._on_click(property)}>{property}</button>
+		<button key={property} type="button" className={class_name} onClick={() => this._on_click(property)}>{property}</button>
 	    );
 	});
 	return (
-	    <div className="btn-group" Role="group" Aria-Label="">
-		<button Type="button" className="btn btn-secondary btn-sm" onClick={this._on_click_all}><i className="fas fa-check"></i></button>
-		<button Type="button" className="btn btn-secondary btn-sm" onClick={this._on_click_inverse}><i className="fas fa-retweet"></i></button>
-		<button Type="button" className="btn btn-secondary btn-sm" onClick={this._on_click_clear}><i className="fas fa-trash-alt"></i></button>
+	    <div className="btn-group" role="group" aria-label="">
+		<button key='all' type="button" className="btn btn-secondary btn-sm" onClick={this._on_click_all}><i className="fas fa-check"></i></button>
+		<button key='inverse' type="button" className="btn btn-secondary btn-sm" onClick={this._on_click_inverse}><i className="fas fa-retweet"></i></button>
+		<button key='clear' type="button" className="btn btn-secondary btn-sm" onClick={this._on_click_clear}><i className="fas fa-trash-alt"></i></button>
 		{buttons}
 	    </div>
 	);

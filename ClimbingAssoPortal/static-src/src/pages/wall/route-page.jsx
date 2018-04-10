@@ -31,6 +31,21 @@ import { RouteTable } from './route-table.jsx';
 
 /**************************************************************************************************/
 
+// import { injectIntl, defineMessages } from 'react-intl';
+
+// const messages = defineMessages({
+//   widget1Header: {
+//     id: 'Widgets.widget1.header',
+//     defaultMessage: 'Creative header',
+//   },
+//   widget1Body: {
+//     id: 'Widgets.widget1.body',
+//     defaultMessage: 'Mark todays date: {date}',
+//   },
+// });
+
+/**************************************************************************************************/
+
 var route_model = new RouteModel('/api/routes/?limit=1000');
 
 var route_table = ReactDOM.render(

@@ -4,6 +4,7 @@
 
 {% block head %}
     <link rel="stylesheet" href={{ static('css-ext/bootstrap-slider.min.css') }}>
+    <link rel="stylesheet" href={{ static('css-ext/react-table.css') }}>
     <link rel="stylesheet" href={{ static('css/main.css') }}>
 {% endblock %}
 
@@ -12,14 +13,14 @@
     {# <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script> #}
 
      {# Fixme: else React is not defined #}
-    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    {# <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script> #}
+    {# <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script> #}
 
     {# <script type="text/javascript" src={{ static('js-ext/react.development.js') }}></script> #}
     {# <script type="text/javascript" src={{ static('js-ext/react-dom.development.js') }}></script> #}
 
-    {# <script type="text/javascript" src={{ static('js-ext/react.production.min.js') }}></script> #}
-    {# <script type="text/javascript" src={{ static('js-ext/react-dom.production.min.js') }}></script> #}
+    {# <script type="text/javascript" src={{ static('js-ext/react.production.min.js') }}></script>  #}
+    {# <script type="text/javascript" src={{ static('js-ext/react-dom.production.min.js') }}></script>  #}
 
     {# <script src={{ static('js-ext/bootstrap-slider.min.js') }}></script> #}
     {# <script src={{ static('js-ext/react-bootstrap-slider.js') }}></script> #}
@@ -44,23 +45,24 @@
     <div id="grade-filter" class="mx-auto slider-wrapper"></div>
     <div id="inclination-filter" class=""></div>
     <div id="profile-filter" class=""></div>
-    <div class="route-table-wrapper">
-	<table class="table">
-	    <thead>
-		<tr>
-		    <th scope="col">{{ _('Line Number') }}</th>
-		    <th scope="col">{{ _('Sector') }}</th>
-		    <th scope="col">{{ _('Profile') }}</th>
-		    <th scope="col">{{ _('Inclination') }}</th>
-		    <th scope="col">{{ _('Grade') }}</th>
-		    <th scope="col">{{ _('Colour') }}</th>
-		    <th scope="col">{{ _('Name') }}</th>
-		    <th scope="col">{{ _('Comment') }}</th>
-		    <th scope="col">{{ _('Opener') }}</th>
-		    <th scope="col">{{ _('Opening date') }}</th>
-		</tr>
-	    </thead>
-	    <tbody id="route-table"></tbody>
-	</table>
-    </div>
+    {# <div class="route-table-wrapper"> #}
+    {# 	<table class="table"> #}
+    {# 	    <thead> #}
+    {# 		<tr> #}
+    {# 		    <th scope="col">{{ _('Line Number') }}</th> #}
+    {# 		    <th scope="col">{{ _('Sector') }}</th> #}
+    {# 		    <th scope="col">{{ _('Profile') }}</th> #}
+    {# 		    <th scope="col">{{ _('Inclination') }}</th> #}
+    {# 		    <th scope="col">{{ _('Grade') }}</th> #}
+    {# 		    <th scope="col">{{ _('Colour') }}</th> #}
+    {# 		    <th scope="col">{{ _('Name') }}</th> #}
+    {# 		    <th scope="col">{{ _('Comment') }}</th> #}
+    {# 		    <th scope="col">{{ _('Opener') }}</th> #}
+    {# 		    <th scope="col">{{ _('Opening date') }}</th> #}
+    {# 		</tr> #}
+    {# 	    </thead> #}
+    {# 	    <tbody id="route-table"></tbody> #}
+    {# 	</table> #}
+    {# </div> #}
+    <div id="route-table"></div>
 {% endblock %}

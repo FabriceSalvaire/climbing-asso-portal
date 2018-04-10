@@ -25,8 +25,13 @@ import ReactDOM from 'react-dom';
 import es6BindAll from 'es6bindall';
 import ReactBootstrapSlider from 'react-bootstrap-slider';
 // import ReactBootstrapSlider from '../../externals/react-bootstrap-slider.jsx';
+import ReactTable from 'react-table';
+
+import { FrenchGrade } from '../../tools/grade.js';
 
 import { RouteRow } from './route-table-tpl.jsx';
+
+import { hold_colours } from './hold-colour.js';
 
 /**************************************************************************************************/
 
@@ -58,9 +63,76 @@ class RouteTable extends React.Component {
 	    return <div>Loading...</div>;
 	else
 	    return (
-		<React.Fragment>
-		    {routes.map(route => (<RouteRow key={route.id} route={route} />))}
-		</React.Fragment>
+		<ReactTable
+		    data={routes}
+		    columns={[
+			{
+			    Header: 'Line Number',
+			    accessor: 'line_number',
+			},
+			{
+			    Header: 'Sector',
+			    id: 'sector',
+			    accessor: route => route.line.sector,
+			},
+			{
+			    Header: 'Profile',
+			    id: 'profile',
+			    accessor: route => route.line.profile,
+			},
+			{
+			    Header: 'Inclination',
+			    id: 'inclination',
+			    accessor: route => route.line.inclination,
+			},
+                        {
+                            Header: 'Grade',
+                            accessor: 'grade',
+ 			    sortMethod: (a, b) => {
+			        if (!a || a == 'ENF')
+  			    	    a = '4a';
+			    	if (!b || b == 'ENF')
+			    	    b = '4a';
+			    	a = new FrenchGrade(a).float;
+			    	b = new FrenchGrade(b).float;
+ 				if (a > b)
+ 				    return 1;
+ 				if (a < b)
+				    return -1;
+ 				return 0;
+                            },
+                        },
+                        {
+                            Header: 'Name',
+                            accessor: 'name',
+                        },
+                        {
+ 			    Header: 'Colour',
+			    accessor: 'colour',
+			    Cell: row => {
+			        var class_name = 'hold-colour hold-colour-' + hold_colours[row.value];
+				return <div className={class_name}></div>;
+ 			    },
+			},
+			{
+			    Header: 'Comment',
+			    accessor: 'comment',
+			},
+			{
+			    Header: 'Opener',
+			    accessor: 'opener',
+			},
+			{
+			    Header: 'Opening Date',
+			    accessor: 'opening_date',
+			}
+		    ]}
+		    defaultPageSize={10}
+		    className="-striped -highlight"
+		    />
+		// <React.Fragment>
+		//     {routes.map(route => (<RouteRow key={route.id} route={route} />))}
+		// </React.Fragment>
 	    );
     }
 }
