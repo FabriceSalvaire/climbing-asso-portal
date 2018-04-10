@@ -200,11 +200,18 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #     }
 # }
 
+# see also https://github.com/django-pylibmc/django-pylibmc
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'memory_cache',
+    }
+}
+
 # CACHES = {
 #     'default': {
-#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-#         'LOCATION': '127.0.0.1:11211',
-#         'LOCATION': 'unix:/tmp/memcached.sock',
+#         'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+#         'LOCATION': '/tmp/memcached.sock',
 #     }
 # }
 

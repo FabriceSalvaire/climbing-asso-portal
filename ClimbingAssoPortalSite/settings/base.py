@@ -36,6 +36,8 @@ from pathlib import Path
 
 # from django_jinja.builtins import DEFAULT_EXTENSIONS
 
+from Duration import u_s, u_min, u_hour
+
 ####################################################################################################
 
 print('Load', __name__)
@@ -116,6 +118,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django.middleware.cache.UpdateCacheMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -128,6 +132,8 @@ MIDDLEWARE = [
     'account.middleware.LocaleMiddleware',
     'account.middleware.TimezoneMiddleware',
     'account.middleware.ExpiredPasswordMiddleware',
+
+    'django.middleware.cache.FetchFromCacheMiddleware', # caches GET and HEAD responses with status 200
 ]
 
 ####################################################################################################
@@ -213,6 +219,15 @@ TEMPLATES = [
     JINJA_TEMPLATES,
     DJANGO_TEMPLATES,
 ]
+
+####################################################################################################
+#
+# Cache Middleware
+#
+
+CACHE_MIDDLEWARE_ALIAS = 'default' # cf. CACHES keys
+CACHE_MIDDLEWARE_SECONDS = int(10@u_s)
+CACHE_MIDDLEWARE_KEY_PREFIX = ''
 
 ####################################################################################################
 #
