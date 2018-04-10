@@ -10,6 +10,7 @@
 {% block head_scripts %}
     {% if use_cdn %}
 	{# Fontawesome #}
+
 	{# https://fontawesome.com/get-started/web-fonts-with-css #}
 	{# <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css" #}
 	{# 	  integrity="sha384-v2Tw72dyUXeU3y4aM2Y0tBJQkGfplr39mxZqlTBDUZAb9BGoC40+rdFCG0m10lXk" #}
@@ -17,11 +18,13 @@
         {# <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/fontawesome.css" #}
 	{# 	  integrity="sha384-q3jl8XQu1OpdLgGFvNRnPdj5VIlCvgsDQTQB6owSOHWlAurxul7f+JpUOVdAiJ5P" #}
 	{# 	  crossorigin="anonymous"> #}
+
 	{# https://fontawesome.com/get-started/svg-with-js #}
 	<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js"
 		integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l"
 		crossorigin="anonymous">
 	</script>
+
 	{# <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" #}
 	{# 	integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" #}
 	{# 	crossorigin="anonymous"> #}
@@ -34,8 +37,9 @@
 
     {% else %}
 	{# Fontawesome #}
-	<script defer src={{ static('js-ext/fontawesome-all.min.js') }}></script> 
-	<script defer src={{ static('js-ext/fa-v4-shims.min.js') }}></script> 
+	<script defer src={{ static('js-ext/fontawesome-all.min.js') }}></script>
+	<link rel="stylesheet" href="{{ static('css-ext/fa-svg-with-js.css') }}">
+	<script defer src={{ static('js-ext/fa-v4-shims.min.js') }}></script>
 	<link rel="stylesheet" href="{{ static('css-ext/fa-solid.min.css') }}">
 
 	{# Bootstrap #}
@@ -110,24 +114,24 @@
 		    <li class="nav-item dropdown mr-md-5 {% block nav_account %}{% endblock %}">
 			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
 			   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			   <i class="fa fa-user"></i> {{ user.username }} {#get_full_name()#}</a>
+			   {% icon 'fa-user' %} {{ user.username }} {#get_full_name()#}</a>
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 			    <a class="dropdown-item" href="{{ url('account_settings') }}">
-				<i class="fa fa-user"></i>  {{ _('Settings') }}</a>
+				{% icon 'fa-user' %}  {{ _('Settings') }}</a>
 			    {% if request.user.is_staff %}
 				{# {% url THEME_ADMIN_URL|default:"admin:index" %} #}
 				<a class="dropdown-item" href="{{ url('admin:index') }}">
-				    <i class="fa fa-cog"></i> {{ _('Admin') }}</a>
+				    {% icon 'fa-cog' %} {{ _('Admin') }}</a>
 				{% endif %}
 				<div class="dropdown-divider"></div>
 				<a class="dropdown-item" href="{{ url('account_logout') }}">
-				    <i class="fa fa-sign-out-alt"></i> {{ _('Log out') }}</a>
+				    {% icon 'fa-sign-out-alt' %} {{ _('Log out') }}</a>
 			</div>
 		    </li>
 		{% else %}
 		    <li class="nav-item {% block nav_login %}{% endblock %}">
 			<a class="nav-link" href="{{ url('account_login') }}">
-			    <i class="fa fa-sign-in-alt"></i> {{ _('Log in') }}
+			    {% icon 'fa-sign-in-alt' %} {{ _('Log in') }}
 			</a>
 		    </li>
 		    {% if ACCOUNT_OPEN_SIGNUP %}
@@ -147,19 +151,19 @@
     <nav id="left-sidebar" class="active">
 	<div class="left-sidebar-wrapper">
 	    <div id="left-sidebar-open-wrapper">
-		<button id="open-left-sidebar" type="button" class="btn btn-sm"><i class="fas fa-caret-right"></i></button>
+		<button id="open-left-sidebar" type="button" class="btn btn-sm">{% icon 'fas.fa-caret-right' %}</button>
 	    </div>
 	    <div class="left-sidebar-header">
-		<button id="close-left-sidebar" type="button" class="btn btn-sm"><i class="fas fa-caret-left"></i></button>
+		<button id="close-left-sidebar" type="button" class="btn btn-sm">{% icon 'fas.fa-caret-left' %}</button>
 	    </div>
 	    <div class="left-sidebar-spacer">
 		<div id="left-sidebar-scroll">
 		    <ul class="sidebar-elements">
 			{% block left_sidebar_menu %}
 			    <li class="divider">Menu</li> 
-			<li class="active"><a href="index.html"><i class="fas fa-home"></i><span>Dashboard</span></a> 
+			<li class="active"><a href="index.html">{% icon 'fas.fa-home' %}<span>Dashboard</span></a> 
 			</li> 
-			<li class="parent"><a href="#"><i class="fas fa-home"></i><span>UI Elements</span></a> 
+			<li class="parent"><a href="#">{% icon 'fas.fa-home' %}<span>UI Elements</span></a> 
 			    <ul class="sub-menu"> 
 				<li><a href="ui-alerts.html">Alerts</a> 
 				</li> 
@@ -175,7 +179,7 @@
 	    </div>
 	    <div class="left-sidebar-footer">
 		<p>
-		    <i class="fa fa-copyright"></i>
+		    {% icon 'fa-copyright' %}
 		    <a href="https://github.com/FabriceSalvaire/climbing-asso-portal">Climbing Asso Portal 2018</a>
 		</p>
 		<p><a href="{{ url('mentions-legales') }}">Mentions légales</a></p>
@@ -188,9 +192,9 @@
 
 {# {% block left_sidebar_menu %} #}
 {# <li class="divider">Menu</li> #}
-{# <li class="active"><a href="index.html"><i class="fas fa-home"></i><span>Dashboard</span></a> #}
+{# <li class="active"><a href="index.html">{% icon 'fas.fa-home' %}<span>Dashboard</span></a> #}
 {# </li> #}
-{# <li class="parent"><a href="#"><i class="fas fa-home"></i><span>UI Elements</span></a> #}
+{# <li class="parent"><a href="#">{% icon 'fas.fa-home' %}<span>UI Elements</span></a> #}
 {#     <ul class="sub-menu"> #}
 {# 	<li><a href="ui-alerts.html">Alerts</a> #}
 {# 	</li> #}
@@ -254,7 +258,7 @@
 {# 	</li> #}
 {#     </ul> #}
 {# </li> #}
-{# <li class="parent"><a href="#"><i class="fas fa-folder"></i><span>Menu Levels</span></a> #}
+{# <li class="parent"><a href="#">{% icon 'fas.fa-folder' %}<span>Menu Levels</span></a> #}
 {#     <ul class="sub-menu"> #}
 {# 	<li class="parent"><a href="#"><span>Level 1</span></a> #}
 {# 	    <ul class="sub-menu"> #}
@@ -302,7 +306,7 @@
 			<nav aria-label="breadcrumb">
 			    <ol class="breadcrumb">
 				<li class="breadcrumb-item" aria-current="page">
-				    <a href="/"><i class="fa fa-home"></i> {{ _('Home') }}{# Acceuil #}</a></li>
+				    <a href="/">{% icon 'fa-home' %} {{ _('Home') }}{# Acceuil #}</a></li>
 				{% block breadcrumb_li %}{% endblock %}
 			    </ol>
 			</nav>
@@ -329,7 +333,7 @@
     <hr />
     <footer role="contentinfo" >
 	<p>
-	    <i class="fa fa-copyright"></i>
+	    {% icon 'fa-copyright' %}
 	    <a href="https://github.com/FabriceSalvaire/climbing-asso-portal">
 		Climbing Asso Portal 2018</a>
 		/ <a href="{{ url('mentions-legales') }}">Mentions légales</a>

@@ -4,7 +4,7 @@
 {% with fields = form.non_field_errors() %}
     {% if fields %}
 	<div class="alert alert-danger">
-            <a class="close" data-dismiss="alert"><i class="fas fa-times"></i></a>
+            <a class="close" data-dismiss="alert">{% icon 'fas.fa-times' %}</a>
             {% for non_field_error in fields %}
 		{{ non_field_error }}
             {% endfor %}

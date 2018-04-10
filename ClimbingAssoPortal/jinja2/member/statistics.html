@@ -25,7 +25,7 @@
     {# <img class="mx-auto d-block" src={{ url('member.age_histogram_error_svg') }}></img>  #}
 
     <p>
-	<a class="btn btn-primary" href={{ url('member.age_histogram_csv') }}><i class="fas fa-download"></i> {{ _('Age Histogram as CSV') }}</a>
+	<a class="btn btn-primary" href={{ url('member.age_histogram_csv') }}>{% icon 'fas.fa-download' %} {{ _('Age Histogram as CSV') }}</a>
     </p>
 
 {% endblock %}
