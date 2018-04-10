@@ -3,29 +3,40 @@
 
 {% block title %} - {{ _('Rest API') }}{% endblock %}
 
+{% block breadcrumb %}
+{% endblock %}
+
+{#
 {% block breadcrumb_li %}
     <li class="breadcrumb-item active">{{ _('Rest API') }}</li>
 {% endblock %}
+#}
 
 {% block content %}
-    <ul class="nav justify-content-center">
-	<li class="nav-item">
-	    <a class="nav-link" href="/api">
+    <h2>Table of Contents</h2>
+    <ul>
+	<li>
+	    <a href="/api">
 		{{ _('Rest API') }}
 	    </a>
 	</li>
-	<li class="nav-item">
-	    <a class="nav-link" href={{ url('schema-swagger-ui') }}>
+	<li>
+	    <a href={{ url('schema-swagger-ui') }}>
 		{{ _('Swagger Doc') }}
 	    </a>
 	</li>
-	<li class="nav-item">
-	    <a class="nav-link" href={{ url('schema-redoc') }}>
+	<li>
+	    <a href={{ url('schema-redoc') }}>
 		{{ _('Redoc') }}
 	    </a>
 	</li>
-	<li class="nav-item">
-	    <a class="nav-link" href={{ url('old-swagger') }}>
+	<li>
+	    <a href={{ url('graphql') }}>
+		{{ _('GraphiQL') }}
+	    </a>
+	</li>
+	<li>
+	    <a href={{ url('old-swagger') }}>
 		{{ _('Old Swagger Doc') }}
 	    </a>
 	</li>

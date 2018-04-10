@@ -1,6 +1,6 @@
 {# -*- mode: jinja2 -*- #}
 {% extends "include/base.html" %}
-{% from "include/widgets.html" import new_button_group, search_by_name %}
+{% from "include/widgets.html" import new_button_group, search_by %}
 
 {% block title %} - {{ _('Routes') }}{% endblock %}
 
@@ -10,10 +10,10 @@
 
 {% block content %}
     <h2>{{ _('Routes') }}
-	{{ new_button_group(title=_('New route'), href=url('route.create')) }}
+	{{ new_button_group(title=_('New route'), href=url('wall.route.create')) }}
     </h2>
 
-    {{ search_by_name(form) }}
+    {# {{ search_by(form) }} #}
     <br>
 
     {# {% if routes %} #}
@@ -32,7 +32,7 @@
 	<tbody>
 	    {% for route in routes %}
 		<tr>
-		    <th scope="row"><a href="{{ url('route.details', route.pk) }}">{{ route.line_number }}</a></th>
+		    <th scope="row"><a href="{{ url('wall.route.details', route.pk) }}">{{ route.line_number }}</a></th>
 		    <td>{{ route.grade }}</td>
 		    <td>{{ route.get_colour_display() }}</td>
 		    <td>{{ route.name }}</td>

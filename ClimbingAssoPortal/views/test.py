@@ -73,10 +73,10 @@ def test_django_selet2(request):
         print('test_django_selet2 GET', request)
         form = Select2Form()
 
-    return render(request, 'test/django_select2.html', {'form': form})
+    return render(request, 'devel/test/django_select2.html', {'form': form})
 
 ####################################################################################################
 
 class TemplateFormView(FormView):
-    template_name = 'test/django_select2.html'
+    template_name = 'devel/test/django_select2.html'
     form_class = Select2Form

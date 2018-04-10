@@ -6,13 +6,6 @@
 
 {% block content %}
     <header role="banner">
-	{# Small device #}
-	{#
-	<div class="jumbotron hidden-sm-up" style="padding: 1rem 1rem">
-	</div>
-	#}
-	{# Large device #}
-	{#  hidden-xs-down #}
 	<div class="jumbotron" style="padding: 1rem 1rem">
 	    <h1 class="display-3">
 		<img src="{{ static('image/favicon.png') }}">
@@ -21,47 +14,8 @@
 	</div>
     </header>
 
-    {% if user.is_authenticated %}
-	{# Large device #}
-	{# class="hidden-xs-down" #}
-    {% else %}
+    {% if not user.is_authenticated %}
 	<a class="btn btn-primary btn-lg m-b-1" href="{{ url('account_login') }}" role="button">
 	    {% icon 'fa-sign-in-alt' %} Connexion</a></li>
     {% endif %}
-
-    {# <a class="btn btn-primary btn-lg m-b-1" href="{{ url('about') }}" role="button"> #}
-    {#   À propos</a> #}
-
-    {% if user.is_staff %}
-	<p>
-	    <a class="btn btn-primary btn-lg m-b-1" href="{{ url('wall') }}" role="button">
-		{{ _('Wall') }}</a>
-	</p>
-    {% endif %}
-
-
-    {% if user.is_staff %}
-	<p>
-	    <a class="btn btn-primary btn-lg m-b-1" href="{{ url('member.index') }}" role="button">
-		{{ _('Members') }}</a>
-	    <a class="btn btn-primary btn-lg m-b-1" href="{{ url('member.statistics') }}" role="button">
-		{{ _('Member Statistics') }}</a>
-	    <a class="btn btn-primary btn-lg m-b-1" href="{{ url('member.map') }}" role="button">
-		{{ _('Member Map') }}</a>
-	</p>
-    {% endif %}
-
-    {% if user.is_staff %}
-	<p>
-	    <a class="btn btn-primary btn-lg m-b-1" href={{ url('api-summary') }} role="button">
-		{{ _('Rest API') }}
-	    </a>
-	</p>
-    {% endif %}
-
-    <p>
-	<a class="btn btn-primary btn-lg m-b-1" href="/test" role="button">
-	    {{ _('Tests') }}
-	</a>
-    </p>
 {% endblock %}

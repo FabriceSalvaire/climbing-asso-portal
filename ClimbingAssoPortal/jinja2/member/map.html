@@ -1,6 +1,5 @@
 {# -*- mode: jinja2 -*- #}
 {% extends "include/base.html" %}
-{% from "include/widgets.html" import new_button_group, search_by %}
 
 {% block head %}
     <link rel="stylesheet" href={{ static('css-ext/ol.css') }}>
@@ -10,12 +9,17 @@
 
 {% block title %} - {{ _('Member Map') }}{% endblock %}
 
+{% block breadcrumb %}
+{% endblock %}
+
+{#
 {% block breadcrumb_li %}
     <li class="breadcrumb-item active">{{ _('Member Map') }}</li>
 {% endblock %}
+#}
 
 {% block content %}
-    <h2>{{_('Member Map')}}</h2>
+    {# <h2>{{_('Member Map')}}</h2> #}
 
     <div id="map" class="map"></div>
 {% endblock %}

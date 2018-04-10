@@ -1,12 +1,16 @@
 {# -*- mode: jinja2 -*- #}
 {% extends "include/base.html" %}
-{% from "include/widgets.html" import new_button_group, search_by %}
 
 {% block title %} - {{ _('Member Statistics') }}{% endblock %}
 
+{% block breadcrumb %}
+{% endblock %}
+
+{#
 {% block breadcrumb_li %}
     <li class="breadcrumb-item active">{{ _('Member Statistics') }}</li>
 {% endblock %}
+#}
 
 {% block content %}
     <h2>{{_('Member Statistics')}}</h2>
@@ -20,12 +24,10 @@
 		<img class="w-100 p-0" src={{ url('member.age_histogram_error_svg') }}></img>
 	    </div>
 	</div>
+	<div class="row">
+	    <a class="mx-auto btn btn-primary" href={{ url('member.age_histogram_csv') }}>{% icon 'fas.fa-download' %} {{ _('Age Histogram as CSV') }}</a>
+	</div>
     </div>
     {# <img class="mx-auto d-block" src={{ url('member.age_histogram_svg') }}></img>  #}
     {# <img class="mx-auto d-block" src={{ url('member.age_histogram_error_svg') }}></img>  #}
-
-    <p>
-	<a class="btn btn-primary" href={{ url('member.age_histogram_csv') }}>{% icon 'fas.fa-download' %} {{ _('Age Histogram as CSV') }}</a>
-    </p>
-
 {% endblock %}

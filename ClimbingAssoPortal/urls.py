@@ -39,14 +39,14 @@ urlpatterns = [
          name='home',
     ),
 
+    path('about',
+         TemplateView.as_view(template_name='about.html'),
+         name='about',
+    ),
+
     path('mentions-legales',
          TemplateView.as_view(template_name='mentions-legales.html'),
          name='mentions-legales',
-    ),
-
-    path('api-summary',
-         login_required(TemplateView.as_view(template_name='api-summary.html')),
-         name='api-summary',
     ),
 ]
 
@@ -119,7 +119,7 @@ urlpatterns += [
 from graphene_django.views import GraphQLView
 
 urlpatterns += [
-    path('graphql', GraphQLView.as_view(graphiql=True)), # , schema=schema
+    path('graphql', GraphQLView.as_view(graphiql=True), name='graphql'), # , schema=schema
 ]
 
 ####################################################################################################
@@ -195,95 +195,100 @@ urlpatterns += [
 from .views import route as route_views
 
 urlpatterns += [
-    path('wall/',
-         TemplateView.as_view(template_name='wall.html'),
-         name='wall',
+    path('wall/route/',
+         TemplateView.as_view(template_name='wall/route/index.html'),
+         name='wall.route.index',
     ),
 
-    path('route/',
+    path('wall/route/index-static/',
          login_required(route_views.RouteListView.as_view()),
-         name='route.index'),
+         name='wall.route.index-static'),
 
-    path('route/histogram.svg',
+    path('wall/statistics',
+         TemplateView.as_view(template_name='wall/statistics.html'),
+         name='wall.statistics',
+    ),
+
+    path('wall/route/histogram.svg',
          route_views.route_historgam_svg,
-         name='route.histogram_svg'),
+         name='wall.route.histogram_svg'),
 
-    path('route/cumulative_histogram.svg',
+    path('wall/route/cumulative_histogram.svg',
          route_views.route_cumulative_histogram_svg,
-         name='route.cumulative_histogram_svg'),
+         name='wall.route.cumulative_histogram_svg'),
 
-    path('route/<int:route_id>/',
+    path('wall/route/<int:route_id>/',
          route_views.details,
-         name='route.details',
+         name='wall.route.details',
     ),
 
-    path('route/create/',
+    path('wall/route/create/',
          route_views.create,
-         name='route.create',
+         name='wall.route.create',
     ),
 
-    path('route/<int:route_id>/update/',
+    path('wall/route/<int:route_id>/update/',
          route_views.update,
-         name='route.update',
+         name='wall.route.update',
     ),
 
-    path('route/<int:route_id>/delete/',
+    path('wall/route/<int:route_id>/delete/',
          route_views.delete,
-         name='route.delete',
+         name='wall.route.delete',
     ),
 ]
 
 ####################################################################################################
 #
-# Test Page
+# Development / Test Page
 #
 
 from .views import test as test_views
 
 urlpatterns += [
-    path('test/',
-         login_required(TemplateView.as_view(template_name='test/index.html')),
+    path('devel/api-summary',
+         login_required(TemplateView.as_view(template_name='devel/api-summary.html')),
+         name='devel.api-summary',
+    ),
+
+    path('devel/test/',
+         login_required(TemplateView.as_view(template_name='devel/test/index.html')),
          name='devel.test.index',
     ),
 
-    path('test/rest-ajax',
-         TemplateView.as_view(template_name='test/rest-ajax.html'),
+    path('devel/test/rest-ajax',
+         TemplateView.as_view(template_name='devel/test/rest-ajax.html'),
          name='devel.test.rest-ajax',
     ),
 
-    path('test/select2',
-         TemplateView.as_view(template_name='test/select2.html'),
+    path('devel/test/select2',
+         TemplateView.as_view(template_name='devel/test/select2.html'),
          name='devel.test.select2',
     ),
 
-    path('test/django_selet2',
+    path('devel/test/django_selet2',
          test_views.test_django_selet2,
          # test_views.TemplateFormView.as_view(),
          name='devel.test.django_select2',
     ),
 
-    path('test/slider',
-         TemplateView.as_view(template_name='test/slider.html'),
+    path('devel/test/slider',
+         TemplateView.as_view(template_name='devel/test/slider.html'),
          name='devel.test.slider',
     ),
 
-    path('test/route-angularjs',
-         TemplateView.as_view(template_name='test/index-angularjs.html'),
+    path('devel/test/route-angularjs',
+         TemplateView.as_view(template_name='devel/test/index-angularjs.html'),
          name='devel.test.route-angularjs',
     ),
 
-    path('test/route-reactjs',
-         TemplateView.as_view(template_name='test/index-reactjs.html'),
-         name='devel.test.route-reactjs',
-    ),
-
-    path('test/translation',
-         TemplateView.as_view(template_name='test/translation.html'),
+    path('devel/test/translation',
+         TemplateView.as_view(template_name='devel/test/translation.html'),
          name='devel.test.translation',
     ),
 
-    path('test/context',
-         TemplateView.as_view(template_name='test/context.html'),
+    path('devel/test/context',
+         TemplateView.as_view(template_name='devel/test/context.html'),
          name='devel.test.context',
     ),
 ]

@@ -11,9 +11,9 @@
 {% endblock %}
 
 {% block breadcrumb_li %}
-    <li class="breadcrumb-item"><a href="{{ url('route.index') }}">{{ _('Routes') }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ url('wall.route.index') }}">{{ _('Routes') }}</a></li>
     {% if update %}
-	<li class="breadcrumb-item"><a href="{{ url('route.details', route.pk) }}">{{ route.name }}</a></li>
+	<li class="breadcrumb-item"><a href="{{ url('wall.route.details', route.pk) }}">{{ route.name }}</a></li>
 	<li class="breadcrumb-item active">{{ _('Update') }}</li>
     {% else %}
 	<li class="breadcrumb-item active">{{ _('New route') }}</li>

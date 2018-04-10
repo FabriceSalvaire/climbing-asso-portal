@@ -68,12 +68,17 @@ wall_menu = Menu(
     title=_('Wall'),
     icon='fa-tree',
     parent=left_sidebar_menu,
-    match='route.',
+    match='wall.',
     childs=[
         Menu(
             title=_('Routes'),
             icon='fa-list',
-            url='route.index',
+            url='wall.route.index',
+        ),
+        Menu(
+            title=_('Route Statistics'),
+            icon='fa-chart-bar',
+            url='wall.statistics',
         ),
     ],
 )
@@ -88,6 +93,11 @@ wall_menu = Menu(
             title=_('Test Pages'),
             icon='fas.fa-vial',
             url='devel.test.index',
+        ),
+        Menu(
+            title=_('API'),
+            icon='fas.fa-book',
+            url='devel.api-summary',
         ),
     ],
 )

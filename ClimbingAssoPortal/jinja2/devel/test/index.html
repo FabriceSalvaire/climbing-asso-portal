@@ -1,19 +1,23 @@
 {# -*- mode: jinja2 -*- #}
 {% extends "include/base.html" %}
 
+{% block breadcrumb %}
+{% endblock %}
+
+{#
 {% block breadcrumb_li %}
     <li class="breadcrumb-item active">{{ _('Test Pages') }}</li>
 {% endblock %}
+#}
 
 {% block content %}
     <h2>Table of Contents</h2>
     <ul>
+	<li><a href="{{ url('wall.route.index-static') }}">{{ _('Routes') }}</a></li>
 	<li><a href="{{ url('devel.test.rest-ajax') }}">{{ _('REST AJAX') }}</a></li>
 	<li><a href="{{ url('devel.test.select2') }}">{{ _('Select2') }}</a></li>
 	<li><a href="{{ url('devel.test.django_select2') }}">{{ _('Django Select2') }}</a></li>
 	<li><a href="{{ url('devel.test.slider') }}">{{ _('Slider') }}</a></li>
-	<li><a href="{{ url('devel.test.route-angularjs') }}">{{ _('Route AngularJS') }}</a></li>
-	<li><a href="{{ url('devel.test.route-reactjs') }}">{{ _('Route ReactJS') }}</a></li>
 	<li><a href="{{ url('devel.test.translation') }}">{{ _('Translation') }}</a></li>
 	<li><a href="{{ url('devel.test.context') }}">{{ _('Context') }}</a></li>
     </ul>

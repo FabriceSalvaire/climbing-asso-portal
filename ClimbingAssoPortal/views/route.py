@@ -123,7 +123,7 @@ class RouteSearchForm(Form):
 
 class RouteListView(FormMixin, ListView):
 
-    template_name = 'route/index.html'
+    template_name = 'wall/route/index-static.html'
 
     # ListView
     model = Route
@@ -172,7 +172,7 @@ def details(request, route_id):
 
     route = get_object_or_404(Route, pk=route_id)
 
-    return render(request, 'route/details.html', {'route': route})
+    return render(request, 'wall/route/details.html', {'route': route})
 
 ####################################################################################################
 
@@ -191,7 +191,7 @@ def create(request):
     else:
         form = RouteForm()
 
-    return render(request, 'route/create.html', {'form': form})
+    return render(request, 'wall/route/create.html', {'form': form})
 
 ####################################################################################################
 
@@ -209,7 +209,7 @@ def update(request, route_id):
     else:
         form = RouteForm(instance=route)
 
-    return render(request, 'route/create.html', {'form': form, 'update': True, 'route': route})
+    return render(request, 'wall/route/create.html', {'form': form, 'update': True, 'route': route})
 
 ####################################################################################################
 
