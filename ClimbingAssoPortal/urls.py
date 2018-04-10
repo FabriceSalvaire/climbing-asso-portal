@@ -1,5 +1,3 @@
-# -*- mode: Python -*-
-
 ####################################################################################################
 #
 # Climbing Asso Portal - A Portal for Climbing Club (Association)
@@ -245,42 +243,47 @@ from .views import test as test_views
 urlpatterns += [
     path('test/',
          login_required(TemplateView.as_view(template_name='test/index.html')),
-         name='test.index',
+         name='devel.test.index',
     ),
 
     path('test/rest-ajax',
          TemplateView.as_view(template_name='test/rest-ajax.html'),
-         name='test.rest-ajax',
+         name='devel.test.rest-ajax',
     ),
 
     path('test/select2',
          TemplateView.as_view(template_name='test/select2.html'),
-         name='test.select2',
+         name='devel.test.select2',
     ),
 
     path('test/django_selet2',
          test_views.test_django_selet2,
          # test_views.TemplateFormView.as_view(),
-         name='test.django_select2',
+         name='devel.test.django_select2',
     ),
 
     path('test/slider',
          TemplateView.as_view(template_name='test/slider.html'),
-         name='test.slider',
+         name='devel.test.slider',
     ),
 
     path('test/route-angularjs',
          TemplateView.as_view(template_name='test/index-angularjs.html'),
-         name='test.route-angularjs',
+         name='devel.test.route-angularjs',
     ),
 
     path('test/route-reactjs',
          TemplateView.as_view(template_name='test/index-reactjs.html'),
-         name='test.route-reactjs',
+         name='devel.test.route-reactjs',
     ),
 
     path('test/translation',
          TemplateView.as_view(template_name='test/translation.html'),
-         name='test.translation',
+         name='devel.test.translation',
+    ),
+
+    path('test/context',
+         TemplateView.as_view(template_name='test/context.html'),
+         name='devel.test.context',
     ),
 ]

@@ -29,16 +29,17 @@ from django.conf import settings
 
 def site(request):
 
-    ctx = {
+    context = {
+        # Used by account
         # 'THEME_ADMIN_URL': settings.THEME_ADMIN_URL,
         'THEME_CONTACT_EMAIL': settings.THEME_CONTACT_EMAIL,
     }
 
     if Site._meta.installed:
         site = Site.objects.get_current(request)
-        ctx.update({
+        context.update({
             'SITE_NAME': site.name,
             'SITE_DOMAIN': site.domain
         })
 
-    return ctx
+    return context

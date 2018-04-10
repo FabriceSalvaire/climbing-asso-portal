@@ -118,7 +118,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.cache.UpdateCacheMiddleware',
+    #! 'django.middleware.cache.UpdateCacheMiddleware',
 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -133,7 +133,8 @@ MIDDLEWARE = [
     'account.middleware.TimezoneMiddleware',
     'account.middleware.ExpiredPasswordMiddleware',
 
-    'django.middleware.cache.FetchFromCacheMiddleware', # caches GET and HEAD responses with status 200
+    # caches GET and HEAD responses with status 200
+    #! 'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
 ####################################################################################################
@@ -158,10 +159,13 @@ JINJA_TEMPLATES = {
             'django.template.context_processors.debug',
             'django.template.context_processors.request',
             'django.contrib.auth.context_processors.auth',
+            'django.template.context_processors.i18n',
+            'django.template.context_processors.tz',
             'django.contrib.messages.context_processors.messages',
 
             'account.context_processors.account',
             'ClimbingAssoPortal.context_processors.site',
+            'ClimbingAssoPortal.context_processors.menu',
         ],
 
         'extensions': [
@@ -177,7 +181,9 @@ JINJA_TEMPLATES = {
             'django_jinja.builtins.extensions.StaticFilesExtension',
             'django_jinja.builtins.extensions.DjangoFiltersExtension',
 
-            'ClimbingAssoPortal.jinja_extensions.i18n.DjangoI18n',
+            # cf. templatetags.__init__.py
+            # 'ClimbingAssoPortal.jinja_extensions.i18n.DjangoI18n',
+            # 'ClimbingAssoPortal.jinja_extensions.icon.Icon',
         ],
 
         'bytecode_cache': {
@@ -226,7 +232,7 @@ TEMPLATES = [
 #
 
 CACHE_MIDDLEWARE_ALIAS = 'default' # cf. CACHES keys
-CACHE_MIDDLEWARE_SECONDS = int(10@u_s)
+CACHE_MIDDLEWARE_SECONDS = int(0@u_s)
 CACHE_MIDDLEWARE_KEY_PREFIX = ''
 
 ####################################################################################################

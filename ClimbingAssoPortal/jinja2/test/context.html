@@ -1,0 +1,48 @@
+{# -*- mode: jinja2 -*- #}
+{% extends "include/base.html" %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+    <h2>CSRF Token</h2>
+    {{ csrf_token }}
+
+    <h2>User</h2>
+    {# https://docs.djangoproject.com/en/2.0/ref/contrib/auth/ #}
+
+    <dl class="row px-3">
+	<dt class="col-sm-3">User Name</dt><dd class="col-sm-9">{{ user.username }}</dd>
+	<dt class="col-sm-3">First Name</dt><dd class="col-sm-9">{{ user.first_name }}</dd>
+	<dt class="col-sm-3">Last Name</dt><dd class="col-sm-9">{{ user.last_name }}</dd>
+	<dt class="col-sm-3">Email</dt><dd class="col-sm-9">{{ user.email }}</dd>
+	<dt class="col-sm-3">Is Staff</dt><dd class="col-sm-9">{{ user.is_staff }}</dd>
+	<dt class="col-sm-3">Is Active</dt><dd class="col-sm-9">{{ user.is_active }}</dd>
+	<dt class="col-sm-3">Superuser</dt><dd class="col-sm-9">{{ user.is_superuser }}</dd>
+	<dt class="col-sm-3">Last login</dt><dd class="col-sm-9">{{ user.last_login }}</dd>
+	<dt class="col-sm-3">Date Joined</dt><dd class="col-sm-9">{{ user.date_joined }}</dd>
+    </dl>
+
+    <h2>User Settings</h2>
+
+    <dl class="row px-3">
+	<dt class="col-sm-3">Language</dt><dd class="col-sm-9">{{ LANGUAGE_CODE }}</dd>
+	<dt class="col-sm-3">Time Zone</dt><dd class="col-sm-9">{{ TIME_ZONE }}</dd>
+    </dl>
+
+    <h2>User Groups</h2>
+    <ul>
+    	{% for group in user.group|sort %}
+    	    <li>{{ group }}</li>
+    	{% endfor %}
+    </ul>
+
+    <h2>User Permission</h2>
+    {# https://docs.djangoproject.com/en/2.0/_modules/django/contrib/auth/context_processors/ #}
+    <ul>
+    	{% for permission in user.get_all_permissions()|sort %}
+    	    <li>{{ permission }}</li>
+    	{% endfor %}
+    </ul>
+{% endblock %}
+

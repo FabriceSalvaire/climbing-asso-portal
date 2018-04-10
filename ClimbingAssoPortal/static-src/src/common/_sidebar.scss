@@ -145,9 +145,10 @@
 	white-space: nowrap;
     }
 
-    // for icon
-    svg {
-	margin-right: 1rem;
+    .menu-icon {
+	width: 1rem;
+	display: inline-block;
+	margin-right: .5rem;
     }
 
     .divider {
@@ -165,6 +166,11 @@
 	    &:hover {
 		background-color: $sidebar-menu-hovered;
 	    }
+
+	}
+
+	&.active > a {
+	    color: $link-color;
 	}
 
 	// Sub-menus
@@ -183,6 +189,10 @@
 	    	    &:hover {
 	    	    background-color: $sidebar-submenu-hovered;
 	    	    }
+		}
+
+		&.active > a {
+		    color: $link-color;
 		}
 
 		ul {
@@ -227,7 +237,7 @@
 
     // opened sub-menus
     li.open > ul {
-	// display: block;
+	display: block;
     }
 
     // Style caret for
