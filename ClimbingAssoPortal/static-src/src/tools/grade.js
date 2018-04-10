@@ -87,22 +87,22 @@ class FrenchGrade {
 
     get float() {
         var value = this._number;
-        var letter = this._letter;
-        var sign = this._sign;
 
+        const letter = this._letter;
+        const sign = this._sign;
         if (letter) {
             // 6a < 6a+ < 6b < 6b+ < 6c < 6c+ < 7a
-            if (letter === 'a')
+            if (letter == 'a')
                 value += 1/4;
-            else if (letter === 'b')
+            else if (letter == 'b')
                 value += 1/2
             else // c
                 value += 3/4
-            if (sign === '+')
+            if (sign == '+')
                 value += 1/8
 	} else {
 	    // Old system: 5 -/inf < 5 < 5 +/sup
-            if (sign === '-')
+            if (sign == '-')
                 value += 1/4;
             else if (sign)
                 value += 1/2;
