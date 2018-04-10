@@ -57,10 +57,10 @@ const babel_config = {
     babelrc: false,
 
     env: {
-	browser: {
-	    presets: ['es2015', 'react', 'stage-2'],
-	    plugins: []
-	},
+	// browser: {
+	//     presets: ['es2015', 'react', 'stage-2'],
+	//     plugins: []
+	// },
 
 	'latest-browser': {
 	    presets: [
@@ -73,7 +73,14 @@ const babel_config = {
  		'react',
 		'stage-2',
   	    ],
-	    plugins: []
+	    plugins: [
+		[
+		    'react-intl', {
+			'messagesDir': './build/messages',
+			'enforceDescriptions': false
+		    }
+		]
+	    ]
 	},
 
 	node: {
@@ -205,8 +212,8 @@ let config = {
 
     externals: {
 	jquery: 'jQuery',
-	react: 'React',
-	'react-dom': 'ReactDOM' // ,
+	// react: 'React',
+	// 'react-dom': 'ReactDOM' // ,
 	// 'react-bootstrap-slider': 'ReactBootstrapSlider'
     },
 
