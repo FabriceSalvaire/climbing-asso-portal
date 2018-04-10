@@ -25,6 +25,8 @@ import cmd
 import glob
 import json
 import os
+import random
+import secrets
 import subprocess
 
 import colors # ansicolors @PyPI
@@ -110,10 +112,10 @@ class Shell(cmd.Cmd):
 
     ##############################################
 
-    def _check_args(self, args):
+    def _check_args(self, args, defaults=None):
 
         if isinstance(args, str):
-            return FakeArgument(args)
+            return FakeArgument(args, defaults)
         else:
             return args
 
@@ -179,19 +181,20 @@ class Shell(cmd.Cmd):
 
         'Create superuser'
 
-        args = self._check_args(args)
+        # Fixme: how to pass for all
+        defaults = dict(
+            # superuser = create_superuser_parser.get_default('superuser')
+            # superuser_email = create_superuser_parser.get_default('superuser_email')
+            superuser = Defaults.SUPERUSER,
+            superuser_email = Defaults.SUPERUSER_EMAIL,
+        )
+
+        args = self._check_args(args, defaults)
 
         self._print_banner('Create superuser / admin')
 
-        # Fixme: how ot pass for all
-        if args is None:
-            # superuser = create_superuser_parser.get_default('superuser')
-            # superuser_email = create_superuser_parser.get_default('superuser_email')
-            superuser = Defaults.SUPERUSER
-            superuser_email = Defaults.SUPERUSER_EMAIL
-        else:
-            superuser = args.superuser
-            superuser_email = args.superuser_email
+        superuser = args.superuser
+        superuser_email = args.superuser_email
 
         self._manage(
             'createsuperuser',
@@ -290,6 +293,30 @@ class Shell(cmd.Cmd):
 
         # poedit
         # linguist-qt5
+
+    ##############################################
+
+    def do_make_secret_key(self, args=None):
+
+        'Make Secret Key'
+
+        defaults = dict(
+            size=50,
+        )
+
+        args = self._check_args(args, defaults)
+        size = int(args.size)
+
+        if args.url_safe:
+            key = secrets.token_urlsafe(size)
+        else:
+            characters = ''.join([chr(ord('a') + i) for i in range(26)])
+            characters += characters.upper()
+            characters += ''.join([str(i) for i in range(10)])
+            characters += '_ - + * = ( ) ! @ # $ % & ^'.replace(' ', '')
+            key = ''.join([random.SystemRandom().choice(characters) for i in range(size)])
+
+        print(key)
 
     ##############################################
 

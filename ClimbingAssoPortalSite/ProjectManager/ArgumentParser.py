@@ -177,6 +177,18 @@ class ArgumentParser:
 
         make_message_parser.set_defaults(func=shell.do_make_message)
 
+        ################################
+
+        make_secret_key = subparsers.add_parser(
+            'make_secret_key',
+            help='Make secret key',
+        )
+
+        make_secret_key.add_argument('--url-safe', action='store_true')
+        make_secret_key.add_argument('--size', type=int, default=50)
+
+        make_secret_key.set_defaults(func=shell.do_make_secret_key)
+
     ##############################################
 
     def parse(self):
