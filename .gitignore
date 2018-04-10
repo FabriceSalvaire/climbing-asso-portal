@@ -37,7 +37,7 @@ fixtures/204_member.json
 fixtures/206_filer.json
 fixtures/301_route.json
 
-ClimbingAssoPortal/jinja2/include/tmp.html
+ClimbingAssoPortal/jinja2/include/_tmp.html
 ClimbingAssoPortal/jinja2/rename.sh
 ClimbingAssoPortal/jinja2/trash/
 ClimbingAssoPortal/management/commands/member-isssues.txt
@@ -56,3 +56,7 @@ ressources/
 setup-tools/make-translation-sh
 tools/trash.py
 trash.py
+
+ClimbingAssoPortal/static-src/build/
+root
+static-src
