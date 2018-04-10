@@ -99,6 +99,13 @@ INSTALLED_APPS = [
     'django_celery_results', # http://django-celery-results.readthedocs.io/en/latest/
     'django_celery_beat', # http://django-celery-beat.readthedocs.io/en/latest/
 
+    'health_check', # http://django-health-check.readthedocs.io/en/latest/index.html
+    'health_check.db',             # stock Django health checkers
+    'health_check.cache',
+    'health_check.storage',
+    # 'health_check.contrib.celery', # requires celery
+    'health_check.contrib.psutil', # disk and memory utilization; requires psutil
+
     'graphene_django', # http://docs.graphene-python.org/projects/django/en/latest
 
     'ClimbingAssoPortal.apps.ClimbingAssoPortalConfig',
@@ -328,4 +335,17 @@ GRAPHENE = {
     'MIDDLEWARE': [
         'graphene_django.debug.DjangoDebugMiddleware',
     ]
+}
+
+####################################################################################################
+#
+# Health Check
+#
+
+ # to prevent DOS attack on health url, use make_secret
+HEALTH_CHECK_URL_KEY = 'dev-only'
+
+HEALTH_CHECK = {
+    'DISK_USAGE_MAX': 90, # %
+    'MEMORY_MIN': 100,    # MB
 }

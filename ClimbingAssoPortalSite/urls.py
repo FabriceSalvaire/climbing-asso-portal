@@ -55,6 +55,8 @@ urlpatterns = [
     # Admin install this autocomplete feature where term are searched in search_fields
     # /admin/APPLICATION/MODEL/autocomplete/?term=XYZ
 
+    path('ht/{}/'.format(settings.HEALTH_CHECK_URL_KEY), include('health_check.urls')),
+
     path('filer/', include('filer.urls')),
     path('account/', include('account.urls')),
     path('select2/', include('django_select2.urls')),
